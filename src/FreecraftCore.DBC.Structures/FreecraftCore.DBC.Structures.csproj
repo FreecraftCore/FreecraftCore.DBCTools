@@ -8,4 +8,12 @@
     <PackageReference Include="FreecraftCore.Serializer.Metadata" Version="3.0.34" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Spell\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FreecraftCore.DBC.Common\FreecraftCore.DBC.Common.csproj" />
+  </ItemGroup>
+
 </Project>
