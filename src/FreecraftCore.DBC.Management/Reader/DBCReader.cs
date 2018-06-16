@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -57,47 +56,31 @@ namespace FreecraftCore
 			if(!header.IsDBC)
 				throw new InvalidOperationException($"Failed to load DBC for DBC Type: {typeof(TDBCEntryType)} Signature: {header.Signature}");
 
-			ConfiguredTaskAwaitable<IReadOnlyDictionary<uint, TDBCEntryType>> dbcEntry = ReadDBCEntryBlock(header)
+			ConfiguredTaskAwaitable<Dictionary<uint, TDBCEntryType>> dbcEntry = ReadDBCEntryBlock(header)
 				.ConfigureAwait(false);
 
 			//TODO: Implement DBC string reading
-			return new ParsedDBCFile<TDBCEntryType>(await dbcEntry, new Dictionary<uint, string>());
+			return new ParsedDBCFile<TDBCEntryType>(await dbcEntry, await ReadDBCStringBlock(header));
 		}
 
-		private async Task<IReadOnlyDictionary<uint, TDBCEntryType>> ReadDBCEntryBlock(DBCHeader header)
+		private async Task<Dictionary<uint, TDBCEntryType>> ReadDBCEntryBlock(DBCHeader header)
 		{
 			//Guessing the size here, no way to know.
-			ConcurrentDictionary<uint, TDBCEntryType> entryMap = new ConcurrentDictionary<uint, TDBCEntryType>(4, 10000);
+			Dictionary<uint, TDBCEntryType> entryMap = new Dictionary<uint, TDBCEntryType>(header.RecordsCount);
 
 			byte[] bytes = new byte[header.RecordSize * header.RecordsCount];
 
 			//Lock for safety, we don't want anyone else accessing the stream while we read it.
 			await ReadBytesIntoArrayFromStream(bytes);
 
-			List<ConfiguredTaskAwaitable> tasks = new List<ConfiguredTaskAwaitable>(8);
+			DefaultStreamReaderStrategy reader = new DefaultStreamReaderStrategy(bytes);
 
-			for(int i = 0; i < 4; i++)
+			for(int i = 0; i < header.RecordsCount; i++)
 			{
-				var i1 = i;
-				tasks.Add(Task.Factory.StartNew(() =>
-					{
-						using(MemoryStream stream = new MemoryStream(bytes, (header.RecordsCount / 4) * i1 * header.RecordSize, (header.RecordsCount / 4) * header.RecordSize))
-						{
-							DefaultStreamReaderStrategy reader = new DefaultStreamReaderStrategy(stream);
+				TDBCEntryType entry = Serializer.Deserialize<TDBCEntryType>(reader);
 
-							for(int j = 0; j < header.RecordsCount; j++)
-							{
-								TDBCEntryType entry = Serializer.Deserialize<TDBCEntryType>(reader);
-
-								entryMap.TryAdd(entry.EntryId, entry);
-							}
-						}
-					})
-					.ConfigureAwait(false));
+				entryMap.Add(entry.EntryId, entry);
 			}
-
-			foreach(var t in tasks)
-				await t;
 
 			return entryMap;
 		}

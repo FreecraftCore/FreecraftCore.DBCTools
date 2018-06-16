@@ -63,7 +63,7 @@ namespace FreecraftCore.DBC.RawDumper
 			// serialize JSON directly to a file
 			using(StreamWriter file = File.CreateText($"Dump-{Path.GetFileNameWithoutExtension(filePath)}-{Guid.NewGuid().ToString()}.txt"))
 			{
-				JsonSerializer serializer = new JsonSerializer();
+				JsonSerializer serializer = new JsonSerializer(){ Formatting = Formatting.Indented };
 				serializer.Serialize(file, dbc);
 			}
 		}
