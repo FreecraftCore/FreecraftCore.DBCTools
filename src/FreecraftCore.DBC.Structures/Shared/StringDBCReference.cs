@@ -6,7 +6,7 @@ using FreecraftCore.Serializer;
 namespace FreecraftCore
 {
 	[WireDataContract]
-	public class StringDBCReference
+	public sealed class StringDBCReference
 	{
 		[WireMember(1)]
 		public uint StringReferenceOffset { get; }

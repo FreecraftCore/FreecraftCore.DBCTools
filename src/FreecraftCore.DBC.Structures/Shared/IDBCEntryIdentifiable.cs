@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace FreecraftCore
 {
@@ -14,6 +15,7 @@ namespace FreecraftCore
 		/// <summary>
 		/// The entry ID for the DBC entry.
 		/// </summary>
+		[JsonIgnore]
 		uint EntryId { get; }
 	}
 }
