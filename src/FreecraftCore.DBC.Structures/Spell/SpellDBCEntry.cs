@@ -11,7 +11,7 @@ namespace FreecraftCore
 	/// The structure for the Spell DBC entry.
 	/// </summary>
 	[WireDataContract]
-	public sealed class SpellDBCEntry : IDBCEntryIdentifiable
+	public sealed class SpellDBCEntry<TStringType> : IDBCEntryIdentifiable
 	{
 		/// <inheritdoc />
 		public uint EntryId => SpellId;
@@ -518,7 +518,7 @@ namespace FreecraftCore
 		/// </summary>
 		[WireMember(79)]
 		[KnownSize(DBCConstants.MaxDbcLocale)]
-		private uint[] _SpellName { get; }
+		private TStringType[] _SpellName { get; }
 
 		/// <summary>
 		/// 152      not used
@@ -544,7 +544,7 @@ namespace FreecraftCore
 		/// </summary>
 		[WireMember(83)]
 		[KnownSize(DBCConstants.MaxDbcLocale)]
-		private uint[] _Description { get; }
+		private TStringType[] _Description { get; }
 
 		/// <summary>
 		/// 186      not used
@@ -557,7 +557,7 @@ namespace FreecraftCore
 		/// </summary>
 		[WireMember(85)]
 		[KnownSize(DBCConstants.MaxDbcLocale)]
-		private uint[] _ToolTip { get; }
+		private TStringType[] _ToolTip { get; }
 
 		/// <summary>
 		/// 203      not used

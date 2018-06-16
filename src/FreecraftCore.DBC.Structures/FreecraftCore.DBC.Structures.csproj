@@ -9,10 +9,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Spell\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\FreecraftCore.DBC.Common\FreecraftCore.DBC.Common.csproj" />
   </ItemGroup>
 
