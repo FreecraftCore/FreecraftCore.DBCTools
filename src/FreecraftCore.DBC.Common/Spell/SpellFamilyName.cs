@@ -1,4 +1,4 @@
-namespace GladBot
+namespace FreecraftCore
 {
 	/// <summary>
 	/// Enumeration of the class/family a spell is associated with.

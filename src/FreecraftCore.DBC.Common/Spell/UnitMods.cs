@@ -1,4 +1,4 @@
-﻿namespace GladBot
+﻿namespace FreecraftCore
 {
 	public enum UnitMods
 	{

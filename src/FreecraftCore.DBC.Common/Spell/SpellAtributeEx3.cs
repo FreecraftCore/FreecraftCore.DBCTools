@@ -1,6 +1,6 @@
 using System;
 
-namespace GladBot
+namespace FreecraftCore
 {
 	[Flags]
 	public enum SpellAtributeEx3 : uint

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GladBot
+namespace FreecraftCore
 {
 	/// <summary>
 	/// The DBC constant values.

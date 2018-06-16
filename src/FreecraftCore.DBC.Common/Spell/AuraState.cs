@@ -1,4 +1,4 @@
-﻿namespace GladBot
+﻿namespace FreecraftCore
 {
 	public enum AuraState
 	{   // (C) used in caster aura state     (T) used in target aura state

@@ -1,4 +1,4 @@
-﻿namespace GladBot
+﻿namespace FreecraftCore
 {
 	//TODO: What is this?
 	public enum SpellModOp

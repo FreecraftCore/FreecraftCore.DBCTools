@@ -1,6 +1,6 @@
 using System;
 
-namespace GladBot
+namespace FreecraftCore
 {
 	///<summary>
 	/// Spell proc event related declarations (accessed using SpellMgr functions)

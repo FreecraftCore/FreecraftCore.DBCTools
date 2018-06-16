@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using FreecraftCore.Serializer;
 
-namespace GladBot
+namespace FreecraftCore
 {
 	//Based on: https://github.com/TrinityCore/SpellWork/blob/master/SpellWork/DBC/Structure.cs
 	/// <summary>

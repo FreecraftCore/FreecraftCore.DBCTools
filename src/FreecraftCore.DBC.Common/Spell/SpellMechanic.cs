@@ -1,4 +1,4 @@
-namespace GladBot
+namespace FreecraftCore
 {
 	/// <summary>
 	/// Enumeration of all spell mechanics
