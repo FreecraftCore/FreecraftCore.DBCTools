@@ -342,8 +342,7 @@ namespace FreecraftCore
 		/// 131-132  m_spellVisualID
 		/// </summary>
 		[WireMember(75)]
-		[KnownSize(2)]
-		public uint[] SpellVisual { get; }
+		public SpellVisualData SpellVisual { get; }
 
 		/// <summary>
 		///  133      m_spellIconID
@@ -403,7 +402,6 @@ namespace FreecraftCore
 		/// 187-202  m_auraDescription_lang not used
 		/// </summary>
 		[WireMember(85)]
-		[KnownSize(DBCConstants.MaxDbcLocale)]
 		private LocalizedStringDBC<TStringType> _ToolTip { get; }
 
 		/// <summary>
@@ -446,8 +444,7 @@ namespace FreecraftCore
 		/// 209-211  m_spellClassMask
 		/// </summary>
 		[WireMember(92)]
-		[KnownSize(3)]
-		public uint[] SpellFamilyFlags { get; }
+		public Flags96<uint> SpellFamilyFlags { get; }
 
 		/// <summary>
 		/// 212      m_maxTargets
@@ -477,8 +474,7 @@ namespace FreecraftCore
 		/// 216-218  m_effectChainAmplitude
 		/// </summary>
 		[WireMember(97)]
-		[KnownSize(DBCConstants.MaxEffectIndex)]
-		public float[] DmgMultiplier { get; }
+		public SpellEffectDataChunk<float> DmgMultiplier { get; }
 
 		/// <summary>
 		/// 219      m_minFactionID not used
@@ -502,8 +498,7 @@ namespace FreecraftCore
 		/// 222-223  m_requiredTotemCategoryID
 		/// </summary>
 		[WireMember(101)]
-		[KnownSize(2)]
-		public uint[] TotemCategory { get; }
+		public SpellTotemDataChunk<uint> TotemCategory { get; }
 
 		/// <summary>
 		/// 224      m_requiredAreaGroupId
@@ -539,8 +534,7 @@ namespace FreecraftCore
 		/// 229-231  3.2.0
 		/// </summary>
 		[WireMember(107)]
-		[KnownSize(DBCConstants.MaxEffectIndex)]
-		public float[] DamageCoeficient { get; }
+		public SpellEffectDataChunk<float> DamageCoeficient { get; }
 
 		/// <summary>
 		/// 232      3.2.0

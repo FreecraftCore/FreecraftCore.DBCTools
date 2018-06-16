@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 using FreecraftCore.Serializer;
+using Microsoft.EntityFrameworkCore;
 
 namespace FreecraftCore
 {
+	[Owned]
 	[WireDataContract]
 	public sealed class RequiredReagentData
 	{
