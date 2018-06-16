@@ -5,12 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 using FreecraftCore.Serializer;
 using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FreecraftCore
 {
 	/// <summary>
 	/// The structure for the Spell DBC entry.
 	/// </summary>
+	[Table("Spell")]
 	[JsonObject]
 	[WireDataContract]
 	public sealed class SpellDBCEntry<TStringType> : IDBCEntryIdentifiable

@@ -1,0 +1,1 @@
+dotnet FreecraftCore.DBC.RawDumper.dll
