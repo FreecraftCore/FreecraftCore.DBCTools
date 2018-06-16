@@ -51,6 +51,13 @@ namespace FreecraftCore
 			if(!header.IsDBC)
 				throw new InvalidOperationException($"Failed to load DBC for DBC Type: {typeof(TDBCEntryType)} Signature: {header.Signature}");
 
+			//TODO: Implement DBC string reading
+			return new ParsedDBCFile<TDBCEntryType>(await ReadDBCEntryBlock(header), ReadDBCStringBlock(header));
+		}
+
+		private async Task<Dictionary<uint, TDBCEntryType>> ReadDBCEntryBlock(DBCHeader header)
+		{
+			//Guessing the size here, no way to know.
 			Dictionary<uint, TDBCEntryType> entryMap = new Dictionary<uint, TDBCEntryType>(header.RecordsCount);
 
 			byte[] bytes = new byte[header.RecordSize * header.RecordsCount];
@@ -69,8 +76,27 @@ namespace FreecraftCore
 				entryMap.Add(entry.EntryId, entry);
 			}
 
-			//TODO: Implement DBC string reading
-			return new ParsedDBCFile<TDBCEntryType>(entryMap, new Dictionary<uint, string>());
+			return entryMap;
+		}
+
+		private Dictionary<uint, string> ReadDBCStringBlock(DBCHeader header)
+		{
+			Dictionary<uint, string> stringMap = new Dictionary<uint, string>(1000);
+			DBCStream.Position = header.StartStringPosition;
+
+			DefaultStreamReaderStrategy stringReader = new DefaultStreamReaderStrategy(DBCStream);
+			int currentOffset = 0;
+			while(DBCStream.Length == DBCStream.Position)
+			{
+				string readString = Serializer.Deserialize<StringDBC>(stringReader).StringValue;
+
+				stringMap.Add((uint)currentOffset, readString);
+
+				//We must move the offset forward length + null terminator
+				currentOffset += readString.Length + 1;
+			}
+
+			return stringMap;
 		}
 	}
 }
