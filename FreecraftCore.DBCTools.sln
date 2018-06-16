@@ -9,9 +9,24 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{C69D878A-A37
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "tools", "{78CBA3CF-28F2-464F-892A-3FB745AC735E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FreecraftCore.DBC.Structures", "src\FreecraftCore.DBC.Structures\FreecraftCore.DBC.Structures.csproj", "{5A31B6DD-F841-48E3-97F9-E00BAAF82512}"
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5A31B6DD-F841-48E3-97F9-E00BAAF82512}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A31B6DD-F841-48E3-97F9-E00BAAF82512}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5A31B6DD-F841-48E3-97F9-E00BAAF82512}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5A31B6DD-F841-48E3-97F9-E00BAAF82512}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{5A31B6DD-F841-48E3-97F9-E00BAAF82512} = {C69D878A-A37C-4DBD-8D90-8AF30074E3C0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {77340858-04C1-4169-93A3-121A82FA6670}
