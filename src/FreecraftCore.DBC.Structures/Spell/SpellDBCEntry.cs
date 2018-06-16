@@ -369,22 +369,10 @@ namespace FreecraftCore
 		private LocalizedStringDBC<TStringType> _SpellName { get; }
 
 		/// <summary>
-		/// 152      not used
-		/// </summary>
-		[WireMember(80)]
-		public uint SpellNameFlag { get; }
-
-		/// <summary>
 		/// 153-168  m_nameSubtext_lang
 		/// </summary>
 		[WireMember(81)]
 		private LocalizedStringDBC<TStringType> _Rank { get; }
-
-		/// <summary>
-		/// 169      not used
-		/// </summary>
-		[WireMember(82)]
-		public uint RankFlags { get; }
 
 		/// <summary>
 		///  170-185  m_description_lang not used
@@ -393,22 +381,10 @@ namespace FreecraftCore
 		private LocalizedStringDBC<TStringType> _Description { get; }
 
 		/// <summary>
-		/// 186      not used
-		/// </summary>
-		[WireMember(84)]
-		public uint DescriptionFlags { get; }
-
-		/// <summary>
 		/// 187-202  m_auraDescription_lang not used
 		/// </summary>
 		[WireMember(85)]
 		private LocalizedStringDBC<TStringType> _ToolTip { get; }
-
-		/// <summary>
-		/// 203      not used
-		/// </summary>
-		[WireMember(86)]
-		public uint ToolTipFlags { get; }
 
 		/// <summary>
 		/// 204      m_manaCostPct
