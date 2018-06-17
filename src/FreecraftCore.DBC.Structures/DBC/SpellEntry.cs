@@ -16,7 +16,7 @@ namespace FreecraftCore
 	[Table("Spell")]
 	[JsonObject]
 	[WireDataContract]
-	public sealed class SpellDBCEntry<TStringType> : IDBCEntryIdentifiable
+	public sealed class SpellEntry<TStringType> : IDBCEntryIdentifiable
 	{
 		/// <inheritdoc />
 		public uint EntryId => (uint)SpellId;
@@ -527,7 +527,7 @@ namespace FreecraftCore
 		// 239      3.3.0
 
 		/// <inheritdoc />
-		public SpellDBCEntry(int spellId, uint category, uint dispel, SpellMechanic mechanic, SpellAtribute attributes, SpellAtributeEx attributesEx, SpellAtributeEx2 attributesEx2, SpellAtributeEx3 attributesEx3, SpellAtributeEx4 attributesEx4, SpellAtributeEx5 attributesEx5, SpellAtributeEx6 attributesEx6, SpellAtributeEx7 attributesEx7, ulong stances, ulong stancesNot, uint targets, CreatureTypeMask targetCreatureType, uint requiresSpellFocus, uint facingCasterFlags, AuraState casterAuraState, AuraState targetAuraState, AuraState casterAuraStateNot, AuraState targetAuraStateNot, uint casterAuraSpell, uint targetAuraSpell, uint excludeCasterAuraSpell, uint excludeTargetAuraSpell, uint castingTimeIndex, uint recoveryTime, uint categoryRecoveryTime, SpellInteruptFlags interruptFlags, SpellAuraInterruptFlags auraInterruptFlags, SpellChannelInterruptFlags channelInterruptFlags, ProcFlags procFlags, uint procChance, uint procCharges, uint maxLevel, uint baseLevel, uint spellLevel, uint durationIndex, SpellCostPower powerType, uint manaCost, uint manaCostPerlevel, uint manaPerSecond, uint manaPerSecondPerLevel, uint rangeIndex, float speed, uint modalNextSpell, uint stackAmount, RequiredReagentData reagentsRequired, ItemClassType equippedItemClass, int equippedItemSubClassMask, InventoryTypeMask equippedItemInventoryTypeMask, SpellEffectData spellEffectInformation, SpellVisualData spellVisual, uint spellIconId, uint activeIconId, uint spellPriority, LocalizedStringDBC<TStringType> spellName, LocalizedStringDBC<TStringType> rank, LocalizedStringDBC<TStringType> description, LocalizedStringDBC<TStringType> toolTip, uint manaCostPercentage, uint startRecoveryCategory, uint startRecoveryTime, uint maxTargetLevel, SpellFamilyName spellFamilyName, Flags96<uint> spellFamilyFlags, uint maxAffectedTargets, SpellDamageClassType dmgClass, SpellPreventionType preventionType, uint stanceBarOrder, SpellEffectDataChunk<float> dmgMultiplier, uint minFactionId, uint minReputation, uint requiredAuraVision, SpellTotemDataChunk<uint> totemCategory, int areaGroupId, SpellSchoolMask schoolMask, uint runeCostId, uint spellMissileId, uint powerDisplayId, SpellEffectDataChunk<float> damageCoeficient, uint spellDescriptionVariableId, uint spellDifficultyId)
+		public SpellEntry(int spellId, uint category, uint dispel, SpellMechanic mechanic, SpellAtribute attributes, SpellAtributeEx attributesEx, SpellAtributeEx2 attributesEx2, SpellAtributeEx3 attributesEx3, SpellAtributeEx4 attributesEx4, SpellAtributeEx5 attributesEx5, SpellAtributeEx6 attributesEx6, SpellAtributeEx7 attributesEx7, ulong stances, ulong stancesNot, uint targets, CreatureTypeMask targetCreatureType, uint requiresSpellFocus, uint facingCasterFlags, AuraState casterAuraState, AuraState targetAuraState, AuraState casterAuraStateNot, AuraState targetAuraStateNot, uint casterAuraSpell, uint targetAuraSpell, uint excludeCasterAuraSpell, uint excludeTargetAuraSpell, uint castingTimeIndex, uint recoveryTime, uint categoryRecoveryTime, SpellInteruptFlags interruptFlags, SpellAuraInterruptFlags auraInterruptFlags, SpellChannelInterruptFlags channelInterruptFlags, ProcFlags procFlags, uint procChance, uint procCharges, uint maxLevel, uint baseLevel, uint spellLevel, uint durationIndex, SpellCostPower powerType, uint manaCost, uint manaCostPerlevel, uint manaPerSecond, uint manaPerSecondPerLevel, uint rangeIndex, float speed, uint modalNextSpell, uint stackAmount, RequiredReagentData reagentsRequired, ItemClassType equippedItemClass, int equippedItemSubClassMask, InventoryTypeMask equippedItemInventoryTypeMask, SpellEffectData spellEffectInformation, SpellVisualData spellVisual, uint spellIconId, uint activeIconId, uint spellPriority, LocalizedStringDBC<TStringType> spellName, LocalizedStringDBC<TStringType> rank, LocalizedStringDBC<TStringType> description, LocalizedStringDBC<TStringType> toolTip, uint manaCostPercentage, uint startRecoveryCategory, uint startRecoveryTime, uint maxTargetLevel, SpellFamilyName spellFamilyName, Flags96<uint> spellFamilyFlags, uint maxAffectedTargets, SpellDamageClassType dmgClass, SpellPreventionType preventionType, uint stanceBarOrder, SpellEffectDataChunk<float> dmgMultiplier, uint minFactionId, uint minReputation, uint requiredAuraVision, SpellTotemDataChunk<uint> totemCategory, int areaGroupId, SpellSchoolMask schoolMask, uint runeCostId, uint spellMissileId, uint powerDisplayId, SpellEffectDataChunk<float> damageCoeficient, uint spellDescriptionVariableId, uint spellDifficultyId)
 		{
 			SpellId = spellId;
 			Category = category;
@@ -616,7 +616,7 @@ namespace FreecraftCore
 		}
 		
 		//Serializer ctor
-		public SpellDBCEntry()
+		public SpellEntry()
 		{
 			
 		}

@@ -21,7 +21,7 @@ namespace FreecraftCore
 		{
 			Console.WriteLine("Creating table schema if not created.");
 
-			ParsedDBCFile<SpellDBCEntry<StringDBCReference>> spellDbcFile = await ParseDBCFile<SpellDBCEntry<StringDBCReference>>("Spell.dbc");
+			ParsedDBCFile<SpellEntry<StringDBCReference>> spellDbcFile = await ParseDBCFile<SpellEntry<StringDBCReference>>("Spell.dbc");
 
 			IServiceCollection serviceCollection = new ServiceCollection();
 			ContainerBuilder builder = new ContainerBuilder();
@@ -68,7 +68,7 @@ namespace FreecraftCore
 			
 			IServiceProvider container = new AutofacServiceProvider(builder.Build());
 
-			ITypeConverterProvider<SpellDBCEntry<StringDBCReference>, SpellDBCEntry<string>> converterProvider = container.GetRequiredService<ITypeConverterProvider<SpellDBCEntry<StringDBCReference>, SpellDBCEntry<string>>>();
+			ITypeConverterProvider<SpellEntry<StringDBCReference>, SpellEntry<string>> converterProvider = container.GetRequiredService<ITypeConverterProvider<SpellEntry<StringDBCReference>, SpellEntry<string>>>();
 			using(var scope = container.CreateScope())
 			{
 				DataBaseClientFilesDatabaseContext context = scope.ServiceProvider.GetService<DataBaseClientFilesDatabaseContext>();
@@ -114,8 +114,8 @@ namespace FreecraftCore
 		}
 
 		private static Task AddSpellEntriesToDatabase(
-			[NotNull] SpellDBCEntry<StringDBCReference>[] entries, 
-			[NotNull] ITypeConverterProvider<SpellDBCEntry<StringDBCReference>, SpellDBCEntry<string>> converterProvider,
+			[NotNull] SpellEntry<StringDBCReference>[] entries, 
+			[NotNull] ITypeConverterProvider<SpellEntry<StringDBCReference>, SpellEntry<string>> converterProvider,
 			[NotNull] DataBaseClientFilesDatabaseContext context)
 		{
 			if(entries == null) throw new ArgumentNullException(nameof(entries));
@@ -123,7 +123,7 @@ namespace FreecraftCore
 			if(context == null) throw new ArgumentNullException(nameof(context));
 
 			//TODO: This probably should not be async
-			context.Spell.AddRange(entries.Select(converterProvider.Convert));
+			context.Spells.AddRange(entries.Select(converterProvider.Convert));
 
 			Console.WriteLine("Saving changes.");
 

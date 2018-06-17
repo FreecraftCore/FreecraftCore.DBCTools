@@ -7,7 +7,7 @@ using JetBrains.Annotations;
 
 namespace FreecraftCore
 {
-	public sealed class SpellDbcEntryRefToStringTypeConverter : ITypeConverterProvider<SpellDBCEntry<StringDBCReference>, SpellDBCEntry<string>>
+	public sealed class SpellDbcEntryRefToStringTypeConverter : ITypeConverterProvider<SpellEntry<StringDBCReference>, SpellEntry<string>>
 	{
 		private ITypeConverterProvider<LocalizedStringDBC<StringDBCReference>, LocalizedStringDBC<string>> LocalizedStringRefToStringConverter { get; }
 
@@ -18,12 +18,12 @@ namespace FreecraftCore
 		}
 
 		/// <inheritdoc />
-		public SpellDBCEntry<string> Convert(SpellDBCEntry<StringDBCReference> fromObject)
+		public SpellEntry<string> Convert(SpellEntry<StringDBCReference> fromObject)
 		{
 			if(fromObject == null) throw new ArgumentNullException(nameof(fromObject));
 
 			//TODO: Speed this up
-			return new SpellDBCEntry<string>(fromObject.SpellId,
+			return new SpellEntry<string>(fromObject.SpellId,
 				fromObject.Category,
 				fromObject.Dispel,
 				fromObject.Mechanic,
