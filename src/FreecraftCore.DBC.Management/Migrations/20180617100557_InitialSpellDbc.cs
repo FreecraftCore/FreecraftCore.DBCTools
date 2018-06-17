@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace FreecraftCore.DBC.Management.Migrations
 {
-    public partial class InitialSpellDBC : Migration
+    public partial class InitialSpellDbc : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -11,7 +11,7 @@ namespace FreecraftCore.DBC.Management.Migrations
                 name: "Spell",
                 columns: table => new
                 {
-                    SpellId = table.Column<uint>(nullable: false)
+                    SpellId = table.Column<int>(nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Category = table.Column<uint>(nullable: false),
                     Dispel = table.Column<uint>(nullable: false),
@@ -146,6 +146,54 @@ namespace FreecraftCore.DBC.Management.Migrations
                     SpellIconID = table.Column<uint>(nullable: false),
                     ActiveIconID = table.Column<uint>(nullable: false),
                     SpellPriority = table.Column<uint>(nullable: false),
+                    SpellName_enUS = table.Column<string>(nullable: true),
+                    SpellName_koKR = table.Column<string>(nullable: true),
+                    SpellName_frFR = table.Column<string>(nullable: true),
+                    SpellName_deDE = table.Column<string>(nullable: true),
+                    SpellName_enCN = table.Column<string>(nullable: true),
+                    SpellName_enTW = table.Column<string>(nullable: true),
+                    SpellName_esES = table.Column<string>(nullable: true),
+                    SpellName_esMX = table.Column<string>(nullable: true),
+                    SpellName_ruRU = table.Column<string>(nullable: true),
+                    SpellName_ptPT = table.Column<string>(nullable: true),
+                    SpellName_itIT = table.Column<string>(nullable: true),
+                    SpellName_Flags = table.Column<uint>(nullable: false),
+                    Rank_enUS = table.Column<string>(nullable: true),
+                    Rank_koKR = table.Column<string>(nullable: true),
+                    Rank_frFR = table.Column<string>(nullable: true),
+                    Rank_deDE = table.Column<string>(nullable: true),
+                    Rank_enCN = table.Column<string>(nullable: true),
+                    Rank_enTW = table.Column<string>(nullable: true),
+                    Rank_esES = table.Column<string>(nullable: true),
+                    Rank_esMX = table.Column<string>(nullable: true),
+                    Rank_ruRU = table.Column<string>(nullable: true),
+                    Rank_ptPT = table.Column<string>(nullable: true),
+                    Rank_itIT = table.Column<string>(nullable: true),
+                    Rank_Flags = table.Column<uint>(nullable: false),
+                    Description_enUS = table.Column<string>(nullable: true),
+                    Description_koKR = table.Column<string>(nullable: true),
+                    Description_frFR = table.Column<string>(nullable: true),
+                    Description_deDE = table.Column<string>(nullable: true),
+                    Description_enCN = table.Column<string>(nullable: true),
+                    Description_enTW = table.Column<string>(nullable: true),
+                    Description_esES = table.Column<string>(nullable: true),
+                    Description_esMX = table.Column<string>(nullable: true),
+                    Description_ruRU = table.Column<string>(nullable: true),
+                    Description_ptPT = table.Column<string>(nullable: true),
+                    Description_itIT = table.Column<string>(nullable: true),
+                    Description_Flags = table.Column<uint>(nullable: false),
+                    ToolTip_enUS = table.Column<string>(nullable: true),
+                    ToolTip_koKR = table.Column<string>(nullable: true),
+                    ToolTip_frFR = table.Column<string>(nullable: true),
+                    ToolTip_deDE = table.Column<string>(nullable: true),
+                    ToolTip_enCN = table.Column<string>(nullable: true),
+                    ToolTip_enTW = table.Column<string>(nullable: true),
+                    ToolTip_esES = table.Column<string>(nullable: true),
+                    ToolTip_esMX = table.Column<string>(nullable: true),
+                    ToolTip_ruRU = table.Column<string>(nullable: true),
+                    ToolTip_ptPT = table.Column<string>(nullable: true),
+                    ToolTip_itIT = table.Column<string>(nullable: true),
+                    ToolTip_Flags = table.Column<uint>(nullable: false),
                     ManaCostPercentage = table.Column<uint>(nullable: false),
                     StartRecoveryCategory = table.Column<uint>(nullable: false),
                     StartRecoveryTime = table.Column<uint>(nullable: false),

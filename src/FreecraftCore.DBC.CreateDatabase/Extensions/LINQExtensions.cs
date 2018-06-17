@@ -11,8 +11,7 @@ namespace FreecraftCore
 		{
 			return list.Select((item, index) => new {index, item})
 				.GroupBy(x => x.index % parts)
-				.Select(x => x.Select(y => y.item))
-				.ToArray();
+				.Select(x => x.Select(y => y.item));
 		}
 	}
 }

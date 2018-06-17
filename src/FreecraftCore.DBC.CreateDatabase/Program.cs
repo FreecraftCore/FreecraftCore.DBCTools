@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Async;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -7,8 +6,12 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Autofac;
+using Autofac.Extensions.DependencyInjection;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Console;
 
 namespace FreecraftCore
 {
@@ -18,11 +21,25 @@ namespace FreecraftCore
 		{
 			Console.WriteLine("Creating table schema if not created.");
 
-			await CreateDatabaseIfNotCreated();
-
 			ParsedDBCFile<SpellDBCEntry<StringDBCReference>> spellDbcFile = await ParseDBCFile<SpellDBCEntry<StringDBCReference>>("Spell.dbc");
 
+			IServiceCollection serviceCollection = new ServiceCollection();
 			ContainerBuilder builder = new ContainerBuilder();
+
+			serviceCollection.AddEntityFrameworkMySql();
+			serviceCollection.AddDbContext<DataBaseClientFilesDatabaseContext>(options =>
+			{
+				//TODO: When OnConfiguring no longer has this we should renable this
+				options.UseMySql("Server=localhost;Database=client.dbc;Uid=root;Pwd=test;", optionsBuilder =>
+				{
+					optionsBuilder.MaxBatchSize(4000);
+					optionsBuilder.MinBatchSize(20);
+					optionsBuilder.EnableRetryOnFailure(5);
+					optionsBuilder.CommandTimeout(1000);
+				});
+
+				options.EnableSensitiveDataLogging();
+			});
 
 			builder.RegisterType<LocalizedStringDbcRefToStringTypeConverter>()
 				.AsImplementedInterfaces()
@@ -40,59 +57,79 @@ namespace FreecraftCore
 				.AsImplementedInterfaces()
 				.AsSelf();
 
-			IContainer container = builder.Build();
+			builder.Populate(serviceCollection);
 
-			ITypeConverterProvider<SpellDBCEntry<StringDBCReference>, SpellDBCEntry<string>> converterProvider = container.Resolve<ITypeConverterProvider<SpellDBCEntry<StringDBCReference>, SpellDBCEntry<string>>>();
+			//TODO: Make logging optional
+			//ILoggerFactory loggerFactory = new LoggerFactory()
+			//	.AddFile($"{"Logs/Dump-{Date}"}-{Guid.NewGuid()}.txt", LogLevel.Trace);
 
-			await spellDbcFile.RecordDatabase.Split(Environment.ProcessorCount * 2).ToArray().ParallelForEachAsync(async pairs =>
+			//builder.RegisterInstance(loggerFactory)
+			//	.As<ILoggerFactory>();
+			
+			IServiceProvider container = new AutofacServiceProvider(builder.Build());
+
+			ITypeConverterProvider<SpellDBCEntry<StringDBCReference>, SpellDBCEntry<string>> converterProvider = container.GetRequiredService<ITypeConverterProvider<SpellDBCEntry<StringDBCReference>, SpellDBCEntry<string>>>();
+			using(var scope = container.CreateScope())
+			{
+				DataBaseClientFilesDatabaseContext context = scope.ServiceProvider.GetService<DataBaseClientFilesDatabaseContext>();
+				await CreateDatabaseIfNotCreated(context);
+			}
+
+			Stopwatch watch = new Stopwatch();
+			watch.Start();
+			using(var scope = container.CreateScope())
+			{
+				DataBaseClientFilesDatabaseContext context = scope.ServiceProvider.GetService<DataBaseClientFilesDatabaseContext>();
+				//See this post for why this configuration is occuring below: https://stackoverflow.com/questions/6107206/improving-bulk-insert-performance-in-entity-framework
+				context.ChangeTracker.AutoDetectChangesEnabled = false;
+				context.ChangeTracker.LazyLoadingEnabled = false;
+				context.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+
+				try
 				{
-					await AddSpellEntriesToDatabase(pairs.ToArray(), converterProvider)
-						.ConfigureAwait(false);
-				})
-				.ConfigureAwait(false);
+					foreach(var spellCollection in spellDbcFile.RecordDatabase.Values.Split(spellDbcFile.RecordDatabase.Count / 3000).ToArray())
+						await AddSpellEntriesToDatabase(spellCollection.ToArray(), converterProvider, context)
+							.ConfigureAwait(false);
+				}
+				catch(Exception e)
+				{
+					Console.WriteLine(e);
+					throw;
+				}
+			}
+			
+			
+			watch.Stop();
 
-			Console.WriteLine($"Finished adding: {spellDbcFile.RecordDatabase.Count} records.");
+			Console.WriteLine($"Finished adding: {spellDbcFile.RecordDatabase.Count} records. Time: {watch.ElapsedMilliseconds}");
 
 			Console.WriteLine("Press any key!");
 			Console.ReadKey();
 		}
 
-		private static async Task CreateDatabaseIfNotCreated()
+		private static async Task CreateDatabaseIfNotCreated(DataBaseClientFilesDatabaseContext context)
 		{
-			DataBaseClientFilesDatabaseContext context = new DataBaseClientFilesDatabaseContext();
-
-			//See this post for why this configuration is occuring below: https://stackoverflow.com/questions/6107206/improving-bulk-insert-performance-in-entity-framework
-			context.ChangeTracker.AutoDetectChangesEnabled = false;
-
 			await context.Database.MigrateAsync();
-			bool alreadyExists = !await context.Database.EnsureCreatedAsync();
-			context.Dispose();
-
-			Console.WriteLine($"Tables Already Existed: {alreadyExists}");
+			await context.Database.EnsureCreatedAsync();
 		}
 
-		private static async Task AddSpellEntriesToDatabase([NotNull] IReadOnlyCollection<KeyValuePair<uint, SpellDBCEntry<StringDBCReference>>> entries, [NotNull] ITypeConverterProvider<SpellDBCEntry<StringDBCReference>, SpellDBCEntry<string>> converterProvider)
+		private static Task AddSpellEntriesToDatabase(
+			[NotNull] SpellDBCEntry<StringDBCReference>[] entries, 
+			[NotNull] ITypeConverterProvider<SpellDBCEntry<StringDBCReference>, SpellDBCEntry<string>> converterProvider,
+			[NotNull] DataBaseClientFilesDatabaseContext context)
 		{
 			if(entries == null) throw new ArgumentNullException(nameof(entries));
 			if(converterProvider == null) throw new ArgumentNullException(nameof(converterProvider));
+			if(context == null) throw new ArgumentNullException(nameof(context));
 
-			foreach(IEnumerable<KeyValuePair<uint, SpellDBCEntry<StringDBCReference>>> spellCollection in entries.Split(5))
-			{
-				//We create the context several times so that we can reduce inmemory usage.
-				//Otherwise Spell.dbc and other large DBCs can use up to a GB of memory.
-				using(DataBaseClientFilesDatabaseContext context = new DataBaseClientFilesDatabaseContext())
-				{
-					//See this post for why this configuration is occuring below: https://stackoverflow.com/questions/6107206/improving-bulk-insert-performance-in-entity-framework
-					context.ChangeTracker.AutoDetectChangesEnabled = false;
-					context.ChangeTracker.LazyLoadingEnabled = false;
+			//TODO: This probably should not be async
+			context.Spell.AddRange(entries.Select(converterProvider.Convert));
 
-					context.Spell.AddRange(spellCollection.Select(s => converterProvider.Convert(s.Value)).ToArray());
+			Console.WriteLine("Saving changes.");
 
-					//Instead of tracking 1,000 and saving we just save after this subcollection.
-					await context.SaveChangesAsync(true)
-						.ConfigureAwait(false);
-				}
-			}
+			//Pass true to call AcceptAllChanges
+			//This tells EF to release storage of changes and entites.
+			return context.SaveChangesAsync(true);
 		}
 
 		public static async Task<ParsedDBCFile<TDBCEntryType>> ParseDBCFile<TDBCEntryType>(string filePath) 

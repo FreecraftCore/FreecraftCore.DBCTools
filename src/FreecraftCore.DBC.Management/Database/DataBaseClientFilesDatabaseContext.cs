@@ -14,7 +14,7 @@ namespace FreecraftCore
 		/// </summary>
 		public DbSet<SpellDBCEntry<string>> Spell { get; set; }
 
-		public DataBaseClientFilesDatabaseContext([NotNull] DbContextOptions options) 
+		public DataBaseClientFilesDatabaseContext([NotNull] DbContextOptions<DataBaseClientFilesDatabaseContext> options)
 			: base(options)
 		{
 
@@ -22,16 +22,15 @@ namespace FreecraftCore
 
 		//TODO: Remove this
 		/// <inheritdoc />
-		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+		/*protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
-			optionsBuilder.UseMySql("Server=localhost;Database=Client.DBC;Uid=root;Pwd=test;", builder =>
-			{
-				builder.MaxBatchSize(10000);
-				builder.MinBatchSize(50);
-			});
-
 			base.OnConfiguring(optionsBuilder);
-		}
+
+			optionsBuilder.UseMySql("Server=127.0.0.1;Database=client.dbc;Uid=root;Pwd=test;Pooling=True;MinimumPoolSize=10;maximumpoolsize=50;ConnectionReset=True;", builder =>
+			{
+				builder.MaxBatchSize(15);
+			});
+		}*/
 
 		/// <inheritdoc />
 		protected override void OnModelCreating(ModelBuilder modelBuilder)

@@ -8,8 +8,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FreecraftCore.DBC.Management.Migrations
 {
     [DbContext(typeof(DataBaseClientFilesDatabaseContext))]
-    [Migration("20180617020245_InitialSpellDBC")]
-    partial class InitialSpellDBC
+    [Migration("20180617100557_InitialSpellDbc")]
+    partial class InitialSpellDbc
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,7 +20,7 @@ namespace FreecraftCore.DBC.Management.Migrations
 
             modelBuilder.Entity("FreecraftCore.SpellDBCEntry<string>", b =>
                 {
-                    b.Property<uint>("SpellId")
+                    b.Property<int>("SpellId")
                         .ValueGeneratedOnAdd();
 
                     b.Property<uint>("ActiveIconID");
@@ -176,7 +176,7 @@ namespace FreecraftCore.DBC.Management.Migrations
                 {
                     b.OwnsOne("FreecraftCore.Flags96<uint>", "SpellFamilyFlags", b1 =>
                         {
-                            b1.Property<uint>("SpellDBCEntry<string>SpellId");
+                            b1.Property<int>("SpellDBCEntry<string>SpellId");
 
                             b1.Property<uint>("One");
 
@@ -194,7 +194,7 @@ namespace FreecraftCore.DBC.Management.Migrations
 
                     b.OwnsOne("FreecraftCore.RequiredReagentData", "ReagentsRequired", b1 =>
                         {
-                            b1.Property<uint>("SpellDBCEntry<string>SpellId");
+                            b1.Property<int>("SpellDBCEntry<string>SpellId");
 
                             b1.ToTable("Spell");
 
@@ -205,7 +205,7 @@ namespace FreecraftCore.DBC.Management.Migrations
 
                             b1.OwnsOne("FreecraftCore.ReagentDataChunk<int>", "ReagentId", b2 =>
                                 {
-                                    b2.Property<uint>("RequiredReagentDataSpellDBCEntry<string>SpellId");
+                                    b2.Property<int>("RequiredReagentDataSpellDBCEntry<string>SpellId");
 
                                     b2.Property<int>("Eight");
 
@@ -233,7 +233,7 @@ namespace FreecraftCore.DBC.Management.Migrations
 
                             b1.OwnsOne("FreecraftCore.ReagentDataChunk<uint>", "ReagentCount", b2 =>
                                 {
-                                    b2.Property<uint>("RequiredReagentDataSpellDBCEntry<string>SpellId");
+                                    b2.Property<int>("RequiredReagentDataSpellDBCEntry<string>SpellId");
 
                                     b2.Property<uint>("Eight");
 
@@ -261,7 +261,7 @@ namespace FreecraftCore.DBC.Management.Migrations
 
                             b1.OwnsOne("FreecraftCore.SpellTotemDataChunk<uint>", "Totem", b2 =>
                                 {
-                                    b2.Property<uint>("RequiredReagentDataSpellDBCEntry<string>SpellId");
+                                    b2.Property<int>("RequiredReagentDataSpellDBCEntry<string>SpellId");
 
                                     b2.Property<uint>("One");
 
@@ -278,7 +278,7 @@ namespace FreecraftCore.DBC.Management.Migrations
 
                     b.OwnsOne("FreecraftCore.SpellEffectData", "SpellEffectInformation", b1 =>
                         {
-                            b1.Property<uint>("SpellDBCEntry<string>SpellId");
+                            b1.Property<int>("SpellDBCEntry<string>SpellId");
 
                             b1.ToTable("Spell");
 
@@ -289,7 +289,7 @@ namespace FreecraftCore.DBC.Management.Migrations
 
                             b1.OwnsOne("FreecraftCore.SpellEffectDataChunk<FreecraftCore.AuraType>", "EffectApplyAuraName", b2 =>
                                 {
-                                    b2.Property<uint>("SpellEffectDataSpellDBCEntry<string>SpellId");
+                                    b2.Property<int>("SpellEffectDataSpellDBCEntry<string>SpellId");
 
                                     b2.Property<int>("Effect1");
 
@@ -307,7 +307,7 @@ namespace FreecraftCore.DBC.Management.Migrations
 
                             b1.OwnsOne("FreecraftCore.SpellEffectDataChunk<FreecraftCore.SpellEffect>", "Effect", b2 =>
                                 {
-                                    b2.Property<uint>("SpellEffectDataSpellDBCEntry<string>SpellId");
+                                    b2.Property<int>("SpellEffectDataSpellDBCEntry<string>SpellId");
 
                                     b2.Property<int>("Effect1");
 
@@ -325,7 +325,7 @@ namespace FreecraftCore.DBC.Management.Migrations
 
                             b1.OwnsOne("FreecraftCore.SpellEffectDataChunk<FreecraftCore.SpellMechanic>", "EffectMechanic", b2 =>
                                 {
-                                    b2.Property<uint>("SpellEffectDataSpellDBCEntry<string>SpellId");
+                                    b2.Property<int>("SpellEffectDataSpellDBCEntry<string>SpellId");
 
                                     b2.Property<int>("Effect1");
 
@@ -343,7 +343,7 @@ namespace FreecraftCore.DBC.Management.Migrations
 
                             b1.OwnsOne("FreecraftCore.SpellEffectDataChunk<float>", "EffectMultipleValue", b2 =>
                                 {
-                                    b2.Property<uint>("SpellEffectDataSpellDBCEntry<string>SpellId");
+                                    b2.Property<int>("SpellEffectDataSpellDBCEntry<string>SpellId");
 
                                     b2.Property<float>("Effect1");
 
@@ -361,7 +361,7 @@ namespace FreecraftCore.DBC.Management.Migrations
 
                             b1.OwnsOne("FreecraftCore.SpellEffectDataChunk<float>", "EffectPointsPerComboPoint", b2 =>
                                 {
-                                    b2.Property<uint>("SpellEffectDataSpellDBCEntry<string>SpellId");
+                                    b2.Property<int>("SpellEffectDataSpellDBCEntry<string>SpellId");
 
                                     b2.Property<float>("Effect1");
 
@@ -379,7 +379,7 @@ namespace FreecraftCore.DBC.Management.Migrations
 
                             b1.OwnsOne("FreecraftCore.SpellEffectDataChunk<float>", "EffectRealPointsPerLevel", b2 =>
                                 {
-                                    b2.Property<uint>("SpellEffectDataSpellDBCEntry<string>SpellId");
+                                    b2.Property<int>("SpellEffectDataSpellDBCEntry<string>SpellId");
 
                                     b2.Property<float>("Effect1");
 
@@ -397,7 +397,7 @@ namespace FreecraftCore.DBC.Management.Migrations
 
                             b1.OwnsOne("FreecraftCore.SpellEffectDataChunk<FreecraftCore.SpellTargetType>", "EffectImplicitTargetA", b2 =>
                                 {
-                                    b2.Property<uint>("SpellEffectDataSpellDBCEntry<string>SpellId");
+                                    b2.Property<int>("SpellEffectDataSpellDBCEntry<string>SpellId");
 
                                     b2.Property<int>("Effect1");
 
@@ -415,7 +415,7 @@ namespace FreecraftCore.DBC.Management.Migrations
 
                             b1.OwnsOne("FreecraftCore.SpellEffectDataChunk<FreecraftCore.SpellTargetType>", "EffectImplicitTargetB", b2 =>
                                 {
-                                    b2.Property<uint>("SpellEffectDataSpellDBCEntry<string>SpellId");
+                                    b2.Property<int>("SpellEffectDataSpellDBCEntry<string>SpellId");
 
                                     b2.Property<int>("Effect1");
 
@@ -433,7 +433,7 @@ namespace FreecraftCore.DBC.Management.Migrations
 
                             b1.OwnsOne("FreecraftCore.SpellEffectDataChunk<int>", "EffectBasePoints", b2 =>
                                 {
-                                    b2.Property<uint>("SpellEffectDataSpellDBCEntry<string>SpellId");
+                                    b2.Property<int>("SpellEffectDataSpellDBCEntry<string>SpellId");
 
                                     b2.Property<int>("Effect1");
 
@@ -451,7 +451,7 @@ namespace FreecraftCore.DBC.Management.Migrations
 
                             b1.OwnsOne("FreecraftCore.SpellEffectDataChunk<int>", "EffectDieSides", b2 =>
                                 {
-                                    b2.Property<uint>("SpellEffectDataSpellDBCEntry<string>SpellId");
+                                    b2.Property<int>("SpellEffectDataSpellDBCEntry<string>SpellId");
 
                                     b2.Property<int>("Effect1");
 
@@ -469,7 +469,7 @@ namespace FreecraftCore.DBC.Management.Migrations
 
                             b1.OwnsOne("FreecraftCore.SpellEffectDataChunk<int>", "EffectMiscValue", b2 =>
                                 {
-                                    b2.Property<uint>("SpellEffectDataSpellDBCEntry<string>SpellId");
+                                    b2.Property<int>("SpellEffectDataSpellDBCEntry<string>SpellId");
 
                                     b2.Property<int>("Effect1");
 
@@ -487,7 +487,7 @@ namespace FreecraftCore.DBC.Management.Migrations
 
                             b1.OwnsOne("FreecraftCore.SpellEffectDataChunk<int>", "EffectMiscValueB", b2 =>
                                 {
-                                    b2.Property<uint>("SpellEffectDataSpellDBCEntry<string>SpellId");
+                                    b2.Property<int>("SpellEffectDataSpellDBCEntry<string>SpellId");
 
                                     b2.Property<int>("Effect1");
 
@@ -505,7 +505,7 @@ namespace FreecraftCore.DBC.Management.Migrations
 
                             b1.OwnsOne("FreecraftCore.SpellEffectDataChunk<uint>", "EffectAmplitude", b2 =>
                                 {
-                                    b2.Property<uint>("SpellEffectDataSpellDBCEntry<string>SpellId");
+                                    b2.Property<int>("SpellEffectDataSpellDBCEntry<string>SpellId");
 
                                     b2.Property<uint>("Effect1");
 
@@ -523,7 +523,7 @@ namespace FreecraftCore.DBC.Management.Migrations
 
                             b1.OwnsOne("FreecraftCore.SpellEffectDataChunk<uint>", "EffectChainTarget", b2 =>
                                 {
-                                    b2.Property<uint>("SpellEffectDataSpellDBCEntry<string>SpellId");
+                                    b2.Property<int>("SpellEffectDataSpellDBCEntry<string>SpellId");
 
                                     b2.Property<uint>("Effect1");
 
@@ -541,7 +541,7 @@ namespace FreecraftCore.DBC.Management.Migrations
 
                             b1.OwnsOne("FreecraftCore.SpellEffectDataChunk<uint>", "EffectItemType", b2 =>
                                 {
-                                    b2.Property<uint>("SpellEffectDataSpellDBCEntry<string>SpellId");
+                                    b2.Property<int>("SpellEffectDataSpellDBCEntry<string>SpellId");
 
                                     b2.Property<uint>("Effect1");
 
@@ -559,7 +559,7 @@ namespace FreecraftCore.DBC.Management.Migrations
 
                             b1.OwnsOne("FreecraftCore.SpellEffectDataChunk<uint>", "EffectRadiusIndex", b2 =>
                                 {
-                                    b2.Property<uint>("SpellEffectDataSpellDBCEntry<string>SpellId");
+                                    b2.Property<int>("SpellEffectDataSpellDBCEntry<string>SpellId");
 
                                     b2.Property<uint>("Effect1");
 
@@ -577,7 +577,7 @@ namespace FreecraftCore.DBC.Management.Migrations
 
                             b1.OwnsOne("FreecraftCore.SpellEffectDataChunk<uint>", "EffectSpellClassMaskA", b2 =>
                                 {
-                                    b2.Property<uint>("SpellEffectDataSpellDBCEntry<string>SpellId");
+                                    b2.Property<int>("SpellEffectDataSpellDBCEntry<string>SpellId");
 
                                     b2.Property<uint>("Effect1");
 
@@ -595,7 +595,7 @@ namespace FreecraftCore.DBC.Management.Migrations
 
                             b1.OwnsOne("FreecraftCore.SpellEffectDataChunk<uint>", "EffectSpellClassMaskB", b2 =>
                                 {
-                                    b2.Property<uint>("SpellEffectDataSpellDBCEntry<string>SpellId");
+                                    b2.Property<int>("SpellEffectDataSpellDBCEntry<string>SpellId");
 
                                     b2.Property<uint>("Effect1");
 
@@ -613,7 +613,7 @@ namespace FreecraftCore.DBC.Management.Migrations
 
                             b1.OwnsOne("FreecraftCore.SpellEffectDataChunk<uint>", "EffectSpellClassMaskC", b2 =>
                                 {
-                                    b2.Property<uint>("SpellEffectDataSpellDBCEntry<string>SpellId");
+                                    b2.Property<int>("SpellEffectDataSpellDBCEntry<string>SpellId");
 
                                     b2.Property<uint>("Effect1");
 
@@ -631,7 +631,7 @@ namespace FreecraftCore.DBC.Management.Migrations
 
                             b1.OwnsOne("FreecraftCore.SpellEffectDataChunk<uint>", "EffectTriggerSpell", b2 =>
                                 {
-                                    b2.Property<uint>("SpellEffectDataSpellDBCEntry<string>SpellId");
+                                    b2.Property<int>("SpellEffectDataSpellDBCEntry<string>SpellId");
 
                                     b2.Property<uint>("Effect1");
 
@@ -650,7 +650,7 @@ namespace FreecraftCore.DBC.Management.Migrations
 
                     b.OwnsOne("FreecraftCore.SpellVisualData", "SpellVisual", b1 =>
                         {
-                            b1.Property<uint>("SpellDBCEntry<string>SpellId");
+                            b1.Property<int>("SpellDBCEntry<string>SpellId");
 
                             b1.Property<uint>("One");
 
@@ -664,9 +664,153 @@ namespace FreecraftCore.DBC.Management.Migrations
                                 .OnDelete(DeleteBehavior.Cascade);
                         });
 
+                    b.OwnsOne("FreecraftCore.LocalizedStringDBC<string>", "Description", b1 =>
+                        {
+                            b1.Property<int>("SpellDBCEntry<string>SpellId");
+
+                            b1.Property<uint>("Flags");
+
+                            b1.Property<string>("deDE");
+
+                            b1.Property<string>("enCN");
+
+                            b1.Property<string>("enTW");
+
+                            b1.Property<string>("enUS");
+
+                            b1.Property<string>("esES");
+
+                            b1.Property<string>("esMX");
+
+                            b1.Property<string>("frFR");
+
+                            b1.Property<string>("itIT");
+
+                            b1.Property<string>("koKR");
+
+                            b1.Property<string>("ptPT");
+
+                            b1.Property<string>("ruRU");
+
+                            b1.ToTable("Spell");
+
+                            b1.HasOne("FreecraftCore.SpellDBCEntry<string>")
+                                .WithOne("Description")
+                                .HasForeignKey("FreecraftCore.LocalizedStringDBC<string>", "SpellDBCEntry<string>SpellId")
+                                .OnDelete(DeleteBehavior.Cascade);
+                        });
+
+                    b.OwnsOne("FreecraftCore.LocalizedStringDBC<string>", "Rank", b1 =>
+                        {
+                            b1.Property<int>("SpellDBCEntry<string>SpellId");
+
+                            b1.Property<uint>("Flags");
+
+                            b1.Property<string>("deDE");
+
+                            b1.Property<string>("enCN");
+
+                            b1.Property<string>("enTW");
+
+                            b1.Property<string>("enUS");
+
+                            b1.Property<string>("esES");
+
+                            b1.Property<string>("esMX");
+
+                            b1.Property<string>("frFR");
+
+                            b1.Property<string>("itIT");
+
+                            b1.Property<string>("koKR");
+
+                            b1.Property<string>("ptPT");
+
+                            b1.Property<string>("ruRU");
+
+                            b1.ToTable("Spell");
+
+                            b1.HasOne("FreecraftCore.SpellDBCEntry<string>")
+                                .WithOne("Rank")
+                                .HasForeignKey("FreecraftCore.LocalizedStringDBC<string>", "SpellDBCEntry<string>SpellId")
+                                .OnDelete(DeleteBehavior.Cascade);
+                        });
+
+                    b.OwnsOne("FreecraftCore.LocalizedStringDBC<string>", "SpellName", b1 =>
+                        {
+                            b1.Property<int>("SpellDBCEntry<string>SpellId");
+
+                            b1.Property<uint>("Flags");
+
+                            b1.Property<string>("deDE");
+
+                            b1.Property<string>("enCN");
+
+                            b1.Property<string>("enTW");
+
+                            b1.Property<string>("enUS");
+
+                            b1.Property<string>("esES");
+
+                            b1.Property<string>("esMX");
+
+                            b1.Property<string>("frFR");
+
+                            b1.Property<string>("itIT");
+
+                            b1.Property<string>("koKR");
+
+                            b1.Property<string>("ptPT");
+
+                            b1.Property<string>("ruRU");
+
+                            b1.ToTable("Spell");
+
+                            b1.HasOne("FreecraftCore.SpellDBCEntry<string>")
+                                .WithOne("SpellName")
+                                .HasForeignKey("FreecraftCore.LocalizedStringDBC<string>", "SpellDBCEntry<string>SpellId")
+                                .OnDelete(DeleteBehavior.Cascade);
+                        });
+
+                    b.OwnsOne("FreecraftCore.LocalizedStringDBC<string>", "ToolTip", b1 =>
+                        {
+                            b1.Property<int>("SpellDBCEntry<string>SpellId");
+
+                            b1.Property<uint>("Flags");
+
+                            b1.Property<string>("deDE");
+
+                            b1.Property<string>("enCN");
+
+                            b1.Property<string>("enTW");
+
+                            b1.Property<string>("enUS");
+
+                            b1.Property<string>("esES");
+
+                            b1.Property<string>("esMX");
+
+                            b1.Property<string>("frFR");
+
+                            b1.Property<string>("itIT");
+
+                            b1.Property<string>("koKR");
+
+                            b1.Property<string>("ptPT");
+
+                            b1.Property<string>("ruRU");
+
+                            b1.ToTable("Spell");
+
+                            b1.HasOne("FreecraftCore.SpellDBCEntry<string>")
+                                .WithOne("ToolTip")
+                                .HasForeignKey("FreecraftCore.LocalizedStringDBC<string>", "SpellDBCEntry<string>SpellId")
+                                .OnDelete(DeleteBehavior.Cascade);
+                        });
+
                     b.OwnsOne("FreecraftCore.SpellEffectDataChunk<float>", "DamageCoeficient", b1 =>
                         {
-                            b1.Property<uint>("SpellDBCEntry<string>SpellId");
+                            b1.Property<int>("SpellDBCEntry<string>SpellId");
 
                             b1.Property<float>("Effect1");
 
@@ -684,7 +828,7 @@ namespace FreecraftCore.DBC.Management.Migrations
 
                     b.OwnsOne("FreecraftCore.SpellEffectDataChunk<float>", "DmgMultiplier", b1 =>
                         {
-                            b1.Property<uint>("SpellDBCEntry<string>SpellId");
+                            b1.Property<int>("SpellDBCEntry<string>SpellId");
 
                             b1.Property<float>("Effect1");
 
@@ -702,7 +846,7 @@ namespace FreecraftCore.DBC.Management.Migrations
 
                     b.OwnsOne("FreecraftCore.SpellTotemDataChunk<uint>", "TotemCategory", b1 =>
                         {
-                            b1.Property<uint>("SpellDBCEntry<string>SpellId");
+                            b1.Property<int>("SpellDBCEntry<string>SpellId");
 
                             b1.Property<uint>("One");
 
