@@ -93,9 +93,7 @@ namespace FreecraftCore
 		[WireMember(10)]
 		public SkillAbilityAquireMethod SkillAquireMethod { get; private set; }
 
-
 		//TODO: Consider renaming
-
 		/// <summary>
 		/// 10       m_trivialSkillLineRankHigh
 		/// Wiki says: Skill becomes grey (green = (grey+yellow)/2)
