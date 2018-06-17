@@ -15,6 +15,8 @@ namespace FreecraftCore
 	public sealed class SpellDifficultyEntry : IDBCEntryIdentifiable
 	{
 		/// <inheritdoc />
+		[JsonIgnore]
+		[NotMapped]
 		public uint EntryId => (uint)SpellDifficultyId;
 
 		[Key]
