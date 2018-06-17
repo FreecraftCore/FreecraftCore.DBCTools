@@ -82,7 +82,7 @@ namespace FreecraftCore
 		[NotMapped]
 		[KnownSize(4)]
 		[WireMember(13)]
-		public TStringType[] Unknowns { get; private set; }
+		public TStringType[] Unknowns { get; private set; } = new TStringType[4];
 
 		/// <summary>
 		/// 4 byte bitmask for the localized string.
@@ -90,6 +90,24 @@ namespace FreecraftCore
 		/// </summary>
 		[WireMember(14)]
 		public uint Flags { get; private set; }
+
+		/// <inheritdoc />
+		public LocalizedStringDBC(TStringType enUs, TStringType koKr, TStringType frFr, TStringType deDe, TStringType enCn, TStringType enTw, TStringType esEs, TStringType esMx, TStringType ruRu, TStringType unknown1, TStringType ptPt, TStringType itIt, uint flags)
+		{
+			enUS = enUs;
+			koKR = koKr;
+			frFR = frFr;
+			deDE = deDe;
+			enCN = enCn;
+			enTW = enTw;
+			esES = esEs;
+			esMX = esMx;
+			ruRU = ruRu;
+			Unknown1 = unknown1;
+			ptPT = ptPt;
+			itIT = itIt;
+			Flags = flags;
+		}
 
 		/// <summary>
 		/// Serializer ctor.

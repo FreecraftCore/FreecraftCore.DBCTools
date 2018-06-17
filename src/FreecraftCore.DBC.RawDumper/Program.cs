@@ -45,16 +45,9 @@ namespace FreecraftCore.DBC.RawDumper
 		public static async Task DumpDBCTable<TDBCEntryType>(string filePath)
 			where TDBCEntryType : IDBCEntryIdentifiable
 		{
-			Stopwatch watch = new Stopwatch();
-			
-			ParsedDBCFile<TDBCEntryType> dbc = null;
-			using(FileStream fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read))
-			{
-				DBCReader<TDBCEntryType> reader = new DBCReader<TDBCEntryType>(fileStream);
 
-				watch.Start();
-				dbc = await reader.ParseDBCFile();
-			}
+			Stopwatch watch = new Stopwatch();
+			ParsedDBCFile<TDBCEntryType> dbc = await ParseDBCFile<TDBCEntryType>(filePath, watch);
 			watch.Stop();
 
 			Console.WriteLine($"Loaded {filePath} in Milliseconds: {watch.ElapsedMilliseconds}");
@@ -63,9 +56,23 @@ namespace FreecraftCore.DBC.RawDumper
 			// serialize JSON directly to a file
 			using(StreamWriter file = File.CreateText($"Dump-{Path.GetFileNameWithoutExtension(filePath)}-{Guid.NewGuid().ToString()}.txt"))
 			{
-				JsonSerializer serializer = new JsonSerializer(){ Formatting = Formatting.Indented };
+				JsonSerializer serializer = new JsonSerializer() { Formatting = Formatting.Indented };
 				serializer.Serialize(file, dbc);
 			}
+		}
+
+		private static async Task<ParsedDBCFile<TDBCEntryType>> ParseDBCFile<TDBCEntryType>(string filePath, Stopwatch watch) where TDBCEntryType : IDBCEntryIdentifiable
+		{
+			ParsedDBCFile<TDBCEntryType> dbc = null;
+			using(FileStream fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+			{
+				DBCReader<TDBCEntryType> reader = new DBCReader<TDBCEntryType>(fileStream);
+
+				watch.Start();
+				dbc = await reader.ParseDBCFile();
+			}
+
+			return dbc;
 		}
 	}
 }

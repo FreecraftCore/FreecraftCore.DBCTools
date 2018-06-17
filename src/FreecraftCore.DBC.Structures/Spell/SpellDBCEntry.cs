@@ -524,9 +524,98 @@ namespace FreecraftCore
 		[WireMember(109)]
 		public uint SpellDifficultyId { get; private set; }
 		// 239      3.3.0
+
+		/// <inheritdoc />
+		public SpellDBCEntry(uint spellId, uint category, uint dispel, SpellMechanic mechanic, SpellAtribute attributes, SpellAtributeEx attributesEx, SpellAtributeEx2 attributesEx2, SpellAtributeEx3 attributesEx3, SpellAtributeEx4 attributesEx4, SpellAtributeEx5 attributesEx5, SpellAtributeEx6 attributesEx6, SpellAtributeEx7 attributesEx7, ulong stances, ulong stancesNot, uint targets, CreatureTypeMask targetCreatureType, uint requiresSpellFocus, uint facingCasterFlags, AuraState casterAuraState, AuraState targetAuraState, AuraState casterAuraStateNot, AuraState targetAuraStateNot, uint casterAuraSpell, uint targetAuraSpell, uint excludeCasterAuraSpell, uint excludeTargetAuraSpell, uint castingTimeIndex, uint recoveryTime, uint categoryRecoveryTime, SpellInteruptFlags interruptFlags, SpellAuraInterruptFlags auraInterruptFlags, SpellChannelInterruptFlags channelInterruptFlags, ProcFlags procFlags, uint procChance, uint procCharges, uint maxLevel, uint baseLevel, uint spellLevel, uint durationIndex, SpellCostPower powerType, uint manaCost, uint manaCostPerlevel, uint manaPerSecond, uint manaPerSecondPerLevel, uint rangeIndex, float speed, uint modalNextSpell, uint stackAmount, RequiredReagentData reagentsRequired, ItemClassType equippedItemClass, int equippedItemSubClassMask, InventoryTypeMask equippedItemInventoryTypeMask, SpellEffectData spellEffectInformation, SpellVisualData spellVisual, uint spellIconId, uint activeIconId, uint spellPriority, LocalizedStringDBC<TStringType> spellName, LocalizedStringDBC<TStringType> rank, LocalizedStringDBC<TStringType> description, LocalizedStringDBC<TStringType> toolTip, uint manaCostPercentage, uint startRecoveryCategory, uint startRecoveryTime, uint maxTargetLevel, SpellFamilyName spellFamilyName, Flags96<uint> spellFamilyFlags, uint maxAffectedTargets, SpellDamageClassType dmgClass, SpellPreventionType preventionType, uint stanceBarOrder, SpellEffectDataChunk<float> dmgMultiplier, uint minFactionId, uint minReputation, uint requiredAuraVision, SpellTotemDataChunk<uint> totemCategory, int areaGroupId, SpellSchoolMask schoolMask, uint runeCostId, uint spellMissileId, uint powerDisplayId, SpellEffectDataChunk<float> damageCoeficient, uint spellDescriptionVariableId, uint spellDifficultyId)
+		{
+			SpellId = spellId;
+			Category = category;
+			Dispel = dispel;
+			Mechanic = mechanic;
+			Attributes = attributes;
+			AttributesEx = attributesEx;
+			AttributesEx2 = attributesEx2;
+			AttributesEx3 = attributesEx3;
+			AttributesEx4 = attributesEx4;
+			AttributesEx5 = attributesEx5;
+			AttributesEx6 = attributesEx6;
+			AttributesEx7 = attributesEx7;
+			Stances = stances;
+			StancesNot = stancesNot;
+			Targets = targets;
+			TargetCreatureType = targetCreatureType;
+			RequiresSpellFocus = requiresSpellFocus;
+			FacingCasterFlags = facingCasterFlags;
+			CasterAuraState = casterAuraState;
+			TargetAuraState = targetAuraState;
+			CasterAuraStateNot = casterAuraStateNot;
+			TargetAuraStateNot = targetAuraStateNot;
+			CasterAuraSpell = casterAuraSpell;
+			TargetAuraSpell = targetAuraSpell;
+			ExcludeCasterAuraSpell = excludeCasterAuraSpell;
+			ExcludeTargetAuraSpell = excludeTargetAuraSpell;
+			CastingTimeIndex = castingTimeIndex;
+			RecoveryTime = recoveryTime;
+			CategoryRecoveryTime = categoryRecoveryTime;
+			InterruptFlags = interruptFlags;
+			AuraInterruptFlags = auraInterruptFlags;
+			ChannelInterruptFlags = channelInterruptFlags;
+			ProcFlags = procFlags;
+			ProcChance = procChance;
+			ProcCharges = procCharges;
+			MaxLevel = maxLevel;
+			BaseLevel = baseLevel;
+			SpellLevel = spellLevel;
+			DurationIndex = durationIndex;
+			PowerType = powerType;
+			ManaCost = manaCost;
+			ManaCostPerlevel = manaCostPerlevel;
+			ManaPerSecond = manaPerSecond;
+			ManaPerSecondPerLevel = manaPerSecondPerLevel;
+			RangeIndex = rangeIndex;
+			Speed = speed;
+			ModalNextSpell = modalNextSpell;
+			StackAmount = stackAmount;
+			ReagentsRequired = reagentsRequired;
+			EquippedItemClass = equippedItemClass;
+			EquippedItemSubClassMask = equippedItemSubClassMask;
+			EquippedItemInventoryTypeMask = equippedItemInventoryTypeMask;
+			SpellEffectInformation = spellEffectInformation;
+			SpellVisual = spellVisual;
+			SpellIconID = spellIconId;
+			ActiveIconID = activeIconId;
+			SpellPriority = spellPriority;
+			SpellName = spellName;
+			Rank = rank;
+			Description = description;
+			ToolTip = toolTip;
+			ManaCostPercentage = manaCostPercentage;
+			StartRecoveryCategory = startRecoveryCategory;
+			StartRecoveryTime = startRecoveryTime;
+			MaxTargetLevel = maxTargetLevel;
+			SpellFamilyName = spellFamilyName;
+			SpellFamilyFlags = spellFamilyFlags;
+			MaxAffectedTargets = maxAffectedTargets;
+			DmgClass = dmgClass;
+			PreventionType = preventionType;
+			StanceBarOrder = stanceBarOrder;
+			DmgMultiplier = dmgMultiplier;
+			MinFactionId = minFactionId;
+			MinReputation = minReputation;
+			RequiredAuraVision = requiredAuraVision;
+			TotemCategory = totemCategory;
+			AreaGroupId = areaGroupId;
+			SchoolMask = schoolMask;
+			RuneCostID = runeCostId;
+			SpellMissileID = spellMissileId;
+			PowerDisplayId = powerDisplayId;
+			DamageCoeficient = damageCoeficient;
+			SpellDescriptionVariableID = spellDescriptionVariableId;
+			SpellDifficultyId = spellDifficultyId;
+		}
 		
 		//Serializer ctor
-		protected SpellDBCEntry()
+		public SpellDBCEntry()
 		{
 			
 		}
