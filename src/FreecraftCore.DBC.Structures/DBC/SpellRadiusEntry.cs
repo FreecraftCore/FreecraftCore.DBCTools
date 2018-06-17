@@ -8,12 +8,12 @@ using Newtonsoft.Json;
 
 namespace FreecraftCore
 {
+	//Referenced by Spell.dbc
 	[Table("SpellRadius")]
 	[JsonObject]
 	[WireDataContract]
 	public class SpellRadiusEntry : IDBCEntryIdentifiable
 	{
-		//TODO: Is this spell id?
 		/// <inheritdoc />
 		[NotMapped]
 		[JsonIgnore]

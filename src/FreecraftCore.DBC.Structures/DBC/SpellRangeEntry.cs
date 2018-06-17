@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 
 namespace FreecraftCore
 {
+	//Referenced by Spell.dbc
 	[Table("SpellRange")]
 	[JsonObject]
 	[WireDataContract]
