@@ -13,10 +13,10 @@ namespace FreecraftCore
 		//This might seem ridiclous that we don't use arrays BUT EF does not support arrays
 		//for the models so we MUST use seperate fields.
 		[WireMember(1)]
-		public TDataType One { get; }
+		public TDataType One { get; private set; }
 
 		[WireMember(2)]
-		public TDataType Two { get; }
+		public TDataType Two { get; private set; }
 
 		/// <inheritdoc />
 		public SpellTotemDataChunk(TDataType one, TDataType two)

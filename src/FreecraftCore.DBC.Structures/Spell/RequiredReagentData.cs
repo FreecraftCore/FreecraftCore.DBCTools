@@ -14,22 +14,19 @@ namespace FreecraftCore
 		/// 50-51    m_totem
 		/// </summary>
 		[WireMember(49)]
-		[KnownSize(2)]
-		public uint[] Totem { get; }
+		public SpellTotemDataChunk<uint> Totem { get; private set; }
 
 		/// <summary>
 		/// 52-59    m_reagent
 		/// </summary>
 		[WireMember(50)]
-		[KnownSize(DBCConstants.MaxReagentCount)]
-		public int[] Reagent { get; }
+		public ReagentDataChunk<int> ReagentId { get; private set; }
 
 		/// <summary>
 		/// 60-67    m_reagentCount
 		/// </summary>
 		[WireMember(51)]
-		[KnownSize(DBCConstants.MaxReagentCount)]
-		public uint[] ReagentCount { get; }
+		public ReagentDataChunk<uint> ReagentCount { get; private set; }
 
 		/// <summary>
 		/// Serializer ctor.

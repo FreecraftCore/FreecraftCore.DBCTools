@@ -9,7 +9,7 @@ namespace FreecraftCore
 	public sealed class StringDBCReference
 	{
 		[WireMember(1)]
-		public uint StringReferenceOffset { get; }
+		public uint StringReferenceOffset { get; private set; }
 
 		/// <inheritdoc />
 		public StringDBCReference(uint stringReferenceOffset)

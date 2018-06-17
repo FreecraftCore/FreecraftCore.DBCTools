@@ -13,7 +13,7 @@ namespace FreecraftCore
 		/// </summary>
 		[Encoding(EncodingType.ASCII)]
 		[WireMember(1)]
-		public string StringValue { get; }
+		public string StringValue { get; private set; }
 
 		/// <inheritdoc />
 		public StringDBC(string stringValue)

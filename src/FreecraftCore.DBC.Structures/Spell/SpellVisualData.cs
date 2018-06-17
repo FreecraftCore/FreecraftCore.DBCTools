@@ -22,10 +22,10 @@ namespace FreecraftCore
 		//public uint[] SpellVisual { get; }
 
 		[WireMember(1)]
-		public uint One { get; }
+		public uint One { get; private set; }
 
 		[WireMember(2)]
-		public uint Two { get; }
+		public uint Two { get; private set; }
 
 		/// <inheritdoc />
 		public SpellVisualData(uint one, uint two)

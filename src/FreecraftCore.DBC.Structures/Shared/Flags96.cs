@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using FreecraftCore.Serializer;
+using Microsoft.EntityFrameworkCore;
 
 namespace FreecraftCore
 {
@@ -9,6 +10,7 @@ namespace FreecraftCore
 	/// Based on Trinitycore's Flags96.
 	/// It is a 3 int sizes flags field.
 	/// </summary>
+	[Owned]
 	[WireDataContract]
 	public sealed class Flags96<TFlagsType>
 		where TFlagsType : struct
@@ -16,13 +18,13 @@ namespace FreecraftCore
 		//This might seem ridiclous that we don't use arrays BUT EF does not support arrays
 		//for the models so we MUST use seperate fields.
 		[WireMember(1)]
-		public TFlagsType One { get; }
+		public TFlagsType One { get; private set; }
 
 		[WireMember(2)]
-		public TFlagsType Two { get; }
+		public TFlagsType Two { get; private set; }
 
 		[WireMember(3)]
-		public TFlagsType Three { get; }
+		public TFlagsType Three { get; private set; }
 
 		/// <inheritdoc />
 		public Flags96(TFlagsType one, TFlagsType two, TFlagsType three)
