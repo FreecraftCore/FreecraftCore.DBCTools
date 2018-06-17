@@ -13,11 +13,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FreecraftCore.DBC.Structure
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FreecraftCore.DBC.Common", "src\FreecraftCore.DBC.Common\FreecraftCore.DBC.Common.csproj", "{46426898-5F59-4A47-B99E-B6397F11BFF2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FreecraftCore.DBC.Management", "src\FreecraftCore.DBC.Management\FreecraftCore.DBC.Management.csproj", "{98134E8E-5269-4C48-AC72-22E33E2D89F7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FreecraftCore.DBC.Management", "src\FreecraftCore.DBC.Management\FreecraftCore.DBC.Management.csproj", "{98134E8E-5269-4C48-AC72-22E33E2D89F7}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FreecraftCore.DBC.RawDumper", "src\FreecraftCore.DBC.RawDumper\FreecraftCore.DBC.RawDumper.csproj", "{6BCAFB5D-DC51-42C5-A2DF-61A3E60BCFE3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FreecraftCore.DBC.CreateDatabase", "src\FreecraftCore.DBC.CreateDatabase\FreecraftCore.DBC.CreateDatabase.csproj", "{164D2CC4-D223-4415-851D-DC5E7C2B8C4E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FreecraftCore.DBC.CreateDatabase", "src\FreecraftCore.DBC.CreateDatabase\FreecraftCore.DBC.CreateDatabase.csproj", "{164D2CC4-D223-4415-851D-DC5E7C2B8C4E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FreecraftCore.DBCTools.Tests", "tests\FreecraftCore.DBCTools.Tests\FreecraftCore.DBCTools.Tests.csproj", "{43766F0B-B9BB-4926-976B-AD0FA45D8149}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{164D2CC4-D223-4415-851D-DC5E7C2B8C4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{164D2CC4-D223-4415-851D-DC5E7C2B8C4E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{164D2CC4-D223-4415-851D-DC5E7C2B8C4E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{43766F0B-B9BB-4926-976B-AD0FA45D8149}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{43766F0B-B9BB-4926-976B-AD0FA45D8149}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{43766F0B-B9BB-4926-976B-AD0FA45D8149}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{43766F0B-B9BB-4926-976B-AD0FA45D8149}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -55,6 +61,7 @@ Global
 		{98134E8E-5269-4C48-AC72-22E33E2D89F7} = {C69D878A-A37C-4DBD-8D90-8AF30074E3C0}
 		{6BCAFB5D-DC51-42C5-A2DF-61A3E60BCFE3} = {78CBA3CF-28F2-464F-892A-3FB745AC735E}
 		{164D2CC4-D223-4415-851D-DC5E7C2B8C4E} = {78CBA3CF-28F2-464F-892A-3FB745AC735E}
+		{43766F0B-B9BB-4926-976B-AD0FA45D8149} = {2E903AB5-E882-49A7-A612-FCCB9F11D540}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {77340858-04C1-4169-93A3-121A82FA6670}
