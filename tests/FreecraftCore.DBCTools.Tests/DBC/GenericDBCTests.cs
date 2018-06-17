@@ -21,7 +21,8 @@ namespace FreecraftCore
 		public static IEnumerable<Type> DBCStructureTypes =
 			typeof(DBCHeader).Assembly
 				.GetExportedTypes()
-				.Where(t => t.GetCustomAttribute<TableAttribute>() != null);
+				.Where(t => t.GetCustomAttribute<TableAttribute>() != null)
+				.Distinct(); //probably not needed
 
 		public static IEnumerable<Type> NonDBCStructureWireDataContractMarkedTypes =>
 			typeof(DBCHeader)
@@ -71,6 +72,25 @@ namespace FreecraftCore
 			Assert.DoesNotThrow(() => serializer.Compile());
 
 			Assert.True(serializer.isTypeRegistered(t), $"Failed to register Type: {t.Name}");
+		}
+
+		[Test]
+		[TestCaseSource(nameof(DBCStructureTypes))]
+		public static void Test_That_Table_Names_Are_Unique(Type t)
+		{
+			//arrange
+			TableAttribute tableAttri = t.GetCustomAttribute<TableAttribute>();
+
+			//assert
+			Assert.NotNull(tableAttri);
+
+			//Check that only 1 other DBC type (this one) has the same table name
+			foreach(Type dbcType in DBCStructureTypes.Where(t2 => t2 != t))
+			{
+				//Don't do select in foreach, we want type information so that we can log fails
+				TableAttribute attribute = dbcType.GetCustomAttribute<TableAttribute>();
+				Assert.AreNotEqual(attribute.Name, tableAttri.Name, $"Found DBC table definition with idential name: {attribute.Name} Type1: {t.Name} Type2: {dbcType.Name}");
+			}
 		}
 	}
 }
