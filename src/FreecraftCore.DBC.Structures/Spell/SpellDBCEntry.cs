@@ -366,25 +366,25 @@ namespace FreecraftCore
 		/// 136-151  m_name_lang
 		/// </summary>
 		[WireMember(79)]
-		private LocalizedStringDBC<TStringType> _SpellName { get; set; }
+		public LocalizedStringDBC<TStringType> SpellName { get; set; }
 
 		/// <summary>
 		/// 153-168  m_nameSubtext_lang
 		/// </summary>
 		[WireMember(81)]
-		private LocalizedStringDBC<TStringType> _Rank { get; set; }
+		public LocalizedStringDBC<TStringType> Rank { get; set; }
 
 		/// <summary>
 		///  170-185  m_description_lang not used
 		/// </summary>
 		[WireMember(83)]
-		private LocalizedStringDBC<TStringType> _Description { get; set; }
+		public LocalizedStringDBC<TStringType> Description { get; set; }
 
 		/// <summary>
 		/// 187-202  m_auraDescription_lang not used
 		/// </summary>
 		[WireMember(85)]
-		private LocalizedStringDBC<TStringType> _ToolTip { get; set; }
+		public LocalizedStringDBC<TStringType> ToolTip { get; set; }
 
 		/// <summary>
 		/// 204      m_manaCostPct

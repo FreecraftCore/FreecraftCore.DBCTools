@@ -4,10 +4,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 using FreecraftCore.Serializer;
 using JetBrains.Annotations;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
 namespace FreecraftCore
 {
+	[Owned]
 	[WireDataContract]
 	public sealed class LocalizedStringDBC<TStringType>
 	{
