@@ -24,7 +24,11 @@ namespace FreecraftCore
 		/// <inheritdoc />
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
-			optionsBuilder.UseMySql("Server=localhost;Database=Client.DBC;Uid=root;Pwd=test;");
+			optionsBuilder.UseMySql("Server=localhost;Database=Client.DBC;Uid=root;Pwd=test;", builder =>
+			{
+				builder.MaxBatchSize(10000);
+				builder.MinBatchSize(50);
+			});
 
 			base.OnConfiguring(optionsBuilder);
 		}

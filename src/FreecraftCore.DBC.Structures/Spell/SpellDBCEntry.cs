@@ -24,6 +24,7 @@ namespace FreecraftCore
 		/// <summary>
 		/// 0 m_ID
 		/// </summary>
+		[DatabaseGenerated(DatabaseGeneratedOption.None)]
 		[Key]
 		[WireMember(1)]
 		public uint SpellId { get; private set; }
