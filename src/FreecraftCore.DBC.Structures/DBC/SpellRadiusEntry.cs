@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 using FreecraftCore.Serializer;
@@ -12,12 +13,13 @@ namespace FreecraftCore
 	[WireDataContract]
 	public class SpellRadiusEntry : IDBCEntryIdentifiable
 	{
+		//TODO: Is this spell id?
 		/// <inheritdoc />
 		[NotMapped]
 		[JsonIgnore]
 		public uint EntryId => SpellId;
 
-		//TODO: Is this spell id?
+		[Key]
 		[WireMember(1)]
 		public uint SpellId { get; private set; }
 
