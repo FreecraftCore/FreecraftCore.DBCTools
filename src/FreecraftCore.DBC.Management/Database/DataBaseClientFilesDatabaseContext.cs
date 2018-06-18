@@ -58,12 +58,12 @@ namespace FreecraftCore
 		//TODO: Make this DATABSE_MIGRATION configuration
 		//TODO: Remove this
 		/// <inheritdoc />
-		/*protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
 			base.OnConfiguring(optionsBuilder);
 
 			optionsBuilder.UseMySql("Server=127.0.0.1;Database=client.dbc;Uid=root;Pwd=test;");
-		}*/
+		}
 
 		/// <inheritdoc />
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
