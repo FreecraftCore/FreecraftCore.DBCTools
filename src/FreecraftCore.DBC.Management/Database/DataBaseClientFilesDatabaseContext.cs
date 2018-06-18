@@ -57,15 +57,12 @@ namespace FreecraftCore
 
 		//TODO: Remove this
 		/// <inheritdoc />
-		/*protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
 			base.OnConfiguring(optionsBuilder);
 
-			optionsBuilder.UseMySql("Server=127.0.0.1;Database=client.dbc;Uid=root;Pwd=test;Pooling=True;MinimumPoolSize=10;maximumpoolsize=50;ConnectionReset=True;", builder =>
-			{
-				builder.MaxBatchSize(15);
-			});
-		}*/
+			optionsBuilder.UseMySql("Server=127.0.0.1;Database=client.dbc;Uid=root;Pwd=test;");
+		}
 
 		/// <inheritdoc />
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
