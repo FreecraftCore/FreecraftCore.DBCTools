@@ -21,6 +21,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FreecraftCore.DBC.CreateDat
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FreecraftCore.DBCTools.Tests", "tests\FreecraftCore.DBCTools.Tests\FreecraftCore.DBCTools.Tests.csproj", "{43766F0B-B9BB-4926-976B-AD0FA45D8149}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FreecraftCore.DBC.CreateDBC", "src\FreecraftCore.DBC.CreateDBC\FreecraftCore.DBC.CreateDBC.csproj", "{ADA9C61A-88FA-4171-992F-EEFD003CCF9B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{43766F0B-B9BB-4926-976B-AD0FA45D8149}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{43766F0B-B9BB-4926-976B-AD0FA45D8149}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{43766F0B-B9BB-4926-976B-AD0FA45D8149}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ADA9C61A-88FA-4171-992F-EEFD003CCF9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ADA9C61A-88FA-4171-992F-EEFD003CCF9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ADA9C61A-88FA-4171-992F-EEFD003CCF9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ADA9C61A-88FA-4171-992F-EEFD003CCF9B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -62,6 +68,7 @@ Global
 		{6BCAFB5D-DC51-42C5-A2DF-61A3E60BCFE3} = {78CBA3CF-28F2-464F-892A-3FB745AC735E}
 		{164D2CC4-D223-4415-851D-DC5E7C2B8C4E} = {78CBA3CF-28F2-464F-892A-3FB745AC735E}
 		{43766F0B-B9BB-4926-976B-AD0FA45D8149} = {2E903AB5-E882-49A7-A612-FCCB9F11D540}
+		{ADA9C61A-88FA-4171-992F-EEFD003CCF9B} = {78CBA3CF-28F2-464F-892A-3FB745AC735E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {77340858-04C1-4169-93A3-121A82FA6670}

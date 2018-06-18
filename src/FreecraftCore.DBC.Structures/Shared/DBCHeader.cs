@@ -21,6 +21,11 @@ namespace FreecraftCore
 		public const int ExpectedSignature = 0x43424457;
 
 		/// <summary>
+		/// The size of the DBC Header.
+		/// </summary>
+		public const int HeaderSize = sizeof(int) * 5;
+
+		/// <summary>
 		/// TODO what is this
 		/// </summary>
 		[WireMember(1)]
