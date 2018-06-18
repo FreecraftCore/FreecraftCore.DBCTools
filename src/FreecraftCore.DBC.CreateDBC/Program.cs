@@ -38,7 +38,7 @@ namespace FreecraftCore
 			Console.WriteLine($"Time Elapsed: {stopWatch.ElapsedMilliseconds}");
 
 			//Write Item DBC
-			using(FileStream fs = new FileStream(@"DBC_Output/Item.dbc", FileMode.CreateNew, FileAccess.Write))
+			using(FileStream fs = new FileStream(@"DBC_Output/DBClientFiles/Item.dbc", FileMode.CreateNew, FileAccess.Write))
 			{
 				DbcEntryWriter<ItemEntry> itemWriter = new DbcEntryWriter<ItemEntry>(fs);
 

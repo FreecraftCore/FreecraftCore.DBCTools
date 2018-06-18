@@ -11,7 +11,7 @@ namespace FreecraftCore
 	//Referenced in Spell.dbc as CastingTimeIndex
 	[JsonObject]
 	[WireDataContract]
-	[Table("SpellCastTime")]
+	[Table("SpellCastTimes")]
 	public class SpellCastTimesEntry : IDBCEntryIdentifiable
 	{
 		/// <inheritdoc />
