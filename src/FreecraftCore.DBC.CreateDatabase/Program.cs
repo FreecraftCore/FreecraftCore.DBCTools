@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Autofac;
@@ -17,17 +19,105 @@ namespace FreecraftCore
 {
 	class Program
 	{
-		static async Task Main(string[] args)
+		/// <summary>
+		/// Builds a <see cref="IServiceProvider"/> that registers
+		/// <see cref="ITableFillable"/> which is the only service you should
+		/// request from the container. This service will handle all complex
+		/// logic for inserting and saving to the database. This is done so that support
+		/// for 50 different DBC models and tables can be handled by one single set of generic services.
+		/// </summary>
+		/// <param name="dbcType"></param>
+		/// <returns></returns>
+		public static IServiceProvider BuildServiceContainerForDbcType(string dbcType)
 		{
-			Console.WriteLine("Creating table schema if not created.");
-
-			ParsedDBCFile<SpellEntry<StringDBCReference>> spellDbcFile = await ParseDBCFile<SpellEntry<StringDBCReference>>("Spell.dbc");
-
-			IServiceCollection serviceCollection = new ServiceCollection();
+			//With only the filename (which is why args will be passed in when this is a tool)
+			//we need to be able to know the DBC model type AND we need to know what Types to use
+			//to do the handling
+			//We always need the TypeConverters so we register them first.
 			ContainerBuilder builder = new ContainerBuilder();
+			ServiceCollection serviceCollection = new ServiceCollection();
+			builder.RegisterAssemblyTypes(typeof(Program).Assembly)
+				.AsClosedTypesOf(typeof(ITypeConverterProvider<,>))
+				.AsImplementedInterfaces();
 
+			RegisterDatabaseServices(serviceCollection);
+
+			//We can scan for the DBC model type knowing the file name.
+			Type dbcModelType = typeof(DBCHeader)
+				.Assembly
+				.GetExportedTypes()
+				.First(t => t.GetCustomAttribute<TableAttribute>()?.Name == dbcType);
+
+			//TODO: Generic handling
+			//We have to do special handling for generic models
+			//IDatabaseDbcInsertable<TDBCEntryType>
+
+			TypedParameter pathParameter = new TypedParameter(typeof(string), $"DBC/{dbcType}.dbc");
+			//TODO: Support configurable DBC location/path.
+			builder.RegisterType(typeof(GenericDatabaseDBCEntryInserter<>).MakeGenericType(dbcModelType))
+				.AsImplementedInterfaces()
+				.SingleInstance()
+				.WithParameter(pathParameter);
+
+			builder.RegisterType(typeof(GenericDbcFileEntryReader<>).MakeGenericType(dbcModelType))
+				.As(typeof(IDbcEntryReader<>).MakeGenericType(dbcModelType))
+				.SingleInstance()
+				.WithParameter(pathParameter);
+
+			builder.RegisterType(typeof(DbcDatabaseFileToTableConverter<>).MakeGenericType(dbcModelType))
+				.AsImplementedInterfaces()
+				.SingleInstance();
+
+			builder.RegisterType<DbcStringReader>()
+				.As<IDbcStringReadable>()
+				.SingleInstance()
+				.WithParameter(pathParameter);
+
+			//TODO: Create a parsed string type so this dictionary is not exposed
+			//May look odd but some TypeConverters actually need the string database
+			//so they can convert from string offset/pointer to the actual string for the database.
+			builder.Register<IReadOnlyDictionary<uint, string>>(context =>
+				{
+					IDbcStringReadable readable = context.Resolve<IDbcStringReadable>();
+
+					//This is blocking
+					return readable.ParseOnlyStrings()
+						.ConfigureAwait(false)
+						.GetAwaiter()
+						.GetResult();
+				})
+				.SingleInstance()
+				.As<IReadOnlyDictionary<uint, string>>();
+
+			//TODO: Make logging optional
+			RegisterLoggingServices(builder);
+
+			//This takes the ASP/Core service collection and pushes it all into AutoFac.
+			builder.Populate(serviceCollection);
+			
+			return new AutofacServiceProvider(builder.Build());
+		}
+
+		//TODO: make this more configurable
+		private static ContainerBuilder RegisterLoggingServices(ContainerBuilder builder)
+		{
+			//ILoggerFactory loggerFactory = new LoggerFactory()
+			//	.AddFile($"{"Logs/Dump-{Date}"}-{Guid.NewGuid()}.txt", LogLevel.Trace);
+
+			ILoggerFactory loggerFactory = new LoggerFactory()
+				.AddConsole(LogLevel.Debug);
+
+			builder.RegisterInstance(loggerFactory)
+				.As<ILoggerFactory>();
+
+			return builder;
+		}
+
+		private static IServiceCollection RegisterDatabaseServices(IServiceCollection serviceCollection)
+		{
+			//TODO: We should support database connection strings in a config file.
 			serviceCollection.AddEntityFrameworkMySql();
-			serviceCollection.AddDbContext<DataBaseClientFilesDatabaseContext>(options =>
+			serviceCollection.AddDbContext<DbContext, DataBaseClientFilesDatabaseContext>(options =>
 			{
 				//TODO: When OnConfiguring no longer has this we should renable this
 				options.UseMySql("Server=localhost;Database=client.dbc;Uid=root;Pwd=test;", optionsBuilder =>
@@ -41,55 +131,30 @@ namespace FreecraftCore
 				options.EnableSensitiveDataLogging();
 			});
 
-			builder.RegisterType<LocalizedStringDbcRefToStringTypeConverter>()
-				.AsImplementedInterfaces()
-				.SingleInstance();
+			return serviceCollection;
+		}
 
-			builder.RegisterType<SpellDbcEntryRefToStringTypeConverter>()
-				.AsImplementedInterfaces()
-				.SingleInstance();
-
-			builder.RegisterType<StringDBCReferenceToStringTypeConverter>()
-				.AsImplementedInterfaces()
-				.SingleInstance();
-
-			builder.RegisterInstance(spellDbcFile.StringDatabase)
-				.AsImplementedInterfaces()
-				.AsSelf();
-
-			builder.Populate(serviceCollection);
-
-			//TODO: Make logging optional
-			//ILoggerFactory loggerFactory = new LoggerFactory()
-			//	.AddFile($"{"Logs/Dump-{Date}"}-{Guid.NewGuid()}.txt", LogLevel.Trace);
-
-			//builder.RegisterInstance(loggerFactory)
-			//	.As<ILoggerFactory>();
-			
-			IServiceProvider container = new AutofacServiceProvider(builder.Build());
-
-			ITypeConverterProvider<SpellEntry<StringDBCReference>, SpellEntry<string>> converterProvider = container.GetRequiredService<ITypeConverterProvider<SpellEntry<StringDBCReference>, SpellEntry<string>>>();
-			using(var scope = container.CreateScope())
-			{
-				DataBaseClientFilesDatabaseContext context = scope.ServiceProvider.GetService<DataBaseClientFilesDatabaseContext>();
-				await CreateDatabaseIfNotCreated(context);
-			}
+		static async Task Main(string[] args)
+		{
+			//TODO: This is just test code, we want to handle inputs better.
+			Console.Write($"Enter DBC Type: ");
+			string dbcType = Console.ReadLine();
+			IServiceProvider provider = BuildServiceContainerForDbcType(dbcType);
 
 			Stopwatch watch = new Stopwatch();
 			watch.Start();
-			using(var scope = container.CreateScope())
+			using(var scope = provider.CreateScope())
 			{
-				DataBaseClientFilesDatabaseContext context = scope.ServiceProvider.GetService<DataBaseClientFilesDatabaseContext>();
-				//See this post for why this configuration is occuring below: https://stackoverflow.com/questions/6107206/improving-bulk-insert-performance-in-entity-framework
-				context.ChangeTracker.AutoDetectChangesEnabled = false;
-				context.ChangeTracker.LazyLoadingEnabled = false;
-				context.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
-
 				try
 				{
-					foreach(var spellCollection in spellDbcFile.RecordDatabase.Values.Split(spellDbcFile.RecordDatabase.Count / 3000).ToArray())
-						await AddSpellEntriesToDatabase(spellCollection.ToArray(), converterProvider, context)
-							.ConfigureAwait(false);
+					//TODO: We shouldn't check everytime we create a DBC table. Do this elsewhere
+					await CreateDatabaseIfNotCreated(scope.ServiceProvider.GetService<DbContext>());
+
+					//This may look silly but we want to support the 50+ DBC types so
+					//it needs to be handle magically otherwise we'd have to write code for each one.
+					ITableFillable tableFiller = scope.ServiceProvider.GetService<ITableFillable>();
+
+					await tableFiller.FillAsync();
 				}
 				catch(Exception e)
 				{
@@ -97,50 +162,18 @@ namespace FreecraftCore
 					throw;
 				}
 			}
-			
-			
-			watch.Stop();
 
-			Console.WriteLine($"Finished adding: {spellDbcFile.RecordDatabase.Count} records. Time: {watch.ElapsedMilliseconds}");
+			watch.Stop();
+			Console.WriteLine($"Created Table In Milliseconds: {watch.ElapsedMilliseconds}");
 
 			Console.WriteLine("Press any key!");
 			Console.ReadKey();
 		}
 
-		private static async Task CreateDatabaseIfNotCreated(DataBaseClientFilesDatabaseContext context)
+		private static async Task CreateDatabaseIfNotCreated(DbContext context)
 		{
 			await context.Database.MigrateAsync();
 			await context.Database.EnsureCreatedAsync();
-		}
-
-		private static Task AddSpellEntriesToDatabase(
-			[NotNull] SpellEntry<StringDBCReference>[] entries, 
-			[NotNull] ITypeConverterProvider<SpellEntry<StringDBCReference>, SpellEntry<string>> converterProvider,
-			[NotNull] DataBaseClientFilesDatabaseContext context)
-		{
-			if(entries == null) throw new ArgumentNullException(nameof(entries));
-			if(converterProvider == null) throw new ArgumentNullException(nameof(converterProvider));
-			if(context == null) throw new ArgumentNullException(nameof(context));
-
-			//TODO: This probably should not be async
-			context.Spells.AddRange(entries.Select(converterProvider.Convert));
-
-			Console.WriteLine("Saving changes.");
-
-			//Pass true to call AcceptAllChanges
-			//This tells EF to release storage of changes and entites.
-			return context.SaveChangesAsync(true);
-		}
-
-		public static async Task<ParsedDBCFile<TDBCEntryType>> ParseDBCFile<TDBCEntryType>(string filePath) 
-			where TDBCEntryType : IDBCEntryIdentifiable
-		{
-			using(FileStream fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read))
-			{
-				DBCReader<TDBCEntryType> reader = new DBCReader<TDBCEntryType>(fileStream);
-
-				return await reader.ParseDBCFile();
-			}
 		}
 	}
 }

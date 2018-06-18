@@ -17,17 +17,10 @@ namespace FreecraftCore
 		/// </summary>
 		public IReadOnlyDictionary<uint, TDBCEntryType> RecordDatabase { get; }
 
-		/// <summary>
-		/// The string database containing all the DBC strin entries.
-		/// The key should be identical to the offsets.
-		/// </summary>
-		public IReadOnlyDictionary<uint, string> StringDatabase { get; }
-
 		/// <inheritdoc />
-		public ParsedDBCFile([NotNull] IReadOnlyDictionary<uint, TDBCEntryType> recordDatabase, [NotNull] IReadOnlyDictionary<uint, string> stringDatabase)
+		public ParsedDBCFile([NotNull] IReadOnlyDictionary<uint, TDBCEntryType> recordDatabase)
 		{
 			RecordDatabase = recordDatabase ?? throw new ArgumentNullException(nameof(recordDatabase));
-			StringDatabase = stringDatabase ?? throw new ArgumentNullException(nameof(stringDatabase));
 		}
 	}
 }

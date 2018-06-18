@@ -66,10 +66,10 @@ namespace FreecraftCore.DBC.RawDumper
 			ParsedDBCFile<TDBCEntryType> dbc = null;
 			using(FileStream fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read))
 			{
-				DBCReader<TDBCEntryType> reader = new DBCReader<TDBCEntryType>(fileStream);
+				DBCEntryReader<TDBCEntryType> reader = new DBCEntryReader<TDBCEntryType>(fileStream);
 
 				watch.Start();
-				dbc = await reader.ParseDBCFile();
+				dbc = await reader.Parse();
 			}
 
 			return dbc;

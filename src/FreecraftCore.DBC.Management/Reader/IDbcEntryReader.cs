@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace FreecraftCore
 {
-	public interface IDbcReader<TDBCEntryType> : IDbcStringReadable
+	public interface IDbcEntryReader<TDBCEntryType>
 		where TDBCEntryType : IDBCEntryIdentifiable
 	{
 		/// <summary>

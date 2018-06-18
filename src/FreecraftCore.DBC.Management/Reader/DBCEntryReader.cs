@@ -17,18 +17,17 @@ namespace FreecraftCore
 	/// Providing ability to read/parse a DBC file from a stream.
 	/// </summary>
 	/// <typeparam name="TDBCEntryType">The entry type.</typeparam>
-	public sealed class DBCReader<TDBCEntryType> : DbcReaderBase, IDbcReader<TDBCEntryType>
+	public sealed class DBCEntryReader<TDBCEntryType> : DbcReaderBase, IDbcEntryReader<TDBCEntryType>
 		where TDBCEntryType : IDBCEntryIdentifiable
 	{
 		//TODO: We should share a univseral serializer for performance reasons.
+
 		/// <summary>
 		/// The serializer
 		/// </summary>
 		private static ISerializerService Serializer { get; } = new SerializerService();
 
-		private DbcStringReader StringReader { get; }
-
-		static DBCReader()
+		static DBCEntryReader()
 		{
 			Serializer.RegisterType<DBCHeader>();
 			Serializer.RegisterType<StringDBC>();
@@ -37,10 +36,9 @@ namespace FreecraftCore
 		}
 
 		/// <inheritdoc />
-		public DBCReader([NotNull] Stream dbcStream) 
+		public DBCEntryReader([NotNull] Stream dbcStream) 
 			: base(dbcStream)
 		{
-			StringReader = new DbcStringReader(dbcStream);
 		}
 
 		public async Task<ParsedDBCFile<TDBCEntryType>> Parse()
@@ -55,16 +53,8 @@ namespace FreecraftCore
 				.ConfigureAwait(false);
 
 			//TODO: Implement DBC string reading
-			return new ParsedDBCFile<TDBCEntryType>(await dbcEntry, await StringReader.ParseOnlyStrings());
+			return new ParsedDBCFile<TDBCEntryType>(await dbcEntry);
 		}
-
-#pragma warning disable AsyncFixer01 // Unnecessary async/await usage
-		/// <inheritdoc />
-		public async Task<IReadOnlyDictionary<uint, string>> ParseOnlyStrings()
-		{
-			return await StringReader.ParseOnlyStrings();
-		}
-#pragma warning restore AsyncFixer01 // Unnecessary async/await usage
 
 		private async Task<Dictionary<uint, TDBCEntryType>> ReadDBCEntryBlock(DBCHeader header)
 		{
