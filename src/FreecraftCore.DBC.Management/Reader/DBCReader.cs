@@ -7,6 +7,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using FreecraftCore.Serializer;
+using JetBrains.Annotations;
 using Nito.AsyncEx;
 
 namespace FreecraftCore
@@ -16,21 +17,16 @@ namespace FreecraftCore
 	/// Providing ability to read/parse a DBC file from a stream.
 	/// </summary>
 	/// <typeparam name="TDBCEntryType">The entry type.</typeparam>
-	public sealed class DBCReader<TDBCEntryType>
+	public sealed class DBCReader<TDBCEntryType> : DbcReaderBase, IDbcReader<TDBCEntryType>
 		where TDBCEntryType : IDBCEntryIdentifiable
 	{
-		private readonly AsyncLock SyncObj = new AsyncLock();
-
-		/// <summary>
-		/// The stream that contains the DBC data.
-		/// </summary>
-		private Stream DBCStream { get; }
-
 		//TODO: We should share a univseral serializer for performance reasons.
 		/// <summary>
 		/// The serializer
 		/// </summary>
 		private static ISerializerService Serializer { get; } = new SerializerService();
+
+		private DbcStringReader StringReader { get; }
 
 		static DBCReader()
 		{
@@ -40,17 +36,16 @@ namespace FreecraftCore
 			Serializer.Compile();
 		}
 
-		public DBCReader(Stream dbcStream)
+		/// <inheritdoc />
+		public DBCReader([NotNull] Stream dbcStream) 
+			: base(dbcStream)
 		{
-			if(dbcStream == null) throw new ArgumentNullException(nameof(dbcStream));
-
-			DBCStream = dbcStream;
+			StringReader = new DbcStringReader(dbcStream);
 		}
 
-		public async Task<ParsedDBCFile<TDBCEntryType>> ParseDBCFile()
+		public async Task<ParsedDBCFile<TDBCEntryType>> Parse()
 		{
-			//Read the header, it contains some information needed to read the whole DBC
-			DBCHeader header = await Serializer.DeserializeAsync<DBCHeader>(new DefaultStreamReaderStrategyAsync(DBCStream));
+			DBCHeader header = await ReadDBCHeader(Serializer);
 
 			//The below is from the: https://github.com/TrinityCore/SpellWork/blob/master/SpellWork/DBC/DBCReader.cs
 			if(!header.IsDBC)
@@ -60,8 +55,16 @@ namespace FreecraftCore
 				.ConfigureAwait(false);
 
 			//TODO: Implement DBC string reading
-			return new ParsedDBCFile<TDBCEntryType>(await dbcEntry, await ReadDBCStringBlock(header));
+			return new ParsedDBCFile<TDBCEntryType>(await dbcEntry, await StringReader.ParseOnlyStrings());
 		}
+
+#pragma warning disable AsyncFixer01 // Unnecessary async/await usage
+		/// <inheritdoc />
+		public async Task<IReadOnlyDictionary<uint, string>> ParseOnlyStrings()
+		{
+			return await StringReader.ParseOnlyStrings();
+		}
+#pragma warning restore AsyncFixer01 // Unnecessary async/await usage
 
 		private async Task<Dictionary<uint, TDBCEntryType>> ReadDBCEntryBlock(DBCHeader header)
 		{
@@ -83,37 +86,6 @@ namespace FreecraftCore
 			}
 
 			return entryMap;
-		}
-
-		private async Task ReadBytesIntoArrayFromStream(byte[] bytes)
-		{
-			using(await SyncObj.LockAsync())
-				for(int offset = 0; offset < bytes.Length;)
-				{
-					offset += await DBCStream.ReadAsync(bytes, offset, bytes.Length - offset);
-				}
-		}
-
-		private async Task<Dictionary<uint, string>> ReadDBCStringBlock(DBCHeader header)
-		{
-			Dictionary<uint, string> stringMap = new Dictionary<uint, string>(1000);
-			DBCStream.Position = header.StartStringPosition;
-			byte[] bytes = new byte[DBCStream.Length - DBCStream.Position];
-
-			await ReadBytesIntoArrayFromStream(bytes);
-			DefaultStreamReaderStrategyAsync stringReader = new DefaultStreamReaderStrategyAsync(bytes);
-
-			for(int currentOffset = 0; currentOffset < bytes.Length;)
-			{
-				string readString = (await Serializer.DeserializeAsync<StringDBC>(stringReader)).StringValue;
-
-				stringMap.Add((uint)currentOffset, readString);
-
-				//We must move the offset forward length + null terminator
-				currentOffset += readString.Length + 1;
-			}
-
-			return stringMap;
 		}
 	}
 }
