@@ -16,6 +16,11 @@ namespace FreecraftCore
 	public sealed class DBCHeader
 	{
 		/// <summary>
+		/// The expected signature that a DBC file should have.
+		/// </summary>
+		public const int ExpectedSignature = 0x43424457;
+
+		/// <summary>
 		/// TODO what is this
 		/// </summary>
 		[WireMember(1)]
@@ -48,7 +53,7 @@ namespace FreecraftCore
 		/// <summary>
 		/// TODO: What is this
 		/// </summary>
-		public bool IsDBC => Signature == 0x43424457;
+		public bool IsDBC => Signature == ExpectedSignature;
 
 		/// <summary>
 		/// The size of the DBC records.
@@ -59,6 +64,18 @@ namespace FreecraftCore
 		/// The starting position of the string data.
 		/// </summary>
 		public long StartStringPosition => DataSize + sizeof(int) * 5;
+
+		/// <inheritdoc />
+		public DBCHeader(int recordsCount, int fieldsCount, int recordSize, int stringTableSize)
+		{
+			//We just do this automatically, it should always be the expected signature.
+			Signature = ExpectedSignature;
+
+			RecordsCount = recordsCount;
+			FieldsCount = fieldsCount;
+			RecordSize = recordSize;
+			StringTableSize = stringTableSize;
+		}
 
 		//Serializer ctor
 		protected DBCHeader()
