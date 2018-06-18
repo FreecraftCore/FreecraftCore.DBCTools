@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 namespace FreecraftCore
 {
 	//Referenced by Spell.dbc
+	[GenericDbcModel(typeof(SpellRangeEntry<StringDBCReference>), typeof(SpellRangeEntry<string>))]
 	[Table("SpellRange")]
 	[JsonObject]
 	[WireDataContract]
