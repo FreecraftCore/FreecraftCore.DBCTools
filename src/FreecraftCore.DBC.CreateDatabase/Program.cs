@@ -128,6 +128,11 @@ namespace FreecraftCore
 					.MakeGenericType(genericAttri.ClosedGenericForFile, genericAttri.ClosedGenericForDatabase))
 				.AsImplementedInterfaces()
 				.SingleInstance();
+
+			//We also need the generic converter too, which is only needed when it's generic.
+			builder.RegisterType(typeof(DbcRefToStringTypeConverter<,>).MakeGenericType(genericAttri.ClosedGenericForFile, genericAttri.ClosedGenericForDatabase))
+				.AsImplementedInterfaces()
+				.SingleInstance();
 		}
 
 		private static void RegisterNonGenericDbcModelServices([NotNull] ContainerBuilder builder, [NotNull] Type dbcModelType, [NotNull] TypedParameter pathParameter)

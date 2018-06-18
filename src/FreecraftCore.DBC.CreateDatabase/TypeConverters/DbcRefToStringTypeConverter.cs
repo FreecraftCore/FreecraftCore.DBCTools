@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Text;
+using Fasterflect;
+using FreecraftCore.Serializer;
 using JetBrains.Annotations;
 
 namespace FreecraftCore
@@ -12,21 +15,39 @@ namespace FreecraftCore
 	/// </summary>
 	/// <typeparam name="TDbcFromType"></typeparam>
 	/// <typeparam name="TDbcToType"></typeparam>
-	public abstract class DbcRefToStringTypeConverter<TDbcFromType, TDbcToType> : ITypeConverterProvider<TDbcFromType, TDbcToType>
+	public class DbcRefToStringTypeConverter<TDbcFromType, TDbcToType> : ITypeConverterProvider<TDbcFromType, TDbcToType>
 		where TDbcFromType : IDBCEntryIdentifiable
-		where TDbcToType : IDBCEntryIdentifiable
+		where TDbcToType : IDBCEntryIdentifiable, new()
 	{
 		protected ITypeConverterProvider<LocalizedStringDBC<StringDBCReference>, LocalizedStringDBC<string>> LocalizedStringConverter { get; }
 
 		protected ITypeConverterProvider<StringDBCReference, string> StringReferenceConverter { get; }
 
 		/// <inheritdoc />
-		protected DbcRefToStringTypeConverter([NotNull] ITypeConverterProvider<LocalizedStringDBC<StringDBCReference>, LocalizedStringDBC<string>> localizedStringConverter, [NotNull] ITypeConverterProvider<StringDBCReference, string> stringReferenceConverter)
+		public DbcRefToStringTypeConverter([NotNull] ITypeConverterProvider<LocalizedStringDBC<StringDBCReference>, LocalizedStringDBC<string>> localizedStringConverter, [NotNull] ITypeConverterProvider<StringDBCReference, string> stringReferenceConverter)
 		{
 			LocalizedStringConverter = localizedStringConverter ?? throw new ArgumentNullException(nameof(localizedStringConverter));
 			StringReferenceConverter = stringReferenceConverter ?? throw new ArgumentNullException(nameof(stringReferenceConverter));
 		}
 		/// <inheritdoc />
-		public abstract TDbcToType Convert(TDbcFromType fromObject);
+		public TDbcToType Convert(TDbcFromType fromObject)
+		{
+			TDbcToType entry = new TDbcToType();
+
+			//We use reflection now to set members, it is fast with fasterflect
+			foreach(MemberInfo mi in entry.GetType().MembersWith(MemberTypes.Property, typeof(WireMemberAttribute)))
+			{
+				//Strings need special handling
+				if(mi.Type() == typeof(LocalizedStringDBC<string>))
+				{
+					entry.SetPropertyValue(mi.Name, LocalizedStringConverter.Convert((LocalizedStringDBC<StringDBCReference>)fromObject.GetPropertyValue(mi.Name)));
+				}
+				else
+					//Sets the entry with the value from the original object.
+					entry.SetPropertyValue(mi.Name, fromObject.GetPropertyValue(mi.Name));
+			}
+
+			return entry;
+		}
 	}
 }

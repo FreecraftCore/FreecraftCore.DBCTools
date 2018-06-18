@@ -45,7 +45,7 @@ namespace FreecraftCore
 		[Test]
 		[TestCaseSource(nameof(DBCStructureTypes))]
 		[TestCaseSource(nameof(NonDBCStructureWireDataContractMarkedTypes))]
-		public void Test_Can_Register_All_Concrete_Payloads(Type t)
+		public void Test_Can_Register_All_Concrete_Models(Type t)
 		{
 			//We have to do abit of a hack if it's a generic type
 			//We need a closed generic. DBCs usually are generic if they have strings
