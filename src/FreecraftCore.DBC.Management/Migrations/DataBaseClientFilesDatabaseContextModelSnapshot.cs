@@ -77,11 +77,11 @@ namespace FreecraftCore.DBC.Management.Migrations
                     b.Property<int>("SpellCastTimeId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("CastTime");
+                    b.Property<uint>("CastTime");
 
-                    b.Property<float>("CastTimePerLevel");
+                    b.Property<int>("CastTimePerLevel");
 
-                    b.Property<int>("MinCastTime");
+                    b.Property<uint>("MinCastTime");
 
                     b.HasKey("SpellCastTimeId");
 

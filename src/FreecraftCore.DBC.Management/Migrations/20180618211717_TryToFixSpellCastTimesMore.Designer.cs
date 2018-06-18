@@ -8,8 +8,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FreecraftCore.DBC.Management.Migrations
 {
     [DbContext(typeof(DataBaseClientFilesDatabaseContext))]
-    [Migration("20180618203112_FixedSpellCastTimesTableName")]
-    partial class FixedSpellCastTimesTableName
+    [Migration("20180618211717_TryToFixSpellCastTimesMore")]
+    partial class TryToFixSpellCastTimesMore
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -79,11 +79,11 @@ namespace FreecraftCore.DBC.Management.Migrations
                     b.Property<int>("SpellCastTimeId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("CastTime");
+                    b.Property<uint>("CastTime");
 
-                    b.Property<float>("CastTimePerLevel");
+                    b.Property<int>("CastTimePerLevel");
 
-                    b.Property<int>("MinCastTime");
+                    b.Property<uint>("MinCastTime");
 
                     b.HasKey("SpellCastTimeId");
 

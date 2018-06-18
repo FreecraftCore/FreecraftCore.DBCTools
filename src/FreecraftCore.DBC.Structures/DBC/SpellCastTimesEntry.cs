@@ -24,18 +24,20 @@ namespace FreecraftCore
 		public int SpellCastTimeId { get; private set; }
 
 		[WireMember(2)]
-		public int CastTime { get; private set; }
+		public uint CastTime { get; private set; }
 
+		//No spell in TC Spell_Dbc table actually references a an index that has
+		//a value other than 0 in this. This is probably not a float nor useful.
+		//Maybe it meant something in pre-3.3.5?
 		//TODO: Conflicting Spellwork/TC/WoWDevWiki information on if this is float or uint
-
 		[WireMember(3)]
-		public float CastTimePerLevel { get; private set; }
+		public int CastTimePerLevel { get; private set; }
 
 		[WireMember(4)]
-		public int MinCastTime { get; private set; }
+		public uint MinCastTime { get; private set; }
 
 		/// <inheritdoc />
-		public SpellCastTimesEntry(int spellCastTimeId, int castTime, float castTimePerLevel, int minCastTime)
+		public SpellCastTimesEntry(int spellCastTimeId, uint castTime, int castTimePerLevel, uint minCastTime)
 		{
 			if(spellCastTimeId < 0) throw new ArgumentOutOfRangeException(nameof(spellCastTimeId));
 
