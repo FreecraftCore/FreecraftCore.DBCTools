@@ -14,6 +14,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Console;
+using Newtonsoft.Json;
 
 namespace FreecraftCore
 {
@@ -152,9 +153,9 @@ namespace FreecraftCore
 		private static void RegisterDbcFileReader(ContainerBuilder builder, Type dbcModelType, TypedParameter pathParameter)
 		{
 			builder.RegisterType(typeof(GenericDbcFileEntryReader<>).MakeGenericType(dbcModelType))
-							.As(typeof(IDbcEntryReader<>).MakeGenericType(dbcModelType))
-							.SingleInstance()
-							.WithParameter(pathParameter);
+				.As(typeof(IDbcEntryReader<>).MakeGenericType(dbcModelType))
+				.SingleInstance()
+				.WithParameter(pathParameter);
 		}
 
 		private static void RegisterEntryInserter([NotNull] ContainerBuilder builder, [NotNull] Type modelType, [NotNull] TypedParameter pathParameter)
@@ -191,7 +192,7 @@ namespace FreecraftCore
 			serviceCollection.AddDbContext<DbContext, DataBaseClientFilesDatabaseContext>(options =>
 			{
 				//TODO: When OnConfiguring no longer has this we should renable this
-				options.UseMySql("Server=localhost;Database=client.dbc;Uid=root;Pwd=test;", optionsBuilder =>
+				options.UseMySql(Config.DatabaseConnectionString, optionsBuilder =>
 				{
 					optionsBuilder.MaxBatchSize(4000);
 					optionsBuilder.MinBatchSize(20);
@@ -205,10 +206,15 @@ namespace FreecraftCore
 			return serviceCollection;
 		}
 
+		public static ApplicationConfiguration Config { get; private set; }
+
 		static async Task Main(string[] args)
 		{
+			//Try to load configuration file
+			Config = BuildConfigFile();
+
 			//TODO: This is just test code, we want to handle inputs better.
-			Console.Write($"Enter DBC Type: ");
+			Console.Write($"Enter DBC Type (without extension; Ex. \"Item\"): ");
 			string dbcType = Console.ReadLine();
 			IServiceProvider provider = BuildServiceContainerForDbcType(dbcType);
 
@@ -239,6 +245,24 @@ namespace FreecraftCore
 
 			Console.WriteLine("Press any key!");
 			Console.ReadKey();
+		}
+
+		private static ApplicationConfiguration BuildConfigFile()
+		{
+			string configData = null;
+			try
+			{
+				configData = File.ReadAllText("Config/Configuration.json");
+			}
+			catch(Exception e)
+			{
+				Console.WriteLine($"Failed to log Configuration.json from path Config/Configuration.json. Exception: {e.Message}\n\n Press any key to quit.");
+				Console.ReadKey();
+				throw;
+			}
+
+			//We assume it's on Config and named Configuration.json
+			return JsonConvert.DeserializeObject<ApplicationConfiguration>(configData);
 		}
 
 		private static async Task CreateDatabaseIfNotCreated(DbContext context)

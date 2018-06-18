@@ -34,4 +34,10 @@
     <ProjectReference Include="..\FreecraftCore.DBC.Management\FreecraftCore.DBC.Management.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Config\Configuration.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
