@@ -32,4 +32,10 @@
     <ProjectReference Include="..\FreecraftCore.DBC.Management\FreecraftCore.DBC.Management.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="StormLibSharp">
+      <HintPath>..\..\lib\Stormlibsharp\StormLibSharp.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

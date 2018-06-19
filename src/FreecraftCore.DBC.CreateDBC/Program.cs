@@ -7,6 +7,7 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using StormLibSharp;
 
 namespace FreecraftCore
 {
@@ -43,6 +44,13 @@ namespace FreecraftCore
 				DbcEntryWriter<ItemEntry> itemWriter = new DbcEntryWriter<ItemEntry>(fs);
 
 				await itemWriter.WriteEntries(entries);
+			}
+
+			using(MpqArchive archive = MpqArchive.CreateNew("patch-7.MPQ", MpqArchiveVersion.Version2, MpqFileStreamAttributes.None, MpqFileStreamAttributes.None, 1))
+			{
+				archive.AddListFile("DBClientFiles/Item.dbc");
+				archive.AddFileFromDiskWithCompression(@"DBC_Output/DBClientFiles/Item.dbc", @"DBClientFiles/Item.dbc", MpqCompressionTypeFlags.MPQ_COMPRESSION_ZLIB);
+				archive.Flush();
 			}
 
 			Console.ReadKey();
