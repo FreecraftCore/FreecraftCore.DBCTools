@@ -42,12 +42,7 @@ namespace FreecraftCore
 				.AsImplementedInterfaces();
 
 			RegisterDatabaseServices(serviceCollection);
-
-			//We can scan for the DBC model type knowing the file name.
-			Type dbcModelType = typeof(DBCHeader)
-				.Assembly
-				.GetExportedTypes()
-				.First(t => t.GetCustomAttribute<TableAttribute>()?.Name == dbcType);
+			Type dbcModelType = ComputeDBCType(dbcType);
 
 			//TODO: Generic handling
 			//We have to do special handling for generic models
@@ -85,12 +80,28 @@ namespace FreecraftCore
 				.As<IReadOnlyDictionary<uint, string>>();
 
 			//TODO: Make logging optional
-			RegisterLoggingServices(builder);
+			RegisterLoggingServices(serviceCollection);
 
 			//This takes the ASP/Core service collection and pushes it all into AutoFac.
 			builder.Populate(serviceCollection);
 
 			return new AutofacServiceProvider(builder.Build());
+		}
+
+		private static Type ComputeDBCType([NotNull] string dbcType)
+		{
+			if(string.IsNullOrEmpty(dbcType)) throw new ArgumentException("Value cannot be null or empty.", nameof(dbcType));
+
+			//We can scan for the DBC model type knowing the file name.
+			return typeof(DBCHeader)
+				.Assembly
+				.GetExportedTypes()
+				.FirstOrDefault(t => t.GetCustomAttribute<TableAttribute>()?.Name == dbcType);
+		}
+
+		private static bool IsDbcTypeImplemented(string dbcType)
+		{
+			return ComputeDBCType(dbcType) != null;
 		}
 
 		/// <summary>
@@ -176,18 +187,22 @@ namespace FreecraftCore
 		}
 
 		//TODO: make this more configurable
-		private static ContainerBuilder RegisterLoggingServices(ContainerBuilder builder)
+		private static IServiceCollection RegisterLoggingServices(IServiceCollection serviceCollection)
 		{
 			//ILoggerFactory loggerFactory = new LoggerFactory()
 			//	.AddFile($"{"Logs/Dump-{Date}"}-{Guid.NewGuid()}.txt", LogLevel.Trace);
 
-			ILoggerFactory loggerFactory = new LoggerFactory()
-				.AddConsole(LogLevel.Debug);
+			serviceCollection.AddLogging(loggingBuilder =>
+			{
+				//TODO: Is the correct way to set level?
+				loggingBuilder.SetMinimumLevel(Config.LoggingLevel);
 
-			builder.RegisterInstance(loggerFactory)
-				.As<ILoggerFactory>();
+				//This gets rid of the query spam.
+				loggingBuilder.AddFilter("Microsoft", LogLevel.Warning);
+				loggingBuilder.AddConsole();
+			});
 
-			return builder;
+			return serviceCollection;
 		}
 
 		private static IServiceCollection RegisterDatabaseServices(IServiceCollection serviceCollection)
@@ -219,36 +234,53 @@ namespace FreecraftCore
 			Config = BuildConfigFile();
 
 			//TODO: This is just test code, we want to handle inputs better.
-			Console.Write($"Enter DBC Type (without extension; Ex. \"Item\"): ");
-			string dbcType = Console.ReadLine();
-			IServiceProvider provider = BuildServiceContainerForDbcType(dbcType);
+			Console.WriteLine($"Will create tables and database if they do not exist.");
 
-			Stopwatch watch = new Stopwatch();
-			watch.Start();
-			using(var scope = provider.CreateScope())
+			//TODO: We shouldn't check everytime we create a DBC table. Do this elsewhere
+			await CreateDatabaseIfNotCreated();
+
+			foreach(string dbcFile in Directory.GetFiles("DBC").Select(Path.GetFileNameWithoutExtension))
 			{
-				try
-				{
-					//TODO: We shouldn't check everytime we create a DBC table. Do this elsewhere
-					await CreateDatabaseIfNotCreated(scope.ServiceProvider.GetService<DbContext>());
+				//We should check if we know a DBC file of this type.
+				IServiceProvider provider = BuildServiceContainerForDbcType(dbcFile);
 
-					//This may look silly but we want to support the 50+ DBC types so
-					//it needs to be handle magically otherwise we'd have to write code for each one.
-					ITableFillable tableFiller = scope.ServiceProvider.GetService<ITableFillable>();
-
-					await tableFiller.FillAsync();
-				}
-				catch(Exception e)
+				Stopwatch watch = new Stopwatch();
+				watch.Start();
+				using(var scope = provider.CreateScope())
 				{
-					Console.WriteLine(e);
-					throw;
+					ILogger<Program> logger = scope.ServiceProvider.GetService<ILogger<Program>>();
+
+					try
+					{
+						if(!IsDbcTypeImplemented(dbcFile))
+						{
+							if(logger.IsEnabled(LogLevel.Warning))
+								logger.LogWarning($"Encountered unknown DBC Type: {dbcFile}. Will skip.");
+
+							continue;
+						}
+
+						if(logger.IsEnabled(LogLevel.Information))
+							logger.LogInformation($"Populating table for DBC: {dbcFile}");
+
+						//This may look silly but we want to support the 50+ DBC types so
+						//it needs to be handle magically otherwise we'd have to write code for each one.
+						ITableFillable tableFiller = scope.ServiceProvider.GetService<ITableFillable>();
+
+						await tableFiller.FillAsync();
+					}
+					catch(Exception e)
+					{
+						Console.WriteLine(e);
+						throw;
+					}
 				}
+
+				watch.Stop();
+				Console.WriteLine($"Created Table: {dbcFile} In Milliseconds: {watch.ElapsedMilliseconds}");
 			}
 
-			watch.Stop();
-			Console.WriteLine($"Created Table In Milliseconds: {watch.ElapsedMilliseconds}");
-
-			Console.WriteLine("Press any key!");
+			Console.WriteLine("Finished. Press any key!");
 			Console.ReadKey();
 		}
 
@@ -270,10 +302,20 @@ namespace FreecraftCore
 			return JsonConvert.DeserializeObject<ApplicationConfiguration>(configData);
 		}
 
-		private static async Task CreateDatabaseIfNotCreated(DbContext context)
+		private static async Task CreateDatabaseIfNotCreated()
 		{
-			await context.Database.MigrateAsync();
-			await context.Database.EnsureCreatedAsync();
+			ContainerBuilder builder = new ContainerBuilder();
+			ServiceCollection serviceCollection = new ServiceCollection();
+
+			RegisterDatabaseServices(serviceCollection);
+			builder.Populate(serviceCollection);
+
+			using(IServiceScope scope = new AutofacServiceProvider(builder.Build()).CreateScope())
+			using(DbContext context = scope.ServiceProvider.GetService<DbContext>())
+			{
+				await context.Database.MigrateAsync();
+				await context.Database.EnsureCreatedAsync();
+			}
 		}
 	}
 }

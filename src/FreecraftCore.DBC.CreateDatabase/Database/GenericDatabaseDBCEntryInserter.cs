@@ -34,8 +34,8 @@ namespace FreecraftCore
 		{
 			if(entries == null) throw new ArgumentNullException(nameof(entries));
 			
-			if(Logger.IsEnabled(LogLevel.Debug))
-				Logger.LogDebug($"Adding: {entries.Count} Type: {typeof(TDBCEntryType).Name}");
+			if(Logger.IsEnabled(LogLevel.Information))
+				Logger.LogInformation($"Adding: {entries.Count} Type: {typeof(TDBCEntryType).Name}");
 
 			//TODO: Is this the best way to insert?
 			Context.Set<TDBCEntryType>().AddRange(entries);
