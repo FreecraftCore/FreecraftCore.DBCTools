@@ -49,7 +49,7 @@ namespace FreecraftCore
 			using(MpqArchive archive = MpqArchive.CreateNew("patch-7.MPQ", MpqArchiveVersion.Version2, MpqFileStreamAttributes.None, MpqFileStreamAttributes.None, 1))
 			{
 				archive.AddListFile("DBClientFiles/Item.dbc");
-				archive.AddFileFromDiskWithCompression(@"DBC_Output/DBClientFiles/Item.dbc", @"DBClientFiles/Item.dbc", MpqCompressionTypeFlags.MPQ_COMPRESSION_ZLIB);
+				archive.AddFileFromDiskWithCompression(@"DBC_Output/DBClientFiles/Item.dbc", @"DBClientFiles\Item.dbc", MpqCompressionTypeFlags.MPQ_COMPRESSION_ZLIB);
 				archive.Flush();
 			}
 

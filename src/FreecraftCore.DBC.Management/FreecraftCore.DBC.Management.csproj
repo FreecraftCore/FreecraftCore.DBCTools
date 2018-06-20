@@ -17,6 +17,7 @@
     <PackageReference Include="Nito.AsyncEx.Coordination" Version="1.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.1.0" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.1.0-rc2-20180613003118" />
+    <PackageReference Include="System.Memory" Version="4.5.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -25,6 +26,18 @@
 
   <PropertyGroup>
     <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DatabaseMigration|AnyCPU'">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <ItemGroup>

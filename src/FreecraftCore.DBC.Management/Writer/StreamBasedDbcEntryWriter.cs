@@ -9,39 +9,39 @@ using JetBrains.Annotations;
 
 namespace FreecraftCore
 {
-	public sealed class DbcEntryWriter<TDBCEntryType>
+	public sealed class StreamBasedDbcEntryWriter<TDBCEntryType>
 		where TDBCEntryType : IDBCEntryIdentifiable
 	{
 		public Stream DbcStream { get; }
 
 		//TODO: We should share a univseral serializer for performance reasons.
-
 		/// <summary>
 		/// The serializer
 		/// </summary>
 		private static ISerializerService Serializer { get; } = new SerializerService();
 
-		static DbcEntryWriter()
+		static StreamBasedDbcEntryWriter()
 		{
-			Serializer.RegisterType<DBCHeader>();
-			Serializer.RegisterType<StringDBC>();
 			Serializer.RegisterType<TDBCEntryType>();
 			Serializer.Compile();
 		}
 
 		/// <inheritdoc />
-		public DbcEntryWriter([NotNull] Stream dbcStream)
+		public StreamBasedDbcEntryWriter([NotNull] Stream dbcStream)
 		{
 			DbcStream = dbcStream ?? throw new ArgumentNullException(nameof(dbcStream));
 		}
 
-		public async Task WriteEntries([NotNull] IReadOnlyCollection<TDBCEntryType> entries)
+		/// <summary>
+		/// Writes the provided <see cref="entries"/>.
+		/// Returns the entry size of the serialized entries.
+		/// Does NOT write the header.
+		/// </summary>
+		/// <param name="entries">The entries to write.</param>
+		/// <returns>The entry size. (size * <see cref="entries"/> = the total size written)</returns>
+		public async Task<int> WriteContents([NotNull] IReadOnlyCollection<TDBCEntryType> entries)
 		{
 			if(entries == null) throw new ArgumentNullException(nameof(entries));
-
-			//We actually have to serialize the collection first.
-			//So we move the stream forward so we can write the header afterwards
-			DbcStream.Position = DBCHeader.HeaderSize;
 
 			//This is kinda hacky, we serialize the first one like this because
 			//we want to know the size of the entry. Since it's not a struct or marshalable/bittable
@@ -56,14 +56,7 @@ namespace FreecraftCore
 				await DbcStream.WriteAsync(Serializer.Serialize(entry));
 			}
 
-			//Now reset the position of the stream so we can build the header.
-			DbcStream.Position = 0;
-
-			//TODO: Handle strings
-			//TODO: Does field count include key?
-			DBCHeader header = new DBCHeader(entries.Count, entrySize / sizeof(int), entrySize, 0);
-
-			await DbcStream.WriteAsync(Serializer.Serialize(header));
+			return entrySize;
 		}
 	}
 }
