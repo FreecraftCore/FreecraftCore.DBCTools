@@ -37,12 +37,10 @@ namespace FreecraftCore
 			//We always need the TypeConverters so we register them first.
 			ContainerBuilder builder = new ContainerBuilder();
 			ServiceCollection serviceCollection = new ServiceCollection();
-			builder.RegisterAssemblyTypes(typeof(Program).Assembly)
-				.AsClosedTypesOf(typeof(ITypeConverterProvider<,>))
-				.AsImplementedInterfaces();
+			builder.RegisterTypeConvertersFromAssembly(typeof(Program).Assembly);
 
 			RegisterDatabaseServices(serviceCollection);
-			Type dbcModelType = ComputeDBCType(dbcType);
+			Type dbcModelType = new DbcTypeParser().ComputeDbcType(dbcType);
 
 			//TODO: Generic handling
 			//We have to do special handling for generic models
@@ -80,28 +78,12 @@ namespace FreecraftCore
 				.As<IReadOnlyDictionary<uint, string>>();
 
 			//TODO: Make logging optional
-			RegisterLoggingServices(serviceCollection);
+			serviceCollection.RegisterLoggingServices(Config.LoggingLevel);
 
 			//This takes the ASP/Core service collection and pushes it all into AutoFac.
 			builder.Populate(serviceCollection);
 
 			return new AutofacServiceProvider(builder.Build());
-		}
-
-		private static Type ComputeDBCType([NotNull] string dbcType)
-		{
-			if(string.IsNullOrEmpty(dbcType)) throw new ArgumentException("Value cannot be null or empty.", nameof(dbcType));
-
-			//We can scan for the DBC model type knowing the file name.
-			return typeof(DBCHeader)
-				.Assembly
-				.GetExportedTypes()
-				.FirstOrDefault(t => t.GetCustomAttribute<TableAttribute>()?.Name == dbcType);
-		}
-
-		private static bool IsDbcTypeImplemented(string dbcType)
-		{
-			return ComputeDBCType(dbcType) != null;
 		}
 
 		/// <summary>
@@ -186,25 +168,6 @@ namespace FreecraftCore
 				.WithParameter(pathParameter);
 		}
 
-		//TODO: make this more configurable
-		private static IServiceCollection RegisterLoggingServices(IServiceCollection serviceCollection)
-		{
-			//ILoggerFactory loggerFactory = new LoggerFactory()
-			//	.AddFile($"{"Logs/Dump-{Date}"}-{Guid.NewGuid()}.txt", LogLevel.Trace);
-
-			serviceCollection.AddLogging(loggingBuilder =>
-			{
-				//TODO: Is the correct way to set level?
-				loggingBuilder.SetMinimumLevel(Config.LoggingLevel);
-
-				//This gets rid of the query spam.
-				loggingBuilder.AddFilter("Microsoft", LogLevel.Warning);
-				loggingBuilder.AddConsole();
-			});
-
-			return serviceCollection;
-		}
-
 		private static IServiceCollection RegisterDatabaseServices(IServiceCollection serviceCollection)
 		{
 			//TODO: We should support database connection strings in a config file.
@@ -244,6 +207,9 @@ namespace FreecraftCore
 				//We should check if we know a DBC file of this type.
 				IServiceProvider provider = BuildServiceContainerForDbcType(dbcFile);
 
+				//TODO: Register in IoC
+				DbcTypeParser parser = new DbcTypeParser();
+
 				Stopwatch watch = new Stopwatch();
 				watch.Start();
 				using(var scope = provider.CreateScope())
@@ -252,7 +218,7 @@ namespace FreecraftCore
 
 					try
 					{
-						if(!IsDbcTypeImplemented(dbcFile))
+						if(!parser.HasDbcType(dbcFile))
 						{
 							if(logger.IsEnabled(LogLevel.Warning))
 								logger.LogWarning($"Encountered unknown DBC Type: {dbcFile}. Will skip.");

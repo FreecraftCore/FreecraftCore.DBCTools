@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using JetBrains.Annotations;
 
 namespace FreecraftCore
 {
@@ -28,9 +29,9 @@ namespace FreecraftCore
 		public uint Currentoffset { get; }
 
 		/// <inheritdoc />
-		public DbcStringDatabase(Dictionary<string, uint> stringToOffsetMap, uint currentoffset)
+		public DbcStringDatabase([NotNull] Dictionary<string, uint> stringToOffsetMap, uint currentoffset)
 		{
-			_StringToOffsetMap = stringToOffsetMap;
+			_StringToOffsetMap = stringToOffsetMap ?? throw new ArgumentNullException(nameof(stringToOffsetMap));
 			Currentoffset = currentoffset;
 		}
 	}
