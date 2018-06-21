@@ -9,7 +9,7 @@ namespace FreecraftCore
 	/// Simple object that allows for pushes strings into a dictionary
 	/// while generating their offset.
 	/// </summary>
-	public sealed class DbcStringDatabaseOffsetGenerator
+	public sealed class DbcStringDatabaseOffsetGenerator : IStringDatabaseProvider, IDbcOffsetGenerator
 	{
 		/// <summary>
 		/// The current string offset for the DBC.
@@ -38,6 +38,7 @@ namespace FreecraftCore
 			CreateOffset("");
 		}
 
+		/// <inheritdoc />
 		public uint CreateOffset([NotNull] string value)
 		{
 			if(value == null) throw new ArgumentNullException(nameof(value));

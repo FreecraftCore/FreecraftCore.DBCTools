@@ -9,7 +9,7 @@ using JetBrains.Annotations;
 
 namespace FreecraftCore
 {
-	public sealed class StreamBasedDbcEntryWriter<TDBCEntryType>
+	public sealed class StreamBasedDbcEntryWriter<TDBCEntryType> : IDbcEntryWriter<TDBCEntryType>
 		where TDBCEntryType : IDBCEntryIdentifiable
 	{
 		public Stream DbcStream { get; }
@@ -53,7 +53,8 @@ namespace FreecraftCore
 
 			foreach(TDBCEntryType entry in entries.Skip(1))
 			{
-				await DbcStream.WriteAsync(Serializer.Serialize(entry));
+				bytes = Serializer.Serialize(entry);
+				await DbcStream.WriteAsync(bytes, 0, bytes.Length);
 			}
 
 			return entrySize;

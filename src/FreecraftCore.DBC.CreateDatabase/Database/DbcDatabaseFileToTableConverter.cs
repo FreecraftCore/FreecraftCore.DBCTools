@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 
 namespace FreecraftCore
 {
-	public sealed class DbcDatabaseFileToTableConverter<TDBCEntryType> : ITableFillable
+	public sealed class DbcDatabaseFileToTableConverter<TDBCEntryType> : IDbcTargetFillable
 		where TDBCEntryType : IDBCEntryIdentifiable
 	{
 		/// <summary>

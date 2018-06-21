@@ -9,9 +9,9 @@ namespace FreecraftCore
 	/// Simple non-generic interface that exposes
 	/// simple <see cref="Fill"/> methods that can be invoked
 	/// to the let the underlying complex Type with an unknown
-	/// type signature fill the database table.
+	/// type signature fill the target output type (database table or output file).
 	/// </summary>
-	public interface ITableFillable
+	public interface IDbcTargetFillable
 	{
 		/// <summary>
 		/// Fills the table.

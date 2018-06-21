@@ -34,9 +34,18 @@ namespace FreecraftCore
 		}
 
 		/// <inheritdoc />
-		public Task WriteHeader(DBCHeader header)
+		public async Task WriteHeader(DBCHeader header)
 		{
-			return DbcStream.WriteAsync(Serializer.Serialize(header)).AsTask();
+			await DbcStream.FlushAsync();
+
+			//TODO: This is kinda hack, but makes things really easy for callers. Header should always go in front.
+			DbcStream.Position = 0;
+
+			byte[] bytes = Serializer.Serialize(header);
+
+			await DbcStream.WriteAsync(bytes, 0, bytes.Length);
+
+			await DbcStream.FlushAsync();
 		}
 	}
 }

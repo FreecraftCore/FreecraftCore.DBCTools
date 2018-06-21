@@ -22,7 +22,7 @@ namespace FreecraftCore
 	{
 		/// <summary>
 		/// Builds a <see cref="IServiceProvider"/> that registers
-		/// <see cref="ITableFillable"/> which is the only service you should
+		/// <see cref="IDbcTargetFillable"/> which is the only service you should
 		/// request from the container. This service will handle all complex
 		/// logic for inserting and saving to the database. This is done so that support
 		/// for 50 different DBC models and tables can be handled by one single set of generic services.
@@ -39,7 +39,7 @@ namespace FreecraftCore
 			ServiceCollection serviceCollection = new ServiceCollection();
 			builder.RegisterTypeConvertersFromAssembly(typeof(Program).Assembly);
 
-			RegisterDatabaseServices(serviceCollection);
+			serviceCollection.RegisterDatabaseServices(Config.DatabaseConnectionString);
 			Type dbcModelType = new DbcTypeParser().ComputeDbcType(dbcType);
 
 			//TODO: Generic handling
@@ -168,33 +168,12 @@ namespace FreecraftCore
 				.WithParameter(pathParameter);
 		}
 
-		private static IServiceCollection RegisterDatabaseServices(IServiceCollection serviceCollection)
-		{
-			//TODO: We should support database connection strings in a config file.
-			serviceCollection.AddEntityFrameworkMySql();
-			serviceCollection.AddDbContext<DbContext, DataBaseClientFilesDatabaseContext>(options =>
-			{
-				//TODO: When OnConfiguring no longer has this we should renable this
-				options.UseMySql(Config.DatabaseConnectionString, optionsBuilder =>
-				{
-					optionsBuilder.MaxBatchSize(4000);
-					optionsBuilder.MinBatchSize(20);
-					optionsBuilder.EnableRetryOnFailure(5);
-					optionsBuilder.CommandTimeout(1000);
-				});
-
-				options.EnableSensitiveDataLogging();
-			});
-
-			return serviceCollection;
-		}
-
 		public static ApplicationConfiguration Config { get; private set; }
 
 		static async Task Main(string[] args)
 		{
 			//Try to load configuration file
-			Config = BuildConfigFile();
+			Config = new ApplicationConfigurationLoader().BuildConfigFile();
 
 			//TODO: This is just test code, we want to handle inputs better.
 			Console.WriteLine($"Will create tables and database if they do not exist.");
@@ -231,7 +210,7 @@ namespace FreecraftCore
 
 						//This may look silly but we want to support the 50+ DBC types so
 						//it needs to be handle magically otherwise we'd have to write code for each one.
-						ITableFillable tableFiller = scope.ServiceProvider.GetService<ITableFillable>();
+						IDbcTargetFillable tableFiller = scope.ServiceProvider.GetService<IDbcTargetFillable>();
 
 						await tableFiller.FillAsync();
 					}
@@ -250,30 +229,12 @@ namespace FreecraftCore
 			Console.ReadKey();
 		}
 
-		private static ApplicationConfiguration BuildConfigFile()
-		{
-			string configData = null;
-			try
-			{
-				configData = File.ReadAllText("Config/Configuration.json");
-			}
-			catch(Exception e)
-			{
-				Console.WriteLine($"Failed to log Configuration.json from path Config/Configuration.json. Exception: {e.Message}\n\n Press any key to quit.");
-				Console.ReadKey();
-				throw;
-			}
-
-			//We assume it's on Config and named Configuration.json
-			return JsonConvert.DeserializeObject<ApplicationConfiguration>(configData);
-		}
-
 		private static async Task CreateDatabaseIfNotCreated()
 		{
 			ContainerBuilder builder = new ContainerBuilder();
 			ServiceCollection serviceCollection = new ServiceCollection();
 
-			RegisterDatabaseServices(serviceCollection);
+			serviceCollection.RegisterDatabaseServices(Config.DatabaseConnectionString);
 			builder.Populate(serviceCollection);
 
 			using(IServiceScope scope = new AutofacServiceProvider(builder.Build()).CreateScope())

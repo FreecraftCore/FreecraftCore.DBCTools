@@ -109,6 +109,28 @@ namespace FreecraftCore
 			Flags = flags;
 		}
 
+		/// <inheritdoc />
+		public LocalizedStringDBC(TStringType enUs, TStringType koKr, TStringType frFr, TStringType deDe, TStringType enCn, TStringType enTw, TStringType esEs, TStringType esMx, TStringType ruRu, TStringType unknown1, TStringType ptPt, TStringType itIt, uint flags, [NotNull] TStringType[] unknowns)
+		{
+			if(Unknowns.Length != 4)
+				throw new ArgumentException($"Unknown localization strings MUST be 4 in length.", nameof(unknowns));
+
+			enUS = enUs;
+			koKR = koKr;
+			frFR = frFr;
+			deDE = deDe;
+			enCN = enCn;
+			enTW = enTw;
+			esES = esEs;
+			esMX = esMx;
+			ruRU = ruRu;
+			Unknown1 = unknown1;
+			ptPT = ptPt;
+			itIT = itIt;
+			Flags = flags;
+			Unknowns = unknowns ?? throw new ArgumentNullException(nameof(unknowns));
+		}
+
 		/// <summary>
 		/// Serializer ctor.
 		/// </summary>

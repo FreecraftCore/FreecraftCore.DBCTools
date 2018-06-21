@@ -30,7 +30,6 @@ namespace FreecraftCore
 		{
 			if(fromObject == null) throw new ArgumentNullException(nameof(fromObject));
 
-
 			if(!StringOffsetMap.ContainsKey(fromObject.StringReferenceOffset))
 				throw new InvalidOperationException($"Failed to read string from Offset Index: {fromObject.StringReferenceOffset}");
 

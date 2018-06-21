@@ -47,20 +47,30 @@ namespace FreecraftCore
 			if(stringsToWrite.Count == 0)
 				return;
 
+			//TODO: This is a hack, we shouldn't need to do this. Find out why we're off by 1 byte on string block
+			await DbcStream.WriteAsync(new byte[1], 0, 1);
+
 			//We should expect that the caller ordered this the way they wanted.
 			foreach(string s in stringsToWrite)
 			{
+#if !NETSTANDARD2_0
 				ReadOnlyMemory<byte> asciiBytes = ReadStringAsASCIIBytes(s);
 
 				await DbcStream.WriteAsync(asciiBytes);
+#else
+				byte[] bytes = new byte[s.Length + 1];
+				Encoding.ASCII.GetEncoder().GetBytes(s.ToCharArray(), 0, s.Length, bytes, 0, true);
+
+				await DbcStream.WriteAsync(bytes, 0, bytes.Length);
+#endif
 			}
 		}
-
+#if !NETSTANDARD2_0
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		private static unsafe ReadOnlyMemory<byte> ReadStringAsASCIIBytes(string s)
 		{
 			//TODO: Can we avoid an allocation here?
-			byte[] asciStringBytes = new byte[s.Length];
+			byte[] asciStringBytes = new byte[s.Length + 1];
 
 			Span<byte> bytesSpan = new Span<byte>(asciStringBytes);
 
@@ -68,5 +78,6 @@ namespace FreecraftCore
 
 			return new ReadOnlyMemory<byte>(asciStringBytes);
 		}
+#endif
 	}
 }

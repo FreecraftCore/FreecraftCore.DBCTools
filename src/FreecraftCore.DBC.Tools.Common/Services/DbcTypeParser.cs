@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using JetBrains.Annotations;
+using Reflect.Extent;
 
 namespace FreecraftCore
 {
@@ -20,6 +21,23 @@ namespace FreecraftCore
 		public bool HasDbcType(string dbcType)
 		{
 			return ComputeDbcType(dbcType) != null;
+		}
+
+		public IReadOnlyCollection<Type> ComputeAllKnownDbcTypes()
+		{
+			return typeof(DBCHeader)
+				.Assembly
+				.GetExportedTypes()
+				.Where(t => t.GetCustomAttribute<TableAttribute>() != null)
+				.ToArray();
+		}
+
+		public string GetDbcName(Type t)
+		{
+			if(!t.HasAttribute<TableAttribute>())
+				throw new InvalidOperationException($"Requested DBC name for Type: {t.Name} but Type was not a DBC type.");
+
+			return t.GetCustomAttribute<TableAttribute>().Name;
 		}
 
 		/// <summary>

@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Text;
 using Autofac;
 using JetBrains.Annotations;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -44,6 +45,30 @@ namespace FreecraftCore
 				//This gets rid of the query spam.
 				loggingBuilder.AddFilter("Microsoft", LogLevel.Warning);
 				loggingBuilder.AddConsole();
+			});
+
+			return serviceCollection;
+		}
+
+		public static IServiceCollection RegisterDatabaseServices([NotNull] this IServiceCollection serviceCollection, [NotNull] string connectionString)
+		{
+			if(serviceCollection == null) throw new ArgumentNullException(nameof(serviceCollection));
+			if(string.IsNullOrEmpty(connectionString)) throw new ArgumentException("Value cannot be null or empty.", nameof(connectionString));
+
+			//TODO: We should support database connection strings in a config file.
+			serviceCollection.AddEntityFrameworkMySql();
+			serviceCollection.AddDbContext<DbContext, DataBaseClientFilesDatabaseContext>(options =>
+			{
+				//TODO: When OnConfiguring no longer has this we should renable this
+				options.UseMySql(connectionString, optionsBuilder =>
+				{
+					optionsBuilder.MaxBatchSize(4000);
+					optionsBuilder.MinBatchSize(20);
+					optionsBuilder.EnableRetryOnFailure(5);
+					optionsBuilder.CommandTimeout(1000);
+				});
+
+				options.EnableSensitiveDataLogging();
 			});
 
 			return serviceCollection;

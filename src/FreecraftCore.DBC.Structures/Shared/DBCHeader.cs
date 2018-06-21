@@ -87,5 +87,11 @@ namespace FreecraftCore
 		{
 			
 		}
+
+		/// <inheritdoc />
+		public override string ToString()
+		{
+			return $"RecordCount: {RecordsCount} FieldCount: {FieldsCount} RecordSize: {RecordSize} StringOffsetPos: {StartStringPosition}";
+		}
 	}
 }
