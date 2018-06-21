@@ -29,7 +29,6 @@ namespace FreecraftCore
 		/// logic for inserting and saving to the database. This is done so that support
 		/// for 50 different DBC models and tables can be handled by one single set of generic services.
 		/// </summary>
-		/// <param name="dbcType"></param>
 		/// <returns></returns>
 		public IServiceProvider Build()
 		{
@@ -40,8 +39,7 @@ namespace FreecraftCore
 			ContainerBuilder builder = new ContainerBuilder();
 			ServiceCollection serviceCollection = new ServiceCollection();
 			builder.RegisterTypeConvertersFromAssembly(typeof(Program).Assembly);
-
-			serviceCollection.RegisterDatabaseServices(Config.DatabaseConnectionString);
+			RegisterCreateDatabaseDatabaseService(serviceCollection);
 			Type dbcModelType = new DbcTypeParser().ComputeDbcType(DbcType);
 
 			//TODO: Generic handling
@@ -57,11 +55,6 @@ namespace FreecraftCore
 				RegisterNonGenericDbcModelServices(builder, dbcModelType, pathParameter);
 			else
 				RegisterGenericDbcModelServices(builder, dbcModelType, pathParameter);
-
-			builder.RegisterType<DbcFileStringReader>()
-				.As<IDbcStringReadable>()
-				.SingleInstance()
-				.WithParameter(pathParameter);
 
 			//TODO: Create a parsed string type so this dictionary is not exposed
 			//May look odd but some TypeConverters actually need the string database
@@ -86,6 +79,11 @@ namespace FreecraftCore
 			builder.Populate(serviceCollection);
 
 			return new AutofacServiceProvider(builder.Build());
+		}
+
+		protected virtual void RegisterCreateDatabaseDatabaseService(ServiceCollection serviceCollection)
+		{
+			serviceCollection.RegisterDatabaseServices(Config.DatabaseConnectionString);
 		}
 
 		/// <summary>
@@ -154,6 +152,11 @@ namespace FreecraftCore
 		{
 			builder.RegisterType(typeof(GenericDbcFileEntryReader<>).MakeGenericType(dbcModelType))
 				.As(typeof(IDbcEntryReader<>).MakeGenericType(dbcModelType))
+				.SingleInstance()
+				.WithParameter(pathParameter);
+
+			builder.RegisterType<DbcFileStringReader>()
+				.As<IDbcStringReadable>()
 				.SingleInstance()
 				.WithParameter(pathParameter);
 		}
