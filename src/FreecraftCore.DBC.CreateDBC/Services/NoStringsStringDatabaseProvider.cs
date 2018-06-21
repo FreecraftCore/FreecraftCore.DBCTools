@@ -10,7 +10,7 @@ namespace FreecraftCore
 		/// <summary>
 		/// Static cached empty string database with a 0 offset.
 		/// </summary>
-		private static DbcStringDatabase EmptyStringDatabase { get; } = new DbcStringDatabase(new Dictionary<string, uint>(), 0);
+		private static DbcStringDatabase EmptyStringDatabase { get; } = new DbcStringDatabase(new Dictionary<string, uint>() { {String.Empty, 0} }, 1);
 
 		/// <inheritdoc />
 		public DbcStringDatabase BuildDatabase()

@@ -47,9 +47,6 @@ namespace FreecraftCore
 			if(stringsToWrite.Count == 0)
 				return;
 
-			//TODO: This is a hack, we shouldn't need to do this. Find out why we're off by 1 byte on string block
-			await DbcStream.WriteAsync(new byte[1], 0, 1);
-
 			//We should expect that the caller ordered this the way they wanted.
 			foreach(string s in stringsToWrite)
 			{
