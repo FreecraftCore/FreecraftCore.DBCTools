@@ -38,6 +38,11 @@ namespace FreecraftCore
 
 					using(Stream ms = scope.ServiceProvider.GetRequiredService<Stream>())
 					{
+						//it is important to reset this position
+						//Since we're 20 bytes in after likely writing the header last
+						//Though the above statement could change, either way we want to be at the begining.
+						ms.Position = 0;
+
 						//It is possible nothing has been written, this is kinda hacky to put this
 						//and leak this in a couple places. But it means no entires were found.
 						if(ms.Length == 0)

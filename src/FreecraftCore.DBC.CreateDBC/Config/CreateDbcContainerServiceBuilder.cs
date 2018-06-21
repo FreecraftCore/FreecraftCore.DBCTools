@@ -55,8 +55,8 @@ namespace FreecraftCore
 			//We cannot use filestream. Otherwise we can create 0 byte empty DBC files in the ouput
 			//because sometimes the tables won't be populated.
 			builder.RegisterInstance(new MemoryStream())
-				.SingleInstance()
-				.As<Stream>();
+				.As<Stream>()
+				.SingleInstance();
 
 			//If it's an open generic model it will mean that it requires string type type args
 			//Not requiring this is much simplier, but it is still doable when the model is generic
