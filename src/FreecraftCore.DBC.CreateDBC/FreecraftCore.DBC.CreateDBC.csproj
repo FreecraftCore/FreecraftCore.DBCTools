@@ -14,11 +14,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="run.bat" />
+    <None Remove="createdbc_run.bat" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="run.bat">
+    <Content Include="createdbc_run.bat">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
@@ -32,12 +32,6 @@
   <ItemGroup>
     <ProjectReference Include="..\FreecraftCore.DBC.Management\FreecraftCore.DBC.Management.csproj" />
     <ProjectReference Include="..\FreecraftCore.DBC.Tools.Common\FreecraftCore.DBC.Tools.Common.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="StormLibSharp">
-      <HintPath>..\..\lib\Stormlibsharp\StormLibSharp.dll</HintPath>
-    </Reference>
   </ItemGroup>
 
   <ItemGroup>

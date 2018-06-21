@@ -10,7 +10,6 @@ using Autofac.Extensions.DependencyInjection;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using StormLibSharp;
 
 namespace FreecraftCore
 {
@@ -164,7 +163,7 @@ namespace FreecraftCore
 							continue;
 
 						//Once everything has been filled we should create the file
-						using(FileStream fs = new FileStream($"DBC_Output/{dbcName}.dbc", FileMode.Create, FileAccess.Write))
+						using(FileStream fs = new FileStream($"{Config.DbcOutputPath}/{dbcName}.dbc", FileMode.Create, FileAccess.Write))
 						{
 							await ms.CopyToAsync(fs);
 						}

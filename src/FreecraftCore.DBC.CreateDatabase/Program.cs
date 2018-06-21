@@ -46,7 +46,7 @@ namespace FreecraftCore
 			//We have to do special handling for generic models
 			//IDatabaseDbcInsertable<TDBCEntryType>
 
-			TypedParameter pathParameter = new TypedParameter(typeof(string), $"DBC/{dbcType}.dbc");
+			TypedParameter pathParameter = new TypedParameter(typeof(string), $"{Config.DbcInputPath}/{dbcType}.dbc");
 			//TODO: Support configurable DBC location/path.
 
 			//If it's an open generic model it will mean that it requires string type type args

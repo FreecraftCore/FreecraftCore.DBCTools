@@ -14,11 +14,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="run.bat" />
+    <None Remove="createdatabase_run.bat" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="run.bat">
+    <Content Include="createdatabase_run.bat">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

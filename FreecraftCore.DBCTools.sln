@@ -23,7 +23,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FreecraftCore.DBCTools.Test
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FreecraftCore.DBC.CreateDBC", "src\FreecraftCore.DBC.CreateDBC\FreecraftCore.DBC.CreateDBC.csproj", "{ADA9C61A-88FA-4171-992F-EEFD003CCF9B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FreecraftCore.DBC.Tools.Common", "src\FreecraftCore.DBC.Tools.Common\FreecraftCore.DBC.Tools.Common.csproj", "{86EBFEA6-3FCB-483E-BDEE-0DBDFF41E488}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FreecraftCore.DBC.Tools.Common", "src\FreecraftCore.DBC.Tools.Common\FreecraftCore.DBC.Tools.Common.csproj", "{86EBFEA6-3FCB-483E-BDEE-0DBDFF41E488}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FreecraftCore.DBC.CreateMPQ", "src\FreecraftCore.DBC.CreateMPQ\FreecraftCore.DBC.CreateMPQ.csproj", "{DC1EE44C-0CB9-4027-8C0C-67166770A185}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -80,6 +82,12 @@ Global
 		{86EBFEA6-3FCB-483E-BDEE-0DBDFF41E488}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{86EBFEA6-3FCB-483E-BDEE-0DBDFF41E488}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{86EBFEA6-3FCB-483E-BDEE-0DBDFF41E488}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DC1EE44C-0CB9-4027-8C0C-67166770A185}.DatabaseMigration|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC1EE44C-0CB9-4027-8C0C-67166770A185}.DatabaseMigration|Any CPU.Build.0 = Debug|Any CPU
+		{DC1EE44C-0CB9-4027-8C0C-67166770A185}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC1EE44C-0CB9-4027-8C0C-67166770A185}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC1EE44C-0CB9-4027-8C0C-67166770A185}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC1EE44C-0CB9-4027-8C0C-67166770A185}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -93,6 +101,7 @@ Global
 		{43766F0B-B9BB-4926-976B-AD0FA45D8149} = {2E903AB5-E882-49A7-A612-FCCB9F11D540}
 		{ADA9C61A-88FA-4171-992F-EEFD003CCF9B} = {78CBA3CF-28F2-464F-892A-3FB745AC735E}
 		{86EBFEA6-3FCB-483E-BDEE-0DBDFF41E488} = {C69D878A-A37C-4DBD-8D90-8AF30074E3C0}
+		{DC1EE44C-0CB9-4027-8C0C-67166770A185} = {78CBA3CF-28F2-464F-892A-3FB745AC735E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {77340858-04C1-4169-93A3-121A82FA6670}
