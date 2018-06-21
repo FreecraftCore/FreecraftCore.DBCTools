@@ -45,12 +45,17 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Mocks\MockedCreateDbcContainerServiceBuilder.cs" />
+    <Compile Include="Mocks\MockCreateDatabaseContainerServiceBuilder.cs" />
     <Compile Include="Tests\GenericDBCTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="FreecraftCore.Serializer">
       <Version>3.0.34</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory">
+      <Version>2.1.1</Version>
     </PackageReference>
     <PackageReference Include="NUnit">
       <Version>3.10.1</Version>
@@ -63,13 +68,31 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\src\FreecraftCore.DBC.CreateDatabase\FreecraftCore.DBC.CreateDatabase.csproj">
+      <Project>{164d2cc4-d223-4415-851d-dc5e7c2b8c4e}</Project>
+      <Name>FreecraftCore.DBC.CreateDatabase</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\FreecraftCore.DBC.CreateDBC\FreecraftCore.DBC.CreateDBC.csproj">
+      <Project>{ADA9C61A-88FA-4171-992F-EEFD003CCF9B}</Project>
+      <Name>FreecraftCore.DBC.CreateDBC</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\FreecraftCore.DBC.Management\FreecraftCore.DBC.Management.csproj">
+      <Project>{98134E8E-5269-4C48-AC72-22E33E2D89F7}</Project>
+      <Name>FreecraftCore.DBC.Management</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\src\FreecraftCore.DBC.Structures\FreecraftCore.DBC.Structures.csproj">
       <Project>{5a31b6dd-f841-48e3-97f9-e00baaf82512}</Project>
       <Name>FreecraftCore.DBC.Structures</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\src\FreecraftCore.DBC.Tools.Common\FreecraftCore.DBC.Tools.Common.csproj">
+      <Project>{86EBFEA6-3FCB-483E-BDEE-0DBDFF41E488}</Project>
+      <Name>FreecraftCore.DBC.Tools.Common</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="DBC\" />
+    <None Include="DBC\Item.dbc">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

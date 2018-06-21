@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using FreecraftCore.Serializer;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using NUnit.Framework;
 
 namespace FreecraftCore
@@ -90,6 +94,55 @@ namespace FreecraftCore
 				//Don't do select in foreach, we want type information so that we can log fails
 				TableAttribute attribute = dbcType.GetCustomAttribute<TableAttribute>();
 				Assert.AreNotEqual(attribute.Name, tableAttri.Name, $"Found DBC table definition with idential name: {attribute.Name} Type1: {t.Name} Type2: {dbcType.Name}");
+			}
+		}
+
+		[Test]
+		[TestCaseSource(nameof(DBCStructureTypes))]
+		public static void Test_DBC_File_Converts_To_Table_Back_To_Same_DBC_File(Type t)
+		{
+			//arrange
+			DbcTypeParser parser = new DbcTypeParser();
+			string dbcType = parser.GetDbcName(t);
+			string filePath = Path.Combine(TestContext.CurrentContext.TestDirectory, "DBC", $"{dbcType}.dbc");
+
+			if(!File.Exists(filePath))
+				Assert.Inconclusive($"No DBC file test into provided for Type: {t.Name}");
+
+			ApplicationConfiguration config = new ApplicationConfiguration("test", true, LogLevel.Debug, "DBC", "DBC_OUTPUT", "MPQ", "patch-6");
+
+			//If we have a DBC file then we should prepare the DBC to Database stuff
+			//so we can create an in memory database
+			using(MockCreateDatabaseContainerServiceBuilder databaseCreatorContainer = new MockCreateDatabaseContainerServiceBuilder(config, dbcType, filePath))
+			{
+				IServiceProvider databaseCreatorServiceProvider = databaseCreatorContainer.Build();
+
+				databaseCreatorServiceProvider.GetService<IDbcTargetFillable>().Fill();
+
+				//At this point the inmemory database is filled.
+				MockedCreateDbcContainerServiceBuilder dbcCreatorContainer = new MockedCreateDbcContainerServiceBuilder(config, t, databaseCreatorServiceProvider.GetService<DbContext>());
+
+				IServiceProvider dbcCreatorServiceProvider = dbcCreatorContainer.Build();
+
+				dbcCreatorServiceProvider.GetService<IDbcTargetFillable>().Fill();
+
+				//At this point the DBC file should be in DbContext and the table should have
+				//been loaded and turned back into a DBC file. Meaning we can now compare streams
+				databaseCreatorContainer.MockedFileStream.Position = 0;
+				using(BinaryReader binaryRead2 = new BinaryReader(dbcCreatorServiceProvider.GetService<Stream>()))
+				using(BinaryReader binaryRead1 = new BinaryReader(databaseCreatorContainer.MockedFileStream))
+				{
+					binaryRead2.BaseStream.Position = 0;
+					binaryRead1.BaseStream.Position = 0;
+
+					byte[] originalBytes = binaryRead1.ReadBytes((int)databaseCreatorContainer.MockedFileStream.Length);
+					byte[] outputBytes = binaryRead2.ReadBytes((int)binaryRead2.BaseStream.Length);
+
+					Assert.AreEqual(originalBytes.Length, outputBytes.Length, $"Mismatch length on DBC to SQL to DBC for Type: {dbcType}");
+					
+					for(int i = 0; i < originalBytes.Length; i++)
+						Assert.AreEqual(originalBytes[i], outputBytes[i], $"Mismatched value on DBC to SQL to DBC for Type: {dbcType} for Index: {i}");
+				}
 			}
 		}
 	}
