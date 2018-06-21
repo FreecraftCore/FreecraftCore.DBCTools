@@ -7,11 +7,15 @@ namespace FreecraftCore
 {
 	public static class LINQExtensions
 	{
-		public static IEnumerable<IEnumerable<T>> Split<T>(this IEnumerable<T> list, int parts)
+		public static IEnumerable<IEnumerable<T>> Split<T>(this IReadOnlyCollection<T> source, int chunkSize)
 		{
-			return list.Select((item, index) => new {index, item})
-				.GroupBy(x => x.index % parts)
-				.Select(x => x.Select(y => y.item));
+			if(chunkSize > source.Count)
+				return new IEnumerable<T>[]{ source };
+
+			return source
+				.Select((x, i) => new {Index = i, Value = x})
+				.GroupBy(x => x.Index / chunkSize)
+				.Select(x => x.Select(v => v.Value));
 		}
 	}
 }

@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using FreecraftCore.Serializer;
 using JetBrains.Annotations;
+using Microsoft.Extensions.Logging;
 using Nito.AsyncEx;
 
 namespace FreecraftCore
@@ -20,6 +21,8 @@ namespace FreecraftCore
 	public sealed class DBCEntryReader<TDBCEntryType> : DbcReaderBase, IDbcEntryReader<TDBCEntryType>
 		where TDBCEntryType : IDBCEntryIdentifiable
 	{
+		public ILogger<DBCEntryReader<TDBCEntryType>> Logger { get; }
+
 		//TODO: We should share a univseral serializer for performance reasons.
 
 		/// <summary>
@@ -36,14 +39,26 @@ namespace FreecraftCore
 		}
 
 		/// <inheritdoc />
-		public DBCEntryReader([NotNull] Stream dbcStream) 
+		public DBCEntryReader([NotNull] Stream dbcStream, ILogger<DBCEntryReader<TDBCEntryType>> logger) 
 			: base(dbcStream)
 		{
+			Logger = logger;
 		}
 
 		public async Task<ParsedDBCFile<TDBCEntryType>> Parse()
 		{
-			DBCHeader header = await ReadDBCHeader(Serializer);
+			DBCHeader header = null;
+			try
+			{
+				header = await ReadDBCHeader(Serializer);
+			}
+			catch(Exception e)
+			{
+				if(Logger.IsEnabled(LogLevel.Error))
+					Logger.LogError($"Failed to read {nameof(DBCHeader)} for Type: {typeof(TDBCEntryType).Name}. Exception: {e.Message} \n\n Stack: {e.StackTrace}");
+
+				throw;
+			}
 
 			//The below is from the: https://github.com/TrinityCore/SpellWork/blob/master/SpellWork/DBC/DBCReader.cs
 			if(!header.IsDBC)
@@ -70,7 +85,20 @@ namespace FreecraftCore
 
 			for(int i = 0; i < header.RecordsCount; i++)
 			{
-				TDBCEntryType entry = Serializer.Deserialize<TDBCEntryType>(reader);
+				TDBCEntryType entry = default(TDBCEntryType);
+				try
+				{
+					entry = Serializer.Deserialize<TDBCEntryType>(reader);
+				}
+				catch(Exception e)
+				{
+					if(Logger.IsEnabled(LogLevel.Error))
+						Logger.LogError($"Encountered error reading entry Type: {typeof(TDBCEntryType).Name} at Entry count: {i} Exception: {e.Message} \n\n Stack: {e.StackTrace}");
+
+					Console.WriteLine($"Encountered error reading entry Type: {typeof(TDBCEntryType).Name} at Entry count: {i} Exception: {e.Message} \n\n Stack: {e.StackTrace}");
+
+					throw;
+				}
 
 				entryMap.Add(entry.EntryId, entry);
 			}

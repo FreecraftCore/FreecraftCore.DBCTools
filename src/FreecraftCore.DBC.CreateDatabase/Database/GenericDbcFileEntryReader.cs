@@ -4,6 +4,8 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 
 namespace FreecraftCore
 {
@@ -15,16 +17,20 @@ namespace FreecraftCore
 	{
 		private string FilePath { get; }
 
-		public GenericDbcFileEntryReader(string filePath)
+		private ILogger<DBCEntryReader<TDBCEntryType>> Logger { get; }
+ 
+		public GenericDbcFileEntryReader([NotNull] string filePath, [NotNull] ILogger<DBCEntryReader<TDBCEntryType>> logger)
 		{
-			FilePath = filePath;
+			FilePath = filePath ?? throw new ArgumentNullException(nameof(filePath));
+			Logger = logger ?? throw new ArgumentNullException(nameof(logger));
 		}
 
 		public async Task<ParsedDBCFile<TDBCEntryType>> Parse()
 		{
 			using(FileStream fileStream = new FileStream(FilePath, FileMode.Open, FileAccess.Read))
 			{
-				DBCEntryReader<TDBCEntryType> reader = new DBCEntryReader<TDBCEntryType>(fileStream);
+				//TODO: How should we provide logger better than this?
+				DBCEntryReader<TDBCEntryType> reader = new DBCEntryReader<TDBCEntryType>(fileStream, Logger);
 
 				return await reader.Parse();
 			}

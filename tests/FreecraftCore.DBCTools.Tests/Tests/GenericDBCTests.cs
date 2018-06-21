@@ -109,7 +109,7 @@ namespace FreecraftCore
 			if(!File.Exists(filePath))
 				Assert.Inconclusive($"No DBC file test into provided for Type: {t.Name}");
 
-			ApplicationConfiguration config = new ApplicationConfiguration("test", true, LogLevel.Debug, "DBC", "DBC_OUTPUT", "MPQ", "patch-6");
+			ApplicationConfiguration config = new ApplicationConfiguration("test", true, LogLevel.Debug, Path.Combine(TestContext.CurrentContext.TestDirectory, "DBC"), "DBC_OUTPUT", "MPQ", "patch-6");
 
 			//If we have a DBC file then we should prepare the DBC to Database stuff
 			//so we can create an in memory database
@@ -128,18 +128,18 @@ namespace FreecraftCore
 
 				//At this point the DBC file should be in DbContext and the table should have
 				//been loaded and turned back into a DBC file. Meaning we can now compare streams
-				databaseCreatorContainer.MockedFileStream.Position = 0;
+				using(FileStream MockedFileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read))
 				using(BinaryReader binaryRead2 = new BinaryReader(dbcCreatorServiceProvider.GetService<Stream>()))
-				using(BinaryReader binaryRead1 = new BinaryReader(databaseCreatorContainer.MockedFileStream))
+				using(BinaryReader binaryRead1 = new BinaryReader(MockedFileStream))
 				{
 					binaryRead2.BaseStream.Position = 0;
 					binaryRead1.BaseStream.Position = 0;
 
-					byte[] originalBytes = binaryRead1.ReadBytes((int)databaseCreatorContainer.MockedFileStream.Length);
+					byte[] originalBytes = binaryRead1.ReadBytes((int)MockedFileStream.Length);
 					byte[] outputBytes = binaryRead2.ReadBytes((int)binaryRead2.BaseStream.Length);
 
 					Assert.AreEqual(originalBytes.Length, outputBytes.Length, $"Mismatch length on DBC to SQL to DBC for Type: {dbcType}");
-					
+
 					for(int i = 0; i < originalBytes.Length; i++)
 						Assert.AreEqual(originalBytes[i], outputBytes[i], $"Mismatched value on DBC to SQL to DBC for Type: {dbcType} for Index: {i}");
 				}

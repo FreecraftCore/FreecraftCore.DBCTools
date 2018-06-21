@@ -6,6 +6,8 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Fasterflect;
+using Microsoft.Extensions.Logging.Abstractions;
+using Microsoft.Extensions.Logging.Console;
 using Newtonsoft.Json;
 
 namespace FreecraftCore.DBC.RawDumper
@@ -66,7 +68,7 @@ namespace FreecraftCore.DBC.RawDumper
 			ParsedDBCFile<TDBCEntryType> dbc = null;
 			using(FileStream fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read))
 			{
-				DBCEntryReader<TDBCEntryType> reader = new DBCEntryReader<TDBCEntryType>(fileStream);
+				DBCEntryReader<TDBCEntryType> reader = new DBCEntryReader<TDBCEntryType>(fileStream, new NullLogger<DBCEntryReader<TDBCEntryType>>());
 
 				watch.Start();
 				dbc = await reader.Parse();

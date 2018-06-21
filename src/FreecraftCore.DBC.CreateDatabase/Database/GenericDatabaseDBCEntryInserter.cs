@@ -30,17 +30,23 @@ namespace FreecraftCore
 		}
 
 		/// <inheritdoc />
-		public Task<int> InsertEntriesAsync(IReadOnlyCollection<TDBCEntryType> entries)
+		public async Task<int> InsertEntriesAsync(IReadOnlyCollection<TDBCEntryType> entries)
 		{
 			if(entries == null) throw new ArgumentNullException(nameof(entries));
 			
 			if(Logger.IsEnabled(LogLevel.Information))
 				Logger.LogInformation($"Adding: {entries.Count} Type: {typeof(TDBCEntryType).Name}");
 
-			//TODO: Is this the best way to insert?
-			Context.Set<TDBCEntryType>().AddRange(entries);
+			int entryChangeCount = 0;
+			foreach(var subEntriesCollection in entries.Split(1000))
+			{
+				Context.Set<TDBCEntryType>().AddRange(subEntriesCollection.ToArray());
 
-			return Context.SaveChangesAsync(true);
+				entryChangeCount += await Context.SaveChangesAsync(true);
+			}
+
+			//TODO: fix this r.
+			return entryChangeCount;
 		}
 	}
 }

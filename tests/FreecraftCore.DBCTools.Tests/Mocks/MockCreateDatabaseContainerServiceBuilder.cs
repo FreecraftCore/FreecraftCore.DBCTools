@@ -13,36 +13,38 @@ namespace FreecraftCore
 {
 	public sealed class MockCreateDatabaseContainerServiceBuilder : CreateDatabaseContainerServiceBuilder, IDisposable
 	{
-		public FileStream MockedFileStream { get; }
-
 		/// <inheritdoc />
 		public MockCreateDatabaseContainerServiceBuilder([NotNull] ApplicationConfiguration config, [NotNull] string dbcType, string dbcTestFilePath) 
 			: base(config, dbcType)
 		{
-			MockedFileStream = new FileStream(dbcTestFilePath, FileMode.Open, FileAccess.Read);
+
 		}
 
 		/// <inheritdoc />
 		public void Dispose()
 		{
-			MockedFileStream.Dispose();
+
 		}
 
+		//There are issues with messing with the registeration right now of this
+		//there are invisible dependencies on stream position. Must be fixed.
+		//TODO: Fix invisible stream position dependencies
 		/// <inheritdoc />
-		protected override void RegisterDbcFileReader(ContainerBuilder builder, Type dbcModelType, TypedParameter pathParameter)
+		/*protected override void RegisterDbcFileReader(ContainerBuilder builder, Type dbcModelType, TypedParameter pathParameter)
 		{
 			builder.RegisterType(typeof(DBCEntryReader<>).MakeGenericType(dbcModelType))
 				.As(typeof(IDbcEntryReader<>).MakeGenericType(dbcModelType))
 				.SingleInstance();
 
 			builder.RegisterInstance(MockedFileStream)
+				.ExternallyOwned()
 				.As<Stream>()
 				.SingleInstance();
 
 			builder.RegisterType<DbcStringReader>()
 				.As<IDbcStringReadable>()
 				.SingleInstance();
-		}
+		}*/
 
 		/// <inheritdoc />
 		protected override void RegisterCreateDatabaseDatabaseService(ServiceCollection serviceCollection)

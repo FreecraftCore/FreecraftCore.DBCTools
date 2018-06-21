@@ -26,6 +26,9 @@ namespace FreecraftCore
 
 		protected async Task ReadBytesIntoArrayFromStream(byte[] bytes)
 		{
+			if(DBCStream.Length - DBCStream.Position < bytes.Length)
+				throw new InvalidOperationException($"Tried to read bytes from stream for reader Type: {GetType().Name} Stream Position: {DBCStream.Position} Stream Length: {DBCStream.Length} RequestedByteLength: {bytes.Length}");
+
 			using(await SyncObj.LockAsync())
 				for(int offset = 0; offset < bytes.Length;)
 				{
@@ -33,12 +36,16 @@ namespace FreecraftCore
 				}
 		}
 
-		protected Task<DBCHeader> ReadDBCHeader([NotNull] ISerializerService serializer)
+		protected async Task<DBCHeader> ReadDBCHeader([NotNull] ISerializerService serializer)
 		{
 			if(serializer == null) throw new ArgumentNullException(nameof(serializer));
 
+			byte[] bytes = new byte[DBCHeader.HeaderSize];
+
+			await ReadBytesIntoArrayFromStream(bytes);
+
 			//Read the header, it contains some information needed to read the whole DBC
-			return serializer.DeserializeAsync<DBCHeader>(new DefaultStreamReaderStrategyAsync(DBCStream));
+			return serializer.Deserialize<DBCHeader>(bytes);
 		}
 	}
 }
