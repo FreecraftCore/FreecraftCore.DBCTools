@@ -181,13 +181,23 @@ namespace FreecraftCore
 			//TODO: We shouldn't check everytime we create a DBC table. Do this elsewhere
 			await CreateDatabaseIfNotCreated();
 
+			ConsoleLogger defaultLogger = new ConsoleLogger("Console", (s, level) => level >= Config.LoggingLevel, false);
+
 			foreach(string dbcFile in Directory.GetFiles("DBC").Select(Path.GetFileNameWithoutExtension))
 			{
-				//We should check if we know a DBC file of this type.
-				IServiceProvider provider = BuildServiceContainerForDbcType(dbcFile);
-
 				//TODO: Register in IoC
 				DbcTypeParser parser = new DbcTypeParser();
+				if(!parser.HasDbcType(dbcFile))
+				{
+					//TODO: We should create a logger specifically for Program.
+					if(defaultLogger.IsEnabled(LogLevel.Warning))
+						defaultLogger.LogWarning($"Encountered unknown DBC Type: {dbcFile}. Will skip.");
+
+					continue;
+				}
+
+				//We should check if we know a DBC file of this type.
+				IServiceProvider provider = BuildServiceContainerForDbcType(dbcFile);
 
 				Stopwatch watch = new Stopwatch();
 				watch.Start();
@@ -197,14 +207,6 @@ namespace FreecraftCore
 
 					try
 					{
-						if(!parser.HasDbcType(dbcFile))
-						{
-							if(logger.IsEnabled(LogLevel.Warning))
-								logger.LogWarning($"Encountered unknown DBC Type: {dbcFile}. Will skip.");
-
-							continue;
-						}
-
 						if(logger.IsEnabled(LogLevel.Information))
 							logger.LogInformation($"Populating table for DBC: {dbcFile}");
 
@@ -216,16 +218,20 @@ namespace FreecraftCore
 					}
 					catch(Exception e)
 					{
-						Console.WriteLine(e);
+						if(logger.IsEnabled(LogLevel.Error))
+							logger.LogError($"Encountered Exception: {e.Message} \n\n Stack: {e.StackTrace}");
+
 						throw;
 					}
 				}
 
 				watch.Stop();
-				Console.WriteLine($"Created Table: {dbcFile} In Milliseconds: {watch.ElapsedMilliseconds}");
+
+				if(defaultLogger.IsEnabled(LogLevel.Information))
+					defaultLogger.LogInformation($"Created Table: {dbcFile} In Milliseconds: {watch.ElapsedMilliseconds}");
 			}
 
-			Console.WriteLine("Finished. Press any key!");
+			defaultLogger.LogWarning("Finished. Press any key!");
 			Console.ReadKey();
 		}
 

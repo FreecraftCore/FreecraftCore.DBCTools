@@ -6,11 +6,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="createdmpq_run.bat" />
+    <None Remove="creatempq_run.bat" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="createdmpq_run.bat">
+    <Content Include="creatempq_run.bat">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
