@@ -37,16 +37,10 @@ namespace FreecraftCore
 			if(Logger.IsEnabled(LogLevel.Information))
 				Logger.LogInformation($"Adding: {entries.Count} Type: {typeof(TDBCEntryType).Name}");
 
-			int entryChangeCount = 0;
-			foreach(var subEntriesCollection in entries.Split(1000))
-			{
-				Context.Set<TDBCEntryType>().AddRange(subEntriesCollection.ToArray());
+			//TODO: Improve the performance of this
+			Context.Set<TDBCEntryType>().AddRange(entries);
 
-				entryChangeCount += await Context.SaveChangesAsync(true);
-			}
-
-			//TODO: fix this r.
-			return entryChangeCount;
+			return await Context.SaveChangesAsync(true);
 		}
 	}
 }
