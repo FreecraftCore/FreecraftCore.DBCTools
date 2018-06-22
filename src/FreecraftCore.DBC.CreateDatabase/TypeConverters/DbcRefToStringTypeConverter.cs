@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 using Fasterflect;
@@ -23,6 +24,14 @@ namespace FreecraftCore
 
 		protected ITypeConverterProvider<StringDBCReference, string> StringReferenceConverter { get; }
 
+		/// <summary>
+		/// Cached reflected <see cref="MemberInfo"/>
+		/// </summary>
+		public static IReadOnlyCollection<MemberInfo> OriginalSerializableMemberInfos { get; }
+			= typeof(TDbcToType)
+				.MembersWith(MemberTypes.Property, typeof(WireMemberAttribute))
+				.ToArray();
+
 		/// <inheritdoc />
 		public DbcRefToStringTypeConverter([NotNull] ITypeConverterProvider<LocalizedStringDBC<StringDBCReference>, LocalizedStringDBC<string>> localizedStringConverter, [NotNull] ITypeConverterProvider<StringDBCReference, string> stringReferenceConverter)
 		{
@@ -35,8 +44,9 @@ namespace FreecraftCore
 			TDbcToType entry = new TDbcToType();
 
 			//We use reflection now to set members, it is fast with fasterflect
-			foreach(MemberInfo mi in entry.GetType().MembersWith(MemberTypes.Property, typeof(WireMemberAttribute)))
+			foreach(MemberInfo mi in OriginalSerializableMemberInfos)
 			{
+				//TODO: The set and get might be slow. We could build a table for this.
 				//Strings need special handling
 				if(mi.Type() == typeof(LocalizedStringDBC<string>))
 				{
