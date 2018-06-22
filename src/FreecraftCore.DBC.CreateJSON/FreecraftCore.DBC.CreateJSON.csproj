@@ -2,34 +2,30 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFrameworks>netcoreapp2.1;netstandard2.0</TargetFrameworks>
+    <LangVersion>7.3</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="creatempq_run.bat" />
+    <None Remove="createcsv_run.bat" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Include="..\Configuration.json" Link="Config\Configuration.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="creatempq_run.bat">
+    <Content Include="createcsv_run.bat">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\FreecraftCore.DBC.Tools.Common\FreecraftCore.DBC.Tools.Common.csproj" />
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+    <PackageReference Include="Overby.Extensions.AsyncBinaryReaderWriter" Version="1.0.39" />
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="StormLibSharp">
-      <HintPath>..\..\lib\Stormlibsharp\StormLibSharp.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Config\" />
+    <ProjectReference Include="..\FreecraftCore.DBC.CreateDatabase\FreecraftCore.DBC.CreateDatabase.csproj" />
   </ItemGroup>
 
 </Project>

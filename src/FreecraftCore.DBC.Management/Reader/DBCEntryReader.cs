@@ -103,6 +103,9 @@ namespace FreecraftCore
 				entryMap.Add(entry.EntryId, entry);
 			}
 
+			if(Logger.IsEnabled(LogLevel.Debug))
+				Logger.LogDebug($"Finished reading entries for Type: {typeof(TDBCEntryType).Name}");
+
 			return entryMap;
 		}
 	}

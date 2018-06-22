@@ -25,7 +25,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FreecraftCore.DBC.CreateDBC
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FreecraftCore.DBC.Tools.Common", "src\FreecraftCore.DBC.Tools.Common\FreecraftCore.DBC.Tools.Common.csproj", "{86EBFEA6-3FCB-483E-BDEE-0DBDFF41E488}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FreecraftCore.DBC.CreateMPQ", "src\FreecraftCore.DBC.CreateMPQ\FreecraftCore.DBC.CreateMPQ.csproj", "{DC1EE44C-0CB9-4027-8C0C-67166770A185}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FreecraftCore.DBC.CreateMPQ", "src\FreecraftCore.DBC.CreateMPQ\FreecraftCore.DBC.CreateMPQ.csproj", "{DC1EE44C-0CB9-4027-8C0C-67166770A185}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FreecraftCore.DBC.CreateJSON", "src\FreecraftCore.DBC.CreateJSON\FreecraftCore.DBC.CreateJSON.csproj", "{A7CABE80-E4F3-47BD-8A3A-A09F517B24BA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -88,6 +90,12 @@ Global
 		{DC1EE44C-0CB9-4027-8C0C-67166770A185}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DC1EE44C-0CB9-4027-8C0C-67166770A185}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DC1EE44C-0CB9-4027-8C0C-67166770A185}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A7CABE80-E4F3-47BD-8A3A-A09F517B24BA}.DatabaseMigration|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7CABE80-E4F3-47BD-8A3A-A09F517B24BA}.DatabaseMigration|Any CPU.Build.0 = Debug|Any CPU
+		{A7CABE80-E4F3-47BD-8A3A-A09F517B24BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7CABE80-E4F3-47BD-8A3A-A09F517B24BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7CABE80-E4F3-47BD-8A3A-A09F517B24BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7CABE80-E4F3-47BD-8A3A-A09F517B24BA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -102,6 +110,7 @@ Global
 		{ADA9C61A-88FA-4171-992F-EEFD003CCF9B} = {78CBA3CF-28F2-464F-892A-3FB745AC735E}
 		{86EBFEA6-3FCB-483E-BDEE-0DBDFF41E488} = {C69D878A-A37C-4DBD-8D90-8AF30074E3C0}
 		{DC1EE44C-0CB9-4027-8C0C-67166770A185} = {78CBA3CF-28F2-464F-892A-3FB745AC735E}
+		{A7CABE80-E4F3-47BD-8A3A-A09F517B24BA} = {78CBA3CF-28F2-464F-892A-3FB745AC735E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {77340858-04C1-4169-93A3-121A82FA6670}

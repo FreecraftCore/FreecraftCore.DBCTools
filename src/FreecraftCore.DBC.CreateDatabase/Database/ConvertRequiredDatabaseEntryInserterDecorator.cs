@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
+using Microsoft.Extensions.Logging;
 
 namespace FreecraftCore
 {
@@ -22,16 +23,19 @@ namespace FreecraftCore
 		
 		private ITypeConverterProvider<TDBCFileType, TDBCEntryType> DbcTypeConverter { get; }
 
+		private ILogger<ConvertRequiredDatabaseEntryInserterDecorator<TDBCFileType, TDBCEntryType>> Logger { get; }
+
 		static ConvertRequiredDatabaseEntryInserterDecorator()
 		{
 			//TODO: If you want to enforce same open generic type for both generic args you can check here. Decided not to for now though.
 		}
 
 		/// <inheritdoc />
-		public ConvertRequiredDatabaseEntryInserterDecorator([NotNull] IDatabaseDbcInsertable<TDBCEntryType> decorateDbcInsertable, ITypeConverterProvider<TDBCFileType, TDBCEntryType> dbcTypeConverter)
+		public ConvertRequiredDatabaseEntryInserterDecorator([NotNull] IDatabaseDbcInsertable<TDBCEntryType> decorateDbcInsertable, [NotNull] ITypeConverterProvider<TDBCFileType, TDBCEntryType> dbcTypeConverter, [NotNull] ILogger<ConvertRequiredDatabaseEntryInserterDecorator<TDBCFileType, TDBCEntryType>> logger)
 		{
 			DecorateDbcInsertable = decorateDbcInsertable ?? throw new ArgumentNullException(nameof(decorateDbcInsertable));
-			DbcTypeConverter = dbcTypeConverter;
+			DbcTypeConverter = dbcTypeConverter ?? throw new ArgumentNullException(nameof(dbcTypeConverter));
+			Logger = logger ?? throw new ArgumentNullException(nameof(logger));
 		}
 
 		/// <inheritdoc />
@@ -39,7 +43,15 @@ namespace FreecraftCore
 		{
 			if(entries == null) throw new ArgumentNullException(nameof(entries));
 
-			return DecorateDbcInsertable.InsertEntriesAsync(entries.Select(DbcTypeConverter.Convert).ToArray());
+			if(Logger.IsEnabled(LogLevel.Debug))
+				Logger.LogDebug($"About to convert Type: {typeof(TDBCFileType).Name} to {typeof(TDBCEntryType).Name}.");
+
+			TDBCEntryType[] convertedCollection = entries.Select(DbcTypeConverter.Convert).ToArray();
+
+			if(Logger.IsEnabled(LogLevel.Debug))
+				Logger.LogDebug($"Finished convert Type: {typeof(TDBCFileType).Name} to {typeof(TDBCEntryType).Name}.");
+
+			return DecorateDbcInsertable.InsertEntriesAsync(convertedCollection);
 		}
 	}
 }

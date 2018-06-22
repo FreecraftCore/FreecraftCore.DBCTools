@@ -5,5 +5,6 @@
   "DbcInputPath": "DBC",
   "DbcOutputPath": "DBC_OUTPUT/DBClientFiles",
   "MpqOutputPath": "MPQ",
-  "MpqOutputName": "patch-6"
+  "MpqOutputName": "patch-6",
+  "DiffOutputPath": "JSON"
 }

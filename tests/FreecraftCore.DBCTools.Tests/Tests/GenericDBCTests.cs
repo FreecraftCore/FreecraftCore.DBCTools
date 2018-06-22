@@ -109,7 +109,7 @@ namespace FreecraftCore
 			if(!File.Exists(filePath))
 				Assert.Inconclusive($"No DBC file test into provided for Type: {t.Name}");
 
-			ApplicationConfiguration config = new ApplicationConfiguration("test", true, LogLevel.Debug, Path.Combine(TestContext.CurrentContext.TestDirectory, "DBC"), "DBC_OUTPUT", "MPQ", "patch-6");
+			ApplicationConfiguration config = new ApplicationConfiguration("test", true, LogLevel.Debug, Path.Combine(TestContext.CurrentContext.TestDirectory, "DBC"), "DBC_OUTPUT", "MPQ", "patch-6", "JSON");
 
 			//If we have a DBC file then we should prepare the DBC to Database stuff
 			//so we can create an in memory database

@@ -11,9 +11,9 @@ namespace FreecraftCore
 {
 	public class CreateDatabaseContainerServiceBuilder
 	{
-		private ApplicationConfiguration Config { get; }
+		protected ApplicationConfiguration Config { get; }
 
-		private string DbcType { get; }
+		protected string DbcType { get; }
 
 		/// <inheritdoc />
 		public CreateDatabaseContainerServiceBuilder([NotNull] ApplicationConfiguration config, [NotNull] string dbcType)
@@ -42,11 +42,7 @@ namespace FreecraftCore
 			RegisterCreateDatabaseDatabaseService(serviceCollection);
 			Type dbcModelType = new DbcTypeParser().ComputeDbcType(DbcType);
 
-			//TODO: Generic handling
-			//We have to do special handling for generic models
-			//IDatabaseDbcInsertable<TDBCEntryType>
-
-			TypedParameter pathParameter = new TypedParameter(typeof(string), $"{Config.DbcInputPath}/{DbcType}.dbc");
+			TypedParameter pathParameter = CreateInputPathParameter();
 			//TODO: Support configurable DBC location/path.
 
 			//If it's an open generic model it will mean that it requires string type type args
@@ -79,6 +75,14 @@ namespace FreecraftCore
 			builder.Populate(serviceCollection);
 
 			return new AutofacServiceProvider(builder.Build());
+		}
+
+		protected virtual TypedParameter CreateInputPathParameter()
+		{
+			//TODO: Generic handling
+			//We have to do special handling for generic models
+			//IDatabaseDbcInsertable<TDBCEntryType>
+			return new TypedParameter(typeof(string), $"{Config.DbcInputPath}/{DbcType}.dbc");
 		}
 
 		protected virtual void RegisterCreateDatabaseDatabaseService(ServiceCollection serviceCollection)
@@ -161,7 +165,7 @@ namespace FreecraftCore
 				.WithParameter(pathParameter);
 		}
 
-		private void RegisterEntryInserter([NotNull] ContainerBuilder builder, [NotNull] Type modelType, [NotNull] TypedParameter pathParameter)
+		protected virtual void RegisterEntryInserter([NotNull] ContainerBuilder builder, [NotNull] Type modelType, [NotNull] TypedParameter pathParameter)
 		{
 			if(builder == null) throw new ArgumentNullException(nameof(builder));
 			if(modelType == null) throw new ArgumentNullException(nameof(modelType));

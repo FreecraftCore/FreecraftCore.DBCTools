@@ -59,8 +59,11 @@ namespace FreecraftCore
 		[JsonProperty]
 		public string MpqOutputName { get; private set; }
 
+		[JsonProperty]
+		public string DiffOutputPath { get; private set; }
+
 		/// <inheritdoc />
-		public ApplicationConfiguration(string databaseConnectionString, bool loggingEnabled, LogLevel loggingLevel, string dbcInputPath, string dbcOutputPath, string mpqOutputPath, string mpqOutputName)
+		public ApplicationConfiguration(string databaseConnectionString, bool loggingEnabled, LogLevel loggingLevel, string dbcInputPath, string dbcOutputPath, string mpqOutputPath, string mpqOutputName, string diffOutputPath)
 		{
 			DatabaseConnectionString = databaseConnectionString;
 			LoggingEnabled = loggingEnabled;
@@ -69,6 +72,7 @@ namespace FreecraftCore
 			DbcOutputPath = dbcOutputPath;
 			MpqOutputPath = mpqOutputPath;
 			MpqOutputName = mpqOutputName;
+			DiffOutputPath = diffOutputPath;
 		}
 
 		/// <summary>

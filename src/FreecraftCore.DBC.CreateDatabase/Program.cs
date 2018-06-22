@@ -18,7 +18,7 @@ using Newtonsoft.Json;
 
 namespace FreecraftCore
 {
-	class Program
+	internal class Program
 	{
 		public static ApplicationConfiguration Config { get; private set; }
 
