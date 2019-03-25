@@ -37,7 +37,7 @@ namespace FreecraftCore
 			//The JSON writing expects a TextWriter
 			builder.Register<AsyncBinaryWriter>(context =>
 				{
-					return new AsyncBinaryWriter(new FileStream(Path.Combine(Config.DiffOutputPath, $"{DbcType}.csv"), FileMode.Create, FileAccess.Write));
+					return new AsyncBinaryWriter(new FileStream(Path.Combine(Config.DiffOutputPath, $"{DbcType}.json"), FileMode.Create, FileAccess.Write));
 				})
 				.AsSelf()
 				.InstancePerLifetimeScope()
