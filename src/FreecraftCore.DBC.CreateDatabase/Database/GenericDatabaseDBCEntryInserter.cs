@@ -27,6 +27,10 @@ namespace FreecraftCore
 		{
 			Context = context ?? throw new ArgumentNullException(nameof(context));
 			Logger = logger ?? throw new ArgumentNullException(nameof(logger));
+
+			//https://stackoverflow.com/questions/41736995/entityframework-insert-speed-is-very-slow-with-large-quantity-of-data
+			//This should speed up insert considerably.
+			Context.ChangeTracker.AutoDetectChangesEnabled = false;
 		}
 
 		/// <inheritdoc />
