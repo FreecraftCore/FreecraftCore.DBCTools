@@ -45,6 +45,11 @@ namespace FreecraftCore
 		public DbSet<SpellRadiusEntry> SpellRadius { get; set; }
 
 		/// <summary>
+		/// Represents the AreaTrigger.dbc
+		/// </summary>
+		public DbSet<AreaTriggerEntry> AreaTriggers { get; set; }
+
+		/// <summary>
 		/// Represents the SpellRange.dbc
 		/// </summary>
 		public DbSet<SpellRangeEntry<string>> SpellRanges { get; set; }
@@ -101,6 +106,9 @@ namespace FreecraftCore
 					builder.OwnsOne(r => r.EffectSpellClassMaskC);
 					builder.OwnsOne(r => r.EffectTriggerSpell);
 				});
+
+			modelBuilder.Entity<AreaTriggerEntry>().OwnsOne(a => a.Position);
+			modelBuilder.Entity<AreaTriggerEntry>().OwnsOne(a => a.UnalignedBoxDimension);
 		}
 
 		public DataBaseClientFilesDatabaseContext()

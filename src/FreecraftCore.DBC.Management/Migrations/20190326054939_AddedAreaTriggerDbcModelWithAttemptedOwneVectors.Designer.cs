@@ -2,14 +2,16 @@
 using FreecraftCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace FreecraftCore.DBC.Management.Migrations
 {
     [DbContext(typeof(DataBaseClientFilesDatabaseContext))]
-    partial class DataBaseClientFilesDatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20190326054939_AddedAreaTriggerDbcModelWithAttemptedOwneVectors")]
+    partial class AddedAreaTriggerDbcModelWithAttemptedOwneVectors
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -334,12 +336,6 @@ namespace FreecraftCore.DBC.Management.Migrations
                         {
                             b1.Property<int>("AreaTriggerEntryAreaTriggerId");
 
-                            b1.Property<float>("X");
-
-                            b1.Property<float>("Y");
-
-                            b1.Property<float>("Z");
-
                             b1.ToTable("AreaTrigger");
 
                             b1.HasOne("FreecraftCore.AreaTriggerEntry")
@@ -351,12 +347,6 @@ namespace FreecraftCore.DBC.Management.Migrations
                     b.OwnsOne("FreecraftCore.Vector3<float>", "UnalignedBoxDimension", b1 =>
                         {
                             b1.Property<int>("AreaTriggerEntryAreaTriggerId");
-
-                            b1.Property<float>("X");
-
-                            b1.Property<float>("Y");
-
-                            b1.Property<float>("Z");
 
                             b1.ToTable("AreaTrigger");
 
@@ -372,10 +362,6 @@ namespace FreecraftCore.DBC.Management.Migrations
                     b.OwnsOne("FreecraftCore.Vector2<uint>", "CharacterPoints", b1 =>
                         {
                             b1.Property<int>("SkillLineAbilityEntrySkillLineAbilityId");
-
-                            b1.Property<uint>("X");
-
-                            b1.Property<uint>("Y");
 
                             b1.ToTable("SkillLineAbility");
 
