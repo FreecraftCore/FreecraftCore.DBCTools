@@ -15,13 +15,13 @@ namespace FreecraftCore
 		/// X value.
 		/// </summary>
 		[WireMember(1)]
-		public T X { get; }
+		public T X { get; private set; }
 
 		/// <summary>
 		/// Y value.
 		/// </summary>
 		[WireMember(2)]
-		public T Y { get; }
+		public T Y { get; private set; }
 
 		/// <inheritdoc />
 		public Vector2(T x, T y)

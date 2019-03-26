@@ -16,7 +16,7 @@ namespace FreecraftCore
 		/// X value.
 		/// </summary>
 		[WireMember(1)]
-		public T W { get; }
+		public T W { get; private set; }
 
 		/// <inheritdoc />
 		public Vector4(T x, T y, T z, T w)

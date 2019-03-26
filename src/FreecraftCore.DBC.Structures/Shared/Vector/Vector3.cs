@@ -16,7 +16,7 @@ namespace FreecraftCore
 		/// X value.
 		/// </summary>
 		[WireMember(1)]
-		public T Z { get; }
+		public T Z { get; private set; }
 
 		public Vector3(T x, T y, T z)
 			: base(x, y)
