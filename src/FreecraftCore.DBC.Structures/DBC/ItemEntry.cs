@@ -15,6 +15,7 @@ namespace FreecraftCore
 	public sealed class ItemEntry : IDBCEntryIdentifiable
 	{
 		/// <inheritdoc />
+		[JsonIgnore]
 		public uint EntryId => (uint)ItemId;
 
 		[Key]
