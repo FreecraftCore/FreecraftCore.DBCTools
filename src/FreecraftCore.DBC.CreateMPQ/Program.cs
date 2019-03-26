@@ -19,11 +19,11 @@ namespace FreecraftCore.DBC.CreateMPQ
 			string[] dbcFileNames = Directory.GetFiles(Config.DbcOutputPath);
 
 			//Creates an MPQ with length of dbc files at the MPQ output directory.
-			using(MpqArchive mpq = MpqArchive.CreateNew(Path.Combine(Config.MpqOutputPath, $"{Config.MpqOutputName}.MPQ"), MpqArchiveVersion.Version2, MpqFileStreamAttributes.None, MpqFileStreamAttributes.None, dbcFileNames.Length))
+			using(MpqArchive mpq = MpqArchive.CreateNew(Path.Combine(Config.MpqOutputPath, $"{Config.MpqOutputName}.MPQ"), MpqArchiveVersion.Version2, MpqFileStreamAttributes.None, MpqFileStreamAttributes.CreateAttributesFile, dbcFileNames.Length))
 			{
 				foreach(string dbc in dbcFileNames)
 				{
-					mpq.AddFileFromDiskWithCompression(dbc, Path.Combine("DBClientFiles", Path.GetFileName(dbc)), MpqCompressionTypeFlags.MPQ_COMPRESSION_ZLIB);
+					mpq.AddFileFromDiskWithCompression(dbc, Path.Combine("DBFilesClient", Path.GetFileName(dbc)), MpqCompressionTypeFlags.MPQ_COMPRESSION_ZLIB);
 				}
 			}
 		}
