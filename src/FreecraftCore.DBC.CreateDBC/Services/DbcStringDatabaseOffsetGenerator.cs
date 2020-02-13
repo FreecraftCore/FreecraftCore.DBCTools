@@ -56,6 +56,14 @@ namespace FreecraftCore
 			return startOffset;
 		}
 
+		/// <inheritdoc />
+		public void Reset()
+		{
+			this.Currentoffset = 0;
+			this._StringToOffsetMap.Clear();
+			CreateOffset("");
+		}
+
 		/// <summary>
 		/// Builds the <see cref="DbcStringDatabase"/> from the provided
 		/// data.
