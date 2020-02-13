@@ -54,6 +54,8 @@ namespace FreecraftCore
 		/// </summary>
 		public DbSet<SpellRangeEntry<string>> SpellRanges { get; set; }
 
+		public DbSet<ProfanityNamesEntry<string>> NamesProfanity { get; set; }
+
 		public DataBaseClientFilesDatabaseContext([NotNull] DbContextOptions<DataBaseClientFilesDatabaseContext> options)
 			: base(options)
 		{
