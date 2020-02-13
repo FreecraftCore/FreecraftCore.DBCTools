@@ -7,7 +7,6 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Fasterflect;
 using Microsoft.Extensions.Logging.Abstractions;
-using Microsoft.Extensions.Logging.Console;
 using Newtonsoft.Json;
 
 namespace FreecraftCore.DBC.RawDumper

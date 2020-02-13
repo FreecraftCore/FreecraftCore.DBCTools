@@ -33,8 +33,6 @@ namespace FreecraftCore
 			//TODO: We shouldn't check everytime we create a DBC table. Do this elsewhere
 			await CreateDatabaseIfNotCreated();
 
-			ConsoleLogger defaultLogger = new ConsoleLogger("Console", (s, level) => level >= Config.LoggingLevel, false);
-
 			foreach(string dbcFile in Directory.GetFiles("DBC").Select(Path.GetFileNameWithoutExtension))
 			{
 				//TODO: Register in IoC
@@ -42,8 +40,8 @@ namespace FreecraftCore
 				if(!parser.HasDbcType(dbcFile))
 				{
 					//TODO: We should create a logger specifically for Program.
-					if(defaultLogger.IsEnabled(LogLevel.Warning))
-						defaultLogger.LogWarning($"Encountered unknown DBC Type: {dbcFile}. Will skip.");
+					if(Config.LoggingLevel > LogLevel.Warning)
+						Console.WriteLine($"Encountered unknown DBC Type: {dbcFile}. Will skip.");
 
 					continue;
 				}
@@ -59,7 +57,7 @@ namespace FreecraftCore
 
 					try
 					{
-						if(logger.IsEnabled(LogLevel.Information))
+						if(Config.LoggingLevel > LogLevel.Information)
 							logger.LogInformation($"Populating table for DBC: {dbcFile}");
 
 						//This may look silly but we want to support the 50+ DBC types so
@@ -79,11 +77,11 @@ namespace FreecraftCore
 
 				watch.Stop();
 
-				if(defaultLogger.IsEnabled(LogLevel.Information))
-					defaultLogger.LogInformation($"Created Table: {dbcFile} In Milliseconds: {watch.ElapsedMilliseconds}");
+				if(Config.LoggingLevel > LogLevel.Information)
+					Console.WriteLine($"Created Table: {dbcFile} In Milliseconds: {watch.ElapsedMilliseconds}");
 			}
 
-			defaultLogger.LogWarning("Finished. Press any key!");
+			Console.WriteLine("Finished. Press any key!");
 			Console.ReadKey();
 		}
 

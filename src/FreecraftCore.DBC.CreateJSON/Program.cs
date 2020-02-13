@@ -19,16 +19,14 @@ namespace FreecraftCore
 			//Try to load configuration file
 			Config = new ApplicationConfigurationLoader().BuildConfigFile();
 
-			ConsoleLogger defaultLogger = new ConsoleLogger("Console", (s, level) => level >= Config.LoggingLevel, false);
-
 			Parallel.ForEach(Directory.GetFiles(Config.DbcOutputPath).Select(Path.GetFileNameWithoutExtension), async dbcFile =>
 			{
 				DbcTypeParser parser = new DbcTypeParser();
 				if(!parser.HasDbcType(dbcFile))
 				{
 					//TODO: We should create a logger specifically for Program.
-					if(defaultLogger.IsEnabled(LogLevel.Warning))
-						defaultLogger.LogWarning($"Encountered unknown DBC Type: {dbcFile}. Will skip.");
+					if(Config.LoggingLevel >= LogLevel.Warning)
+						Console.WriteLine($"Encountered unknown DBC Type: {dbcFile}. Will skip.");
 
 					return;
 				}
