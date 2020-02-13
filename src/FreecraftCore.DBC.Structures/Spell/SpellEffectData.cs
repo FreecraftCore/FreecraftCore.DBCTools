@@ -136,7 +136,32 @@ namespace FreecraftCore
 		[WireMember(74)]
 		public SpellEffectDataChunk<uint> EffectSpellClassMaskC { get; private set; }
 
-		protected SpellEffectData()
+		/// <inheritdoc />
+		public SpellEffectData(SpellEffectDataChunk<SpellEffect> effect, SpellEffectDataChunk<int> effectDieSides, SpellEffectDataChunk<float> effectRealPointsPerLevel, SpellEffectDataChunk<int> effectBasePoints, SpellEffectDataChunk<SpellMechanic> effectMechanic, SpellEffectDataChunk<SpellTargetType> effectImplicitTargetA, SpellEffectDataChunk<SpellTargetType> effectImplicitTargetB, SpellEffectDataChunk<uint> effectRadiusIndex, SpellEffectDataChunk<AuraType> effectApplyAuraName, SpellEffectDataChunk<uint> effectAmplitude, SpellEffectDataChunk<float> effectMultipleValue, SpellEffectDataChunk<uint> effectChainTarget, SpellEffectDataChunk<uint> effectItemType, SpellEffectDataChunk<int> effectMiscValue, SpellEffectDataChunk<int> effectMiscValueB, SpellEffectDataChunk<uint> effectTriggerSpell, SpellEffectDataChunk<float> effectPointsPerComboPoint, SpellEffectDataChunk<uint> effectSpellClassMaskA, SpellEffectDataChunk<uint> effectSpellClassMaskB, SpellEffectDataChunk<uint> effectSpellClassMaskC)
+		{
+			Effect = effect;
+			EffectDieSides = effectDieSides;
+			EffectRealPointsPerLevel = effectRealPointsPerLevel;
+			EffectBasePoints = effectBasePoints;
+			EffectMechanic = effectMechanic;
+			EffectImplicitTargetA = effectImplicitTargetA;
+			EffectImplicitTargetB = effectImplicitTargetB;
+			EffectRadiusIndex = effectRadiusIndex;
+			EffectApplyAuraName = effectApplyAuraName;
+			EffectAmplitude = effectAmplitude;
+			EffectMultipleValue = effectMultipleValue;
+			EffectChainTarget = effectChainTarget;
+			EffectItemType = effectItemType;
+			EffectMiscValue = effectMiscValue;
+			EffectMiscValueB = effectMiscValueB;
+			EffectTriggerSpell = effectTriggerSpell;
+			EffectPointsPerComboPoint = effectPointsPerComboPoint;
+			EffectSpellClassMaskA = effectSpellClassMaskA;
+			EffectSpellClassMaskB = effectSpellClassMaskB;
+			EffectSpellClassMaskC = effectSpellClassMaskC;
+		}
+
+		public SpellEffectData()
 		{
 			
 		}
