@@ -52,9 +52,9 @@ namespace FreecraftCore
 				{
 					entry.SetPropertyValue(mi.Name, LocalizedStringConverter.Convert((LocalizedStringDBC<StringDBCReference>)fromObject.GetPropertyValue(mi.Name)));
 				}
-				else
+				else if(mi.Type() == typeof(string))
 					//Sets the entry with the value from the original object.
-					entry.SetPropertyValue(mi.Name, fromObject.GetPropertyValue(mi.Name));
+					entry.SetPropertyValue(mi.Name, StringReferenceConverter.Convert((StringDBCReference)fromObject.GetPropertyValue(mi.Name)));
 			}
 
 			return entry;
