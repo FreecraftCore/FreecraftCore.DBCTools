@@ -1,5 +1,5 @@
 ﻿{
-  "DatabaseConnectionString": "Server=localhost;Database=client.dbc;Uid=root;Pwd=test;",
+  "DatabaseConnectionString": "Server=localhost;Port=3307;Database=client.dbc;Uid=root;Pwd=test;",
   "LoggingEnabled": "True",
   "LoggingLevel": "Debug",
   "DbcInputPath": "DBC",
