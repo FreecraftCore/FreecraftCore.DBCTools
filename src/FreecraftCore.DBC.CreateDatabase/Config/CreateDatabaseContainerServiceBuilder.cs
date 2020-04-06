@@ -88,6 +88,7 @@ namespace FreecraftCore
 		protected virtual void RegisterCreateDatabaseDatabaseService(ServiceCollection serviceCollection)
 		{
 			serviceCollection.RegisterDatabaseServices(Config.DatabaseConnectionString);
+			serviceCollection.RegisterDBContextOptions(Config.DatabaseConnectionString);
 		}
 
 		/// <summary>

@@ -91,6 +91,7 @@ namespace FreecraftCore
 			ServiceCollection serviceCollection = new ServiceCollection();
 
 			serviceCollection.RegisterDatabaseServices(Config.DatabaseConnectionString);
+			serviceCollection.RegisterDBContextOptions(Config.DatabaseConnectionString);
 			builder.Populate(serviceCollection);
 
 			using(IServiceScope scope = new AutofacServiceProvider(builder.Build()).CreateScope())

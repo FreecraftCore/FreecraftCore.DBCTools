@@ -5,6 +5,7 @@ using System.Text;
 using Autofac;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -69,6 +70,36 @@ namespace FreecraftCore
 				});
 
 				options.EnableSensitiveDataLogging();
+			});
+
+			return serviceCollection;
+		}
+
+		public static IServiceCollection RegisterDBContextOptions([NotNull] this IServiceCollection serviceCollection, [NotNull] string connectionString) 
+		{
+			if (serviceCollection == null) throw new ArgumentNullException(nameof(serviceCollection));
+			if (string.IsNullOrWhiteSpace(connectionString)) throw new ArgumentException("Value cannot be null or whitespace.", nameof(connectionString));
+
+			serviceCollection.AddScoped<DbContextOptions<DataBaseClientFilesDatabaseContext>>(provider =>
+			{
+				DbContextOptionsBuilder<DataBaseClientFilesDatabaseContext> options = new DbContextOptionsBuilder<DataBaseClientFilesDatabaseContext>();
+				//TODO: When OnConfiguring no longer has this we should renable this
+				options.UseMySql(connectionString, optionsBuilder =>
+				{
+					optionsBuilder.MaxBatchSize(4000);
+					optionsBuilder.MinBatchSize(20);
+					optionsBuilder.EnableRetryOnFailure(5);
+					optionsBuilder.CommandTimeout(1000);
+				});
+
+				options.EnableSensitiveDataLogging();
+
+				return options.Options;
+			});
+
+			serviceCollection.AddScoped<IDbContextOptions, DbContextOptions>(provider =>
+			{
+				return provider.GetService<DbContextOptions<DataBaseClientFilesDatabaseContext>>();
 			});
 
 			return serviceCollection;
