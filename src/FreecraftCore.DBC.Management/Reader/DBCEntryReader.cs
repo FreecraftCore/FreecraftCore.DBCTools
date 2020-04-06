@@ -85,10 +85,10 @@ namespace FreecraftCore
 
 			for(int i = 0; i < header.RecordsCount; i++)
 			{
-				TDBCEntryType entry = default(TDBCEntryType);
 				try
 				{
-					entry = Serializer.Deserialize<TDBCEntryType>(reader);
+					TDBCEntryType entry = Serializer.Deserialize<TDBCEntryType>(reader);
+					entryMap.Add(entry.EntryId, entry);
 				}
 				catch(Exception e)
 				{
@@ -99,8 +99,6 @@ namespace FreecraftCore
 
 					throw;
 				}
-
-				entryMap.Add(entry.EntryId, entry);
 			}
 
 			if(Logger.IsEnabled(LogLevel.Debug))
