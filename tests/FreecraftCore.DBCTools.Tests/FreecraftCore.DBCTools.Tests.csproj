@@ -80,10 +80,6 @@
       <Project>{98134E8E-5269-4C48-AC72-22E33E2D89F7}</Project>
       <Name>FreecraftCore.DBC.Management</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\src\FreecraftCore.DBC.Structures\FreecraftCore.DBC.Structures.csproj">
-      <Project>{5a31b6dd-f841-48e3-97f9-e00baaf82512}</Project>
-      <Name>FreecraftCore.DBC.Structures</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\src\FreecraftCore.DBC.Tools.Common\FreecraftCore.DBC.Tools.Common.csproj">
       <Project>{86EBFEA6-3FCB-483E-BDEE-0DBDFF41E488}</Project>
       <Name>FreecraftCore.DBC.Tools.Common</Name>

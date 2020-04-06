@@ -18,7 +18,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\FreecraftCore.DBC.Management\FreecraftCore.DBC.Management.csproj" />
-    <ProjectReference Include="..\FreecraftCore.DBC.Structures\FreecraftCore.DBC.Structures.csproj" />
   </ItemGroup>
 
 </Project>
