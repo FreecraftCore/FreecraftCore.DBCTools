@@ -97,8 +97,8 @@ namespace FreecraftCore
 			using(IServiceScope scope = new AutofacServiceProvider(builder.Build()).CreateScope())
 			using(DbContext context = scope.ServiceProvider.GetService<DbContext>())
 			{
-				await context.Database.MigrateAsync();
 				await context.Database.EnsureCreatedAsync();
+				await context.Database.MigrateAsync();
 			}
 		}
 	}
