@@ -60,19 +60,25 @@ namespace FreecraftCore
 			serviceCollection.AddEntityFrameworkMySql();
 			serviceCollection.AddDbContext<DbContext, DataBaseClientFilesDatabaseContext>(options =>
 			{
-				//TODO: When OnConfiguring no longer has this we should renable this
-				options.UseMySql(connectionString, optionsBuilder =>
-				{
-					optionsBuilder.MaxBatchSize(4000);
-					optionsBuilder.MinBatchSize(20);
-					optionsBuilder.EnableRetryOnFailure(5);
-					optionsBuilder.CommandTimeout(1000);
-				});
-
-				options.EnableSensitiveDataLogging();
+				ConfigureDbOptions(connectionString, options);
 			});
 
 			return serviceCollection;
+		}
+
+		private static void ConfigureDbOptions(string connectionString, DbContextOptionsBuilder options)
+		{
+			//TODO: When OnConfiguring no longer has this we should renable this
+			options.UseMySql(connectionString, optionsBuilder =>
+			{
+				optionsBuilder.MaxBatchSize(4000);
+				optionsBuilder.MinBatchSize(20);
+				optionsBuilder.EnableRetryOnFailure(5);
+				optionsBuilder.CommandTimeout(1000);
+				optionsBuilder.MigrationsAssembly("FreecraftCore.DBC.Management");
+			});
+
+			options.EnableSensitiveDataLogging();
 		}
 
 		public static IServiceCollection RegisterDBContextOptions([NotNull] this IServiceCollection serviceCollection, [NotNull] string connectionString) 
@@ -83,16 +89,8 @@ namespace FreecraftCore
 			serviceCollection.AddScoped<DbContextOptions<DataBaseClientFilesDatabaseContext>>(provider =>
 			{
 				DbContextOptionsBuilder<DataBaseClientFilesDatabaseContext> options = new DbContextOptionsBuilder<DataBaseClientFilesDatabaseContext>();
-				//TODO: When OnConfiguring no longer has this we should renable this
-				options.UseMySql(connectionString, optionsBuilder =>
-				{
-					optionsBuilder.MaxBatchSize(4000);
-					optionsBuilder.MinBatchSize(20);
-					optionsBuilder.EnableRetryOnFailure(5);
-					optionsBuilder.CommandTimeout(1000);
-				});
 
-				options.EnableSensitiveDataLogging();
+				ConfigureDbOptions(connectionString, options);
 
 				return options.Options;
 			});
