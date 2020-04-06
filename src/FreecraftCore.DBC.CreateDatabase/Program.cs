@@ -99,6 +99,7 @@ namespace FreecraftCore
 			{
 				await context.Database.EnsureCreatedAsync();
 				await context.Database.MigrateAsync();
+				await context.SaveChangesAsync(true);
 			}
 		}
 	}
