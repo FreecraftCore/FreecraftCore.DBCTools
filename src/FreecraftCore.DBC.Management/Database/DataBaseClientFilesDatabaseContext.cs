@@ -79,7 +79,7 @@ namespace FreecraftCore
 		{
 			base.OnModelCreating(modelBuilder);
 
-			modelBuilder
+			/*modelBuilder
 				.Entity<SpellEntry<string>>()
 				.OwnsOne(p => p.ReagentsRequired, builder =>
 				{
@@ -112,7 +112,11 @@ namespace FreecraftCore
 				});
 
 			modelBuilder.Entity<AreaTriggerEntry>().OwnsOne(a => a.Position);
-			modelBuilder.Entity<AreaTriggerEntry>().OwnsOne(a => a.UnalignedBoxDimension);
+			modelBuilder.Entity<AreaTriggerEntry>().OwnsOne(a => a.UnalignedBoxDimension);*/
+
+			//Important to show internal fields.
+			foreach (string name in MapEntry<string>.INTERNAL_FIELD_NAMES)
+				modelBuilder.Entity<MapEntry<string>>().Property(name);
 
 			//modelBuilder.Entity<MapEntry<string>>().OwnsOne()
 		}
