@@ -42,7 +42,7 @@ namespace FreecraftCore
 				Logger.LogInformation($"Adding: {entries.Count} Type: {typeof(TDBCEntryType).Name}");
 
 			//TODO: Improve the performance of this
-			Context.Set<TDBCEntryType>().AddRange(entries);
+			await Context.Set<TDBCEntryType>().AddRangeAsync(entries);
 
 			return await Context.SaveChangesAsync(true);
 		}
