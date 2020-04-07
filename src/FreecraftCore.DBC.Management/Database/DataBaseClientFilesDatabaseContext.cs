@@ -58,6 +58,12 @@ namespace FreecraftCore
 
 		public DbSet<MapEntry<string>> Maps { get; set; }
 
+		public DbSet<AchievementEntry<string>> Achievements { get; set; }
+
+		public DbSet<AchievementCategoryEntry<string>> AchievementCategory { get; set; }
+
+		public DbSet<AchievementCriteriaEntry<string>> AchievementCriteria { get; set; }
+
 		public DataBaseClientFilesDatabaseContext([NotNull] DbContextOptions<DataBaseClientFilesDatabaseContext> options)
 			: base(options)
 		{

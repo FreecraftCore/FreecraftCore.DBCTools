@@ -2,70 +2,21 @@
 using FreecraftCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace FreecraftCore.DBC.Management.Migrations
 {
     [DbContext(typeof(DataBaseClientFilesDatabaseContext))]
-    partial class DataBaseClientFilesDatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20200407153400_AddedAchievementDbc")]
+    partial class AddedAchievementDbc
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "3.1.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
-
-            modelBuilder.Entity("FreecraftCore.AchievementCategoryEntry<string>", b =>
-                {
-                    b.Property<int>("AchievementCategoryId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<int>("ParentId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UIOrder")
-                        .HasColumnType("int");
-
-                    b.HasKey("AchievementCategoryId");
-
-                    b.ToTable("Achievement_Category");
-                });
-
-            modelBuilder.Entity("FreecraftCore.AchievementCriteriaEntry<string>", b =>
-                {
-                    b.Property<int>("AchievementCriteriaId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<int>("Amount")
-                        .HasColumnType("int");
-
-                    b.Property<int>("AssetId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Flags")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ReferredAchievementId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Time")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UIOrder")
-                        .HasColumnType("int");
-
-                    b.HasKey("AchievementCriteriaId");
-
-                    b.HasIndex("ReferredAchievementId");
-
-                    b.ToTable("Achievement_Criteria");
-                });
 
             modelBuilder.Entity("FreecraftCore.AchievementEntry<string>", b =>
                 {
@@ -601,173 +552,6 @@ namespace FreecraftCore.DBC.Management.Migrations
                     b.HasKey("SpellRangeId");
 
                     b.ToTable("SpellRange");
-                });
-
-            modelBuilder.Entity("FreecraftCore.AchievementCategoryEntry<string>", b =>
-                {
-                    b.OwnsOne("FreecraftCore.LocalizedStringDBC<string>", "Name", b1 =>
-                        {
-                            b1.Property<int>("AchievementCategoryEntry<string>AchievementCategoryId")
-                                .HasColumnType("int");
-
-                            b1.Property<uint>("Flags")
-                                .HasColumnType("int unsigned");
-
-                            b1.Property<string>("deDE")
-                                .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                            b1.Property<string>("enCN")
-                                .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                            b1.Property<string>("enTW")
-                                .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                            b1.Property<string>("enUS")
-                                .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                            b1.Property<string>("esES")
-                                .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                            b1.Property<string>("esMX")
-                                .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                            b1.Property<string>("frFR")
-                                .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                            b1.Property<string>("itIT")
-                                .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                            b1.Property<string>("koKR")
-                                .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                            b1.Property<string>("ptPT")
-                                .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                            b1.Property<string>("ruRU")
-                                .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                            b1.HasKey("AchievementCategoryEntry<string>AchievementCategoryId");
-
-                            b1.ToTable("Achievement_Category");
-
-                            b1.WithOwner()
-                                .HasForeignKey("AchievementCategoryEntry<string>AchievementCategoryId");
-                        });
-                });
-
-            modelBuilder.Entity("FreecraftCore.AchievementCriteriaEntry<string>", b =>
-                {
-                    b.HasOne("FreecraftCore.AchievementEntry<string>", "AchievementEntry")
-                        .WithMany()
-                        .HasForeignKey("ReferredAchievementId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.OwnsOne("FreecraftCore.AchievementCriteriaConditionDefinition", "Fail", b1 =>
-                        {
-                            b1.Property<int>("AchievementCriteriaEntry<string>AchievementCriteriaId")
-                                .HasColumnType("int");
-
-                            b1.Property<int>("AssetId")
-                                .HasColumnType("int");
-
-                            b1.Property<int>("Condition")
-                                .HasColumnType("int");
-
-                            b1.HasKey("AchievementCriteriaEntry<string>AchievementCriteriaId");
-
-                            b1.ToTable("Achievement_Criteria");
-
-                            b1.WithOwner()
-                                .HasForeignKey("AchievementCriteriaEntry<string>AchievementCriteriaId");
-                        });
-
-                    b.OwnsOne("FreecraftCore.AchievementCriteriaConditionDefinition", "Start", b1 =>
-                        {
-                            b1.Property<int>("AchievementCriteriaEntry<string>AchievementCriteriaId")
-                                .HasColumnType("int");
-
-                            b1.Property<int>("AssetId")
-                                .HasColumnType("int");
-
-                            b1.Property<int>("Condition")
-                                .HasColumnType("int");
-
-                            b1.HasKey("AchievementCriteriaEntry<string>AchievementCriteriaId");
-
-                            b1.ToTable("Achievement_Criteria");
-
-                            b1.WithOwner()
-                                .HasForeignKey("AchievementCriteriaEntry<string>AchievementCriteriaId");
-                        });
-
-                    b.OwnsOne("FreecraftCore.AchievementCriteriaConditionDefinition", "Timed", b1 =>
-                        {
-                            b1.Property<int>("AchievementCriteriaEntry<string>AchievementCriteriaId")
-                                .HasColumnType("int");
-
-                            b1.Property<int>("AssetId")
-                                .HasColumnType("int");
-
-                            b1.Property<int>("Condition")
-                                .HasColumnType("int");
-
-                            b1.HasKey("AchievementCriteriaEntry<string>AchievementCriteriaId");
-
-                            b1.ToTable("Achievement_Criteria");
-
-                            b1.WithOwner()
-                                .HasForeignKey("AchievementCriteriaEntry<string>AchievementCriteriaId");
-                        });
-
-                    b.OwnsOne("FreecraftCore.LocalizedStringDBC<string>", "Description", b1 =>
-                        {
-                            b1.Property<int>("AchievementCriteriaEntry<string>AchievementCriteriaId")
-                                .HasColumnType("int");
-
-                            b1.Property<uint>("Flags")
-                                .HasColumnType("int unsigned");
-
-                            b1.Property<string>("deDE")
-                                .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                            b1.Property<string>("enCN")
-                                .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                            b1.Property<string>("enTW")
-                                .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                            b1.Property<string>("enUS")
-                                .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                            b1.Property<string>("esES")
-                                .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                            b1.Property<string>("esMX")
-                                .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                            b1.Property<string>("frFR")
-                                .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                            b1.Property<string>("itIT")
-                                .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                            b1.Property<string>("koKR")
-                                .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                            b1.Property<string>("ptPT")
-                                .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                            b1.Property<string>("ruRU")
-                                .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                            b1.HasKey("AchievementCriteriaEntry<string>AchievementCriteriaId");
-
-                            b1.ToTable("Achievement_Criteria");
-
-                            b1.WithOwner()
-                                .HasForeignKey("AchievementCriteriaEntry<string>AchievementCriteriaId");
-                        });
                 });
 
             modelBuilder.Entity("FreecraftCore.AchievementEntry<string>", b =>
