@@ -57,7 +57,7 @@ namespace FreecraftCore
 
 					try
 					{
-						if(Config.LoggingLevel > LogLevel.Information)
+						if (Config.LoggingLevel > LogLevel.Information)
 							logger.LogInformation($"Populating table for DBC: {dbcFile}");
 
 						//This may look silly but we want to support the 50+ DBC types so
@@ -66,12 +66,16 @@ namespace FreecraftCore
 
 						await tableFiller.FillAsync();
 					}
-					catch(Exception e)
+					catch (Exception e)
 					{
-						if(logger.IsEnabled(LogLevel.Error))
+						if (logger.IsEnabled(LogLevel.Error))
 							logger.LogError($"Encountered Exception: {e.Message} \n\n Stack: {e.StackTrace}");
 
 						throw;
+					}
+					finally
+					{
+						await scope.ServiceProvider.GetService<DbContext>().DisposeAsync();
 					}
 				}
 
