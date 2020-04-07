@@ -78,6 +78,7 @@ namespace FreecraftCore
 				optionsBuilder.MigrationsAssembly("FreecraftCore.DBC.Management");
 			});
 
+			options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
 			options.EnableSensitiveDataLogging();
 		}
 
