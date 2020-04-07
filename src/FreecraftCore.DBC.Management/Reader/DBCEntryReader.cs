@@ -60,11 +60,8 @@ namespace FreecraftCore
 			if(!header.IsDBC)
 				throw new InvalidOperationException($"Failed to load DBC for DBC Type: {typeof(TDBCEntryType)} Signature: {header.Signature}");
 
-			ConfiguredTaskAwaitable<Dictionary<uint, TDBCEntryType>> dbcEntry = ReadDBCEntryBlock(header)
-				.ConfigureAwait(false);
-
 			//TODO: Implement DBC string reading
-			return new ParsedDBCFile<TDBCEntryType>(await dbcEntry);
+			return new ParsedDBCFile<TDBCEntryType>(await ReadDBCEntryBlock(header).ConfigureAwait(false));
 		}
 
 		private async Task<Dictionary<uint, TDBCEntryType>> ReadDBCEntryBlock(DBCHeader header)
