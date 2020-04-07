@@ -56,6 +56,8 @@ namespace FreecraftCore
 
 		public DbSet<ProfanityNamesEntry<string>> NamesProfanity { get; set; }
 
+		public DbSet<MapEntry<string>> Maps { get; set; }
+
 		public DataBaseClientFilesDatabaseContext([NotNull] DbContextOptions<DataBaseClientFilesDatabaseContext> options)
 			: base(options)
 		{
@@ -68,7 +70,7 @@ namespace FreecraftCore
 		{
 			base.OnConfiguring(optionsBuilder);
 
-			optionsBuilder.UseMySql("Server=127.0.0.1;Database=client.dbc;Uid=root;Pwd=test;");
+			optionsBuilder.UseMySql("Server=127.0.0.1;Port=3307;Database=client.dbc;Uid=root;Pwd=test;");
 		}
 #endif
 
@@ -111,6 +113,8 @@ namespace FreecraftCore
 
 			modelBuilder.Entity<AreaTriggerEntry>().OwnsOne(a => a.Position);
 			modelBuilder.Entity<AreaTriggerEntry>().OwnsOne(a => a.UnalignedBoxDimension);
+
+			//modelBuilder.Entity<MapEntry<string>>().OwnsOne()
 		}
 
 		public DataBaseClientFilesDatabaseContext()
