@@ -32,7 +32,7 @@ namespace FreecraftCore
 		{
 			TDBCEntryType[] dbcEntryTypes = await Context.Set<TDBCEntryType>().ToArrayAsync();
 
-			return new ParsedDBCFile<TDBCEntryType>(dbcEntryTypes.ToDictionary(type => type.EntryId));
+			return new ParsedDBCFile<TDBCEntryType>(dbcEntryTypes.ToDictionary(type => (int)type.EntryId));
 		}
 	}
 }

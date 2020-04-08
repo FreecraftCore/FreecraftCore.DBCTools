@@ -15,10 +15,10 @@ namespace FreecraftCore
 		/// <summary>
 		/// The record database containing all the DBC record entries.
 		/// </summary>
-		public IReadOnlyDictionary<uint, TDBCEntryType> RecordDatabase { get; }
+		public IReadOnlyDictionary<int, TDBCEntryType> RecordDatabase { get; }
 
 		/// <inheritdoc />
-		public ParsedDBCFile([NotNull] IReadOnlyDictionary<uint, TDBCEntryType> recordDatabase)
+		public ParsedDBCFile([NotNull] IReadOnlyDictionary<int, TDBCEntryType> recordDatabase)
 		{
 			RecordDatabase = recordDatabase ?? throw new ArgumentNullException(nameof(recordDatabase));
 		}

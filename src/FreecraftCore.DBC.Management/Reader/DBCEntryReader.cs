@@ -64,10 +64,10 @@ namespace FreecraftCore
 			return new ParsedDBCFile<TDBCEntryType>(await ReadDBCEntryBlock(header).ConfigureAwait(false));
 		}
 
-		private async Task<Dictionary<uint, TDBCEntryType>> ReadDBCEntryBlock(DBCHeader header)
+		private async Task<Dictionary<int, TDBCEntryType>> ReadDBCEntryBlock(DBCHeader header)
 		{
 			//Guessing the size here, no way to know.
-			Dictionary<uint, TDBCEntryType> entryMap = new Dictionary<uint, TDBCEntryType>(header.RecordsCount);
+			Dictionary<int, TDBCEntryType> entryMap = new Dictionary<int, TDBCEntryType>(header.RecordsCount);
 
 			byte[] bytes = new byte[header.RecordSize * header.RecordsCount];
 
@@ -81,7 +81,7 @@ namespace FreecraftCore
 				try
 				{
 					TDBCEntryType entry = Serializer.Deserialize<TDBCEntryType>(reader);
-					entryMap.Add(entry.EntryId, entry);
+					entryMap.Add((int)entry.EntryId, entry);
 				}
 				catch(Exception e)
 				{
