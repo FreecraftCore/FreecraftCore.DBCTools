@@ -64,6 +64,8 @@ namespace FreecraftCore
 
 		public DbSet<AchievementCriteriaEntry<string>> AchievementCriteria { get; set; }
 
+		public DbSet<SpellItemEnchantmentEntry<string>> SpellItemEnchantment { get; set; }
+
 		public DataBaseClientFilesDatabaseContext([NotNull] DbContextOptions<DataBaseClientFilesDatabaseContext> options)
 			: base(options)
 		{
