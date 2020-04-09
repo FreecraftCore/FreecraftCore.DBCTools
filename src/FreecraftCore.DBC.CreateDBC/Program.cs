@@ -24,6 +24,8 @@ namespace FreecraftCore
 
 			DbcTypeParser dbcTypeParser = new DbcTypeParser();
 
+			Directory.CreateDirectory(Config.DbcOutputPath);
+
 			//For each implement DBCType we should try to build a DBC file for it.
 			foreach(Type dbcType in dbcTypeParser.ComputeAllKnownDbcTypes())
 			{
@@ -49,7 +51,7 @@ namespace FreecraftCore
 							continue;
 
 						//Once everything has been filled we should create the file
-						using(FileStream fs = new FileStream($"{Config.DbcOutputPath}/{dbcName}.dbc", FileMode.Create, FileAccess.Write))
+						using(FileStream fs = new FileStream($"{Config.DbcOutputPath}/{dbcName}.dbc", FileMode.CreateNew, FileAccess.ReadWrite))
 						{
 							await ms.CopyToAsync(fs);
 						}

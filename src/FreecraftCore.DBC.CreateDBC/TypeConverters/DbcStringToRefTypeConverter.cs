@@ -65,6 +65,18 @@ namespace FreecraftCore
 						throw;
 					}
 				}
+				else if (mi.Type() == typeof(StringDBCReference))
+				{
+					try
+					{
+						entry.SetPropertyValue(mi.Name, StringReferenceConverter.Convert((string)fromObject.GetPropertyValue(mi.Name)));
+					}
+					catch(Exception e)
+					{
+						Logger.LogError($"Failed to convert Member: {mi.Name} on Type: {mi.DeclaringType} from Value: {(LocalizedStringDBC<string>)fromObject.GetPropertyValue(mi.Name)} Exception: {e.Message}");
+						throw;
+					}
+				}
 				else
 					//Sets the entry with the value from the original object.
 					entry.SetPropertyValue(mi.Name, fromObject.GetPropertyValue(mi.Name));
