@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Fasterflect;
+using FreecraftCore.Serializer;
 using Microsoft.Extensions.Logging.Abstractions;
 using Newtonsoft.Json;
 
@@ -67,7 +68,14 @@ namespace FreecraftCore.DBC.RawDumper
 			ParsedDBCFile<TDBCEntryType> dbc = null;
 			using(FileStream fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read))
 			{
-				DBCEntryReader<TDBCEntryType> reader = new DBCEntryReader<TDBCEntryType>(fileStream, new NullLogger<DBCEntryReader<TDBCEntryType>>());
+				SerializerService serializer = new SerializerService();
+				foreach (Type t in DBCEntryReader.RequiredSerializeableTypes)
+					serializer.RegisterType(t);
+
+				serializer.RegisterType<TDBCEntryType>();
+				serializer.Compile();
+
+				DBCEntryReader<TDBCEntryType> reader = new DBCEntryReader<TDBCEntryType>(fileStream, serializer);
 
 				watch.Start();
 				dbc = await reader.Parse();

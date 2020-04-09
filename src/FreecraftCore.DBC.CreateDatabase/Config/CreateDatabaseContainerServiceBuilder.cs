@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Text;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using FreecraftCore.Serializer;
 using JetBrains.Annotations;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -131,6 +132,8 @@ namespace FreecraftCore
 			builder.RegisterType(typeof(DbcRefToStringTypeConverter<,>).MakeGenericType(genericAttri.ClosedGenericForFile, genericAttri.ClosedGenericForDatabase))
 				.AsImplementedInterfaces()
 				.SingleInstance();
+
+			RegisterSerializerService(builder, genericAttri.ClosedGenericForFile);
 		}
 
 		private void RegisterNonGenericDbcModelServices([NotNull] ContainerBuilder builder, [NotNull] Type dbcModelType, [NotNull] TypedParameter pathParameter)
@@ -144,6 +147,27 @@ namespace FreecraftCore
 
 			//This is not a type converter, it converts to the SQL table.
 			RegisterFileToDatabaseConverter(builder, dbcModelType);
+
+			RegisterSerializerService(builder, dbcModelType);
+		}
+
+		private static void RegisterSerializerService(ContainerBuilder builder, Type dbcModelType)
+		{
+			builder.Register<SerializerService>(provider =>
+				{
+					SerializerService serializer = new SerializerService();
+
+					foreach (Type t in DBCEntryReader.RequiredSerializeableTypes)
+						serializer.RegisterType(t);
+
+					serializer.RegisterType(dbcModelType);
+
+					serializer.Compile();
+
+					return serializer;
+				})
+				.As<ISerializerService>()
+				.InstancePerLifetimeScope();
 		}
 
 		private void RegisterFileToDatabaseConverter(ContainerBuilder builder, Type dbcModelType)

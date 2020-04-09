@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
+using FreecraftCore.Serializer;
 using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
@@ -29,8 +30,15 @@ namespace FreecraftCore
 		{
 			using(FileStream fileStream = new FileStream(FilePath, FileMode.Open, FileAccess.Read))
 			{
+				SerializerService serializer = new SerializerService();
+				foreach (Type t in DBCEntryReader.RequiredSerializeableTypes)
+					serializer.RegisterType(t);
+
+				serializer.RegisterType<TDBCEntryType>();
+				serializer.Compile();
+
 				//TODO: How should we provide logger better than this?
-				DBCEntryReader<TDBCEntryType> reader = new DBCEntryReader<TDBCEntryType>(fileStream, Logger);
+				DBCEntryReader<TDBCEntryType> reader = new DBCEntryReader<TDBCEntryType>(fileStream, serializer);
 
 				return await reader.Parse();
 			}

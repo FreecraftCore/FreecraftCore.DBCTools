@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
+using FreecraftCore.Serializer;
 using JetBrains.Annotations;
 
 namespace FreecraftCore
@@ -14,11 +15,14 @@ namespace FreecraftCore
 	{
 		private string FilePath { get; }
 
-		public DbcFileStringReader([NotNull] string filePath)
+		private ISerializerService Serializer { get; }
+
+		public DbcFileStringReader([NotNull] string filePath, [NotNull] ISerializerService serializer)
 		{
 			if(string.IsNullOrEmpty(filePath)) throw new ArgumentException("Value cannot be null or empty.", nameof(filePath));
 
 			FilePath = filePath;
+			Serializer = serializer ?? throw new ArgumentNullException(nameof(serializer));
 		}
 
 		/// <inheritdoc />
@@ -26,7 +30,7 @@ namespace FreecraftCore
 		{
 			using(FileStream fileStream = new FileStream(FilePath, FileMode.Open, FileAccess.Read))
 			{
-				DbcStringReader reader = new DbcStringReader(fileStream);
+				DbcStringReader reader = new DbcStringReader(fileStream, Serializer);
 
 				return await reader.ParseOnlyStrings();
 			}
