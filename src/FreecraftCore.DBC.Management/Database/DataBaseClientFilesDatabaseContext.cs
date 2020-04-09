@@ -66,6 +66,8 @@ namespace FreecraftCore
 
 		public DbSet<SpellItemEnchantmentEntry<string>> SpellItemEnchantment { get; set; }
 
+		public DbSet<AreaTableEntry<string>> AreaTable { get; set; }
+
 		public DataBaseClientFilesDatabaseContext([NotNull] DbContextOptions<DataBaseClientFilesDatabaseContext> options)
 			: base(options)
 		{
@@ -87,40 +89,10 @@ namespace FreecraftCore
 		{
 			base.OnModelCreating(modelBuilder);
 
-			/*modelBuilder
-				.Entity<SpellEntry<string>>()
-				.OwnsOne(p => p.ReagentsRequired, builder =>
-				{
-					builder.OwnsOne(r => r.ReagentId);
-					builder.OwnsOne(r => r.Totem);
-					builder.OwnsOne(r => r.ReagentCount);
-				})
-				.OwnsOne(p => p.SpellEffectInformation, builder =>
-				{
-					builder.OwnsOne(r => r.Effect);
-					builder.OwnsOne(r => r.EffectAmplitude);
-					builder.OwnsOne(r => r.EffectChainTarget);
-					builder.OwnsOne(r => r.EffectDieSides);
-					builder.OwnsOne(r => r.EffectImplicitTargetA);
-					builder.OwnsOne(r => r.EffectImplicitTargetB);
-					builder.OwnsOne(r => r.EffectItemType);
-					builder.OwnsOne(r => r.EffectMechanic);
-					builder.OwnsOne(r => r.EffectMiscValue);
-					builder.OwnsOne(r => r.EffectApplyAuraName);
-					builder.OwnsOne(r => r.EffectBasePoints);
-					builder.OwnsOne(r => r.EffectMiscValueB);
-					builder.OwnsOne(r => r.EffectMultipleValue);
-					builder.OwnsOne(r => r.EffectPointsPerComboPoint);
-					builder.OwnsOne(r => r.EffectRadiusIndex);
-					builder.OwnsOne(r => r.EffectRealPointsPerLevel);
-					builder.OwnsOne(r => r.EffectSpellClassMaskA);
-					builder.OwnsOne(r => r.EffectSpellClassMaskB);
-					builder.OwnsOne(r => r.EffectSpellClassMaskC);
-					builder.OwnsOne(r => r.EffectTriggerSpell);
-				});
-
-			modelBuilder.Entity<AreaTriggerEntry>().OwnsOne(a => a.Position);
-			modelBuilder.Entity<AreaTriggerEntry>().OwnsOne(a => a.UnalignedBoxDimension);*/
+			modelBuilder
+				.Entity<AreaTableEntry<string>>()
+				.HasIndex(a => a.AreaBit)
+				.IsUnique();
 
 			//Important to show internal fields.
 			foreach (string name in MapEntry<string>.INTERNAL_FIELD_NAMES)
