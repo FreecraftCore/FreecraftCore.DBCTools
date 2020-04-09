@@ -68,6 +68,8 @@ namespace FreecraftCore
 
 		public DbSet<AreaTableEntry<string>> AreaTable { get; set; }
 
+		public DbSet<ItemDisplayInfoEntry<string>> ItemDisplayInfo { get; set; }
+
 		public DataBaseClientFilesDatabaseContext([NotNull] DbContextOptions<DataBaseClientFilesDatabaseContext> options)
 			: base(options)
 		{
