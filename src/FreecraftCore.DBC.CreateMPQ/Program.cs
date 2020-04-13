@@ -10,6 +10,8 @@ namespace FreecraftCore.DBC.CreateMPQ
 
 		static void Main(string[] args)
 		{
+			Console.WriteLine(DBCToolsExtensions.BuildToolsWelcomeMessage("CreateMPQ"));
+
 			//Try to load configuration file
 			Config = new ApplicationConfigurationLoader().BuildConfigFile();
 
@@ -29,6 +31,8 @@ namespace FreecraftCore.DBC.CreateMPQ
 					mpq.AddFileFromDiskWithCompression(dbc, Path.Combine("DBFilesClient", Path.GetFileName(dbc)), MpqCompressionTypeFlags.MPQ_COMPRESSION_ZLIB);
 				}
 			}
+
+			Console.WriteLine("Finished");
 		}
 	}
 }

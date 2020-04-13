@@ -19,6 +19,8 @@ namespace FreecraftCore
 
 		static async Task Main(string[] args)
 		{
+			Console.WriteLine(DBCToolsExtensions.BuildToolsWelcomeMessage("CreateDBC"));
+
 			//Try to load configuration file
 			Config = new ApplicationConfigurationLoader().BuildConfigFile();
 
@@ -59,7 +61,7 @@ namespace FreecraftCore
 				}
 			}
 
-			Console.ReadKey();
+			Console.WriteLine("Finished");
 		}
 	}
 }
