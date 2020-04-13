@@ -8,7 +8,7 @@ namespace FreecraftCore
 	{
 		public static string BuildToolsWelcomeMessage(string toolName)
 		{
-			return $"FreecraftCore Copyright (c) 2020 Glader\nRunning FreecraftCore.DBCTools {toolName}.";
+			return $"FreecraftCore Copyright (c) 2020 Glader/HelloKitty\nRunning FreecraftCore.DBCTools {toolName}.";
 		}
 	}
 }
