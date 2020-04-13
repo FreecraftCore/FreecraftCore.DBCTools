@@ -16,8 +16,13 @@ namespace FreecraftCore
 
 		public static async Task Main(string[] args)
 		{
+			Console.WriteLine(DBCToolsExtensions.BuildToolsWelcomeMessage("CreateJSON"));
+
 			//Try to load configuration file
 			Config = new ApplicationConfigurationLoader().BuildConfigFile();
+
+			if (!Directory.Exists(Config.DiffOutputPath))
+				Directory.CreateDirectory(Config.DiffOutputPath);
 
 			Parallel.ForEach(Directory.GetFiles(Config.DbcOutputPath).Select(Path.GetFileNameWithoutExtension), async dbcFile =>
 			{
@@ -59,7 +64,7 @@ namespace FreecraftCore
 				}
 			});
 
-			Console.ReadKey();
+			Console.WriteLine("Finished");
 		}
 	}
 }
