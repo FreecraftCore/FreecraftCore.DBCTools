@@ -24,6 +24,8 @@ namespace FreecraftCore
 
 		static async Task Main(string[] args)
 		{
+			Console.WriteLine(DBCToolsExtensions.BuildToolsWelcomeMessage("CreateDatabase"));
+
 			//Try to load configuration file
 			Config = new ApplicationConfigurationLoader().BuildConfigFile();
 
@@ -86,7 +88,6 @@ namespace FreecraftCore
 			}
 
 			Console.WriteLine("Finished. Press any key!");
-			Console.ReadKey();
 		}
 
 		private static async Task CreateDatabaseIfNotCreated()
