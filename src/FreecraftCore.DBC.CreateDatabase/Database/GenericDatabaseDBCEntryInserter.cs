@@ -41,6 +41,15 @@ namespace FreecraftCore
 			if(Logger.IsEnabled(LogLevel.Information))
 				Logger.LogInformation($"Adding: {entries.Count} Type: {typeof(TDBCEntryType).Name}");
 
+			//This prevents inserting into the DB if there are ANY entries.
+			if (await Context.Set<TDBCEntryType>().AnyAsync())
+			{
+				if(Logger.IsEnabled(LogLevel.Warning))
+					Logger.LogInformation($"Insertion for Table: {typeof(TDBCEntryType).Name} skipped. Table is non-empty.");
+
+				return 0;
+			}
+
 			//TODO: Improve the performance of this
 			await Context.Set<TDBCEntryType>().AddRangeAsync(entries);
 
