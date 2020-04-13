@@ -70,6 +70,8 @@ namespace FreecraftCore
 
 		public DbSet<ItemDisplayInfoEntry<string>> ItemDisplayInfo { get; set; }
 
+		public DbSet<LoadingScreensEntry<string>> LoadingScreens { get; set; }
+
 		public DataBaseClientFilesDatabaseContext([NotNull] DbContextOptions<DataBaseClientFilesDatabaseContext> options)
 			: base(options)
 		{
@@ -99,6 +101,9 @@ namespace FreecraftCore
 			//Important to show internal fields.
 			foreach (string name in MapEntry<string>.INTERNAL_FIELD_NAMES)
 				modelBuilder.Entity<MapEntry<string>>().Property(name);
+
+			foreach (string name in LoadingScreensEntry<string>.INTERNAL_FIELD_NAMES)
+				modelBuilder.Entity<LoadingScreensEntry<string>>().Property(name);
 
 			//modelBuilder.Entity<MapEntry<string>>().OwnsOne()
 		}
