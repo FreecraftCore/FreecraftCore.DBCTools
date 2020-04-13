@@ -64,7 +64,7 @@ namespace FreecraftCore
 				}
 			});
 
-			Console.WriteLine("Finished");
+			Console.WriteLine("Finished. Press any key!");
 		}
 	}
 }

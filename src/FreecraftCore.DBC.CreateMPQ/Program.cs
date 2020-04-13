@@ -38,7 +38,7 @@ namespace FreecraftCore.DBC.CreateMPQ
 				}
 			}
 
-			Console.WriteLine("Finished");
+			Console.WriteLine("Finished. Press any key!");
 		}
 	}
 }
