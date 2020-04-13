@@ -18,6 +18,9 @@ namespace FreecraftCore.DBC.CreateMPQ
 
 			string[] dbcFileNames = Directory.GetFiles(Config.DbcOutputPath);
 
+			if (!Directory.Exists(Config.MpqOutputPath))
+				Directory.CreateDirectory(Config.MpqOutputPath);
+
 			//Creates an MPQ with length of dbc files at the MPQ output directory.
 			using(MpqArchive mpq = MpqArchive.CreateNew(Path.Combine(Config.MpqOutputPath, $"{Config.MpqOutputName}.MPQ"), MpqArchiveVersion.Version2, MpqFileStreamAttributes.None, MpqFileStreamAttributes.CreateAttributesFile, dbcFileNames.Length))
 			{
