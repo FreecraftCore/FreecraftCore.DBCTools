@@ -72,6 +72,8 @@ namespace FreecraftCore
 
 		public DbSet<LoadingScreensEntry<string>> LoadingScreens { get; set; }
 
+		public DbSet<FactionEntry<string>> Factions { get; set; }
+
 		public DataBaseClientFilesDatabaseContext([NotNull] DbContextOptions<DataBaseClientFilesDatabaseContext> options)
 			: base(options)
 		{
