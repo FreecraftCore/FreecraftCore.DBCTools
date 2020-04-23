@@ -12,10 +12,12 @@
   <ItemGroup>
     <Compile Remove="Migrations\20200407153216_AddedAchievementDbc.cs" />
     <Compile Remove="Migrations\20200407153216_AddedAchievementDbc.Designer.cs" />
+    <Compile Remove="Migrations\20200423005934_AddedFactionTemplateDbc.cs" />
+    <Compile Remove="Migrations\20200423005934_AddedFactionTemplateDbc.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="FreecraftCore.API.Data" Version="5.0.38" />
+    <PackageReference Include="FreecraftCore.API.Data" Version="5.0.40" />
     <PackageReference Include="FreecraftCore.Serializer" Version="3.0.39" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="3.1.1" />
