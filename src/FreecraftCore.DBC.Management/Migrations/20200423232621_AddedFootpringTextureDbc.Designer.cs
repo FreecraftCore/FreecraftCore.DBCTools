@@ -2,14 +2,16 @@
 using FreecraftCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace FreecraftCore.DBC.Management.Migrations
 {
     [DbContext(typeof(DataBaseClientFilesDatabaseContext))]
-    partial class DataBaseClientFilesDatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20200423232621_AddedFootpringTextureDbc")]
+    partial class AddedFootpringTextureDbc
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -184,38 +186,6 @@ namespace FreecraftCore.DBC.Management.Migrations
                     b.HasKey("AreaTriggerId");
 
                     b.ToTable("AreaTrigger");
-                });
-
-            modelBuilder.Entity("FreecraftCore.CameraShakesEntry", b =>
-                {
-                    b.Property<int>("CameraShakeId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<float>("Amplitude")
-                        .HasColumnType("float");
-
-                    b.Property<float>("Coefficient")
-                        .HasColumnType("float");
-
-                    b.Property<int>("Direction")
-                        .HasColumnType("int");
-
-                    b.Property<float>("Duration")
-                        .HasColumnType("float");
-
-                    b.Property<float>("Frequency")
-                        .HasColumnType("float");
-
-                    b.Property<float>("Phase")
-                        .HasColumnType("float");
-
-                    b.Property<int>("ShakeType")
-                        .HasColumnType("int");
-
-                    b.HasKey("CameraShakeId");
-
-                    b.ToTable("CameraShakes");
                 });
 
             modelBuilder.Entity("FreecraftCore.FactionEntry<string>", b =>

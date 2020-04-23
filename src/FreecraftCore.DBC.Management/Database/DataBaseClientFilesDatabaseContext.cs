@@ -78,6 +78,12 @@ namespace FreecraftCore
 
 		public DbSet<FactionGroupEntry<string>> FactionGroups { get; set; }
 
+		public DbSet<UnitBloodLevelsEntry> UnitBloodLevels { get; set; }
+
+		public DbSet<FootprintTexturesEntry<string>> FootprintTextures { get; set; }
+		
+		public DbSet<CameraShakesEntry> CameraShakes { get; set; }
+
 		public DataBaseClientFilesDatabaseContext([NotNull] DbContextOptions<DataBaseClientFilesDatabaseContext> options)
 			: base(options)
 		{
