@@ -76,6 +76,8 @@ namespace FreecraftCore
 
 		public DbSet<FactionTemplateEntry> FactionTemplates { get; set; }
 
+		public DbSet<FactionGroupEntry<string>> FactionGroups { get; set; }
+
 		public DataBaseClientFilesDatabaseContext([NotNull] DbContextOptions<DataBaseClientFilesDatabaseContext> options)
 			: base(options)
 		{
