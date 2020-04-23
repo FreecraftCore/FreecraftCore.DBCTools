@@ -41,6 +41,15 @@ namespace FreecraftCore
 			if(Logger.IsEnabled(LogLevel.Information))
 				Logger.LogInformation($"Adding: {entries.Count} Type: {typeof(TDBCEntryType).Name}");
 
+			//This let's us check to see if there is a table for this DBC.
+			if (Context.Model.FindEntityType(typeof(TDBCEntryType)) == null)
+			{
+				if (Logger.IsEnabled(LogLevel.Warning))
+					Logger.LogInformation($"DB Set: {typeof(TDBCEntryType).Name}");
+
+				return 0;
+			}
+
 			//This prevents inserting into the DB if there are ANY entries.
 			if (await Context.Set<TDBCEntryType>().AnyAsync())
 			{
