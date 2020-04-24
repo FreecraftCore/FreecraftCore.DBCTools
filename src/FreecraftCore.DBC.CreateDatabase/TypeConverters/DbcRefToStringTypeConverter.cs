@@ -28,9 +28,19 @@ namespace FreecraftCore
 		/// Cached reflected <see cref="MemberInfo"/>
 		/// </summary>
 		public static IReadOnlyCollection<MemberInfo> OriginalSerializableMemberInfos { get; }
-			= typeof(TDbcToType)
+			= ComputeSerializableMembers<TDbcToType>();
+
+		private static MemberInfo[] ComputeSerializableMembers<T>()
+		{
+			return ComputeSerializableMembers(typeof(T));
+		}
+
+		private static MemberInfo[] ComputeSerializableMembers(Type type)
+		{
+			return type
 				.MembersWith(MemberTypes.Property, typeof(WireMemberAttribute))
 				.ToArray();
+		}
 
 		/// <inheritdoc />
 		public DbcRefToStringTypeConverter([NotNull] ITypeConverterProvider<LocalizedStringDBC<StringDBCReference>, LocalizedStringDBC<string>> localizedStringConverter, [NotNull] ITypeConverterProvider<StringDBCReference, string> stringReferenceConverter)
@@ -55,6 +65,16 @@ namespace FreecraftCore
 				else if (mi.Type() == typeof(string))
 					//Sets the entry with the value from the original object.
 					entry.SetPropertyValue(mi.Name, StringReferenceConverter.Convert((StringDBCReference) fromObject.GetPropertyValue(mi.Name)));
+				else if (mi.Type().Name.Contains("GenericStaticallySizedArrayChunk") && mi.Type().GenericTypeArguments[0] == typeof(string))
+				{
+					object arrayObject = Activator.CreateInstance(mi.Type());
+
+					//for types with GenericStaticallySizedArrayChunk so we can set the members
+					foreach(MemberInfo arrayChunkMemberInfo in ComputeSerializableMembers(mi.Type()))
+						arrayObject.SetPropertyValue(arrayChunkMemberInfo.Name, StringReferenceConverter.Convert((StringDBCReference) fromObject.GetPropertyValue(mi.Name).GetPropertyValue(arrayChunkMemberInfo.Name)));
+
+					entry.SetPropertyValue(mi.Name, arrayObject);
+				}
 				else
 					entry.SetPropertyValue(mi.Name, fromObject.GetPropertyValue(mi.Name)); //else it's a normal field so it should directly be set.
 			}
