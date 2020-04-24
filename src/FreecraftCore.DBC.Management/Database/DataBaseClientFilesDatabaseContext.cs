@@ -86,6 +86,8 @@ namespace FreecraftCore
 
 		public DbSet<SoundEntriesEntry<string>> SoundEntries { get; set; }
 
+		public DbSet<CreatureSoundDataEntry> CreatureSoundDatas { get; set; }
+
 		public DataBaseClientFilesDatabaseContext([NotNull] DbContextOptions<DataBaseClientFilesDatabaseContext> options)
 			: base(options)
 		{
