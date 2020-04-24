@@ -84,6 +84,8 @@ namespace FreecraftCore
 		
 		public DbSet<CameraShakesEntry> CameraShakes { get; set; }
 
+		public DbSet<SoundEntriesEntry<string>> SoundEntries { get; set; }
+
 		public DataBaseClientFilesDatabaseContext([NotNull] DbContextOptions<DataBaseClientFilesDatabaseContext> options)
 			: base(options)
 		{
