@@ -116,14 +116,21 @@ namespace FreecraftCore
 				.HasIndex(a => a.AreaBit)
 				.IsUnique();
 
-			//Important to show internal fields.
-			foreach (string name in MapEntry<string>.INTERNAL_FIELD_NAMES)
-				modelBuilder.Entity<MapEntry<string>>().Property(name);
-
-			foreach (string name in LoadingScreensEntry<string>.INTERNAL_FIELD_NAMES)
-				modelBuilder.Entity<LoadingScreensEntry<string>>().Property(name);
+			AddAllInternalFields(modelBuilder.Entity<MapEntry<string>>());
+			AddAllInternalFields(modelBuilder.Entity<LoadingScreensEntry<string>>());
 
 			//modelBuilder.Entity<MapEntry<string>>().OwnsOne()
+		}
+
+		private static void AddAllInternalFields<TModelType>(EntityTypeBuilder<TModelType> entity) 
+			where TModelType : class
+		{
+			string[] internalFieldNames = (string[])typeof(TModelType)
+				.GetField("INTERNAL_FIELD_NAMES", BindingFlags.Public | BindingFlags.Static)
+				.GetValue(null);
+
+			foreach (string name in internalFieldNames)
+				entity.Property(name);
 		}
 
 		public DataBaseClientFilesDatabaseContext()
