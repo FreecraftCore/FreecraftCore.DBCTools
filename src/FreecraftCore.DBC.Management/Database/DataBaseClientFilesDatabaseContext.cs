@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Text;
 using FreecraftCore.Serializer;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace FreecraftCore
 {
@@ -90,6 +92,8 @@ namespace FreecraftCore
 
 		public DbSet<CreatureModelDataEntry<string>> CreatureModelDatas { get; set; }
 
+		public DbSet<CreatureDisplayInfoExtraEntry<string>> CreatureDisplayInfoExtras { get; set; }
+
 		public DataBaseClientFilesDatabaseContext([NotNull] DbContextOptions<DataBaseClientFilesDatabaseContext> options)
 			: base(options)
 		{
@@ -118,6 +122,7 @@ namespace FreecraftCore
 
 			AddAllInternalFields(modelBuilder.Entity<MapEntry<string>>());
 			AddAllInternalFields(modelBuilder.Entity<LoadingScreensEntry<string>>());
+			AddAllInternalFields(modelBuilder.Entity<CreatureDisplayInfoExtraEntry<string>>());
 
 			//modelBuilder.Entity<MapEntry<string>>().OwnsOne()
 		}
