@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -27,6 +28,18 @@ namespace FreecraftCore
 		protected ITypeConverterProvider<string, StringDBCReference> StringReferenceConverter { get; }
 
 		private ILogger<DbcStringToRefTypeConverter<TDbcFromType, TDbcToType>> Logger { get; }
+
+		private static MemberInfo[] ComputeSerializableMembers<T>()
+		{
+			return ComputeSerializableMembers(typeof(T));
+		}
+
+		private static MemberInfo[] ComputeSerializableMembers(Type type)
+		{
+			return type
+				.MembersWith(MemberTypes.Property, typeof(WireMemberAttribute))
+				.ToArray();
+		}
 
 		/// <inheritdoc />
 		public DbcStringToRefTypeConverter([NotNull] ITypeConverterProvider<LocalizedStringDBC<string>, LocalizedStringDBC<StringDBCReference>> localizedStringConverter, [NotNull] ITypeConverterProvider<string, StringDBCReference> stringReferenceConverter, ILogger<DbcStringToRefTypeConverter<TDbcFromType, TDbcToType>> logger)
@@ -76,6 +89,16 @@ namespace FreecraftCore
 						Logger.LogError($"Failed to convert Member: {mi.Name} on Type: {mi.DeclaringType} from Value: {(LocalizedStringDBC<string>)fromObject.GetPropertyValue(mi.Name)} Exception: {e.Message}");
 						throw;
 					}
+				}
+				else if(mi.Type().Name.Contains("GenericStaticallySizedArrayChunk") && mi.Type().GenericTypeArguments[0] == typeof(StringDBCReference))
+				{
+					object arrayObject = Activator.CreateInstance(mi.Type());
+
+					//for types with GenericStaticallySizedArrayChunk so we can set the members
+					foreach(MemberInfo arrayChunkMemberInfo in ComputeSerializableMembers(mi.Type()))
+						arrayObject.SetPropertyValue(arrayChunkMemberInfo.Name, StringReferenceConverter.Convert((string)fromObject.GetPropertyValue(mi.Name).GetPropertyValue(arrayChunkMemberInfo.Name)));
+
+					entry.SetPropertyValue(mi.Name, arrayObject);
 				}
 				else
 					//Sets the entry with the value from the original object.
