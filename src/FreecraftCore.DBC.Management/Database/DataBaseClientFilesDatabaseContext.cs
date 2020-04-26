@@ -98,6 +98,8 @@ namespace FreecraftCore
 
 		public DbSet<NPCSoundsEntry> NpcSoundEntries { get; set; }
 
+		public DbSet<ParticleColorEntry> ParticleColors { get; set; }
+
 		public DataBaseClientFilesDatabaseContext([NotNull] DbContextOptions<DataBaseClientFilesDatabaseContext> options)
 			: base(options)
 		{
