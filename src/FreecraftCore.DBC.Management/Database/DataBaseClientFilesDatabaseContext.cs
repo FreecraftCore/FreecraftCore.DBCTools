@@ -102,6 +102,8 @@ namespace FreecraftCore
 
 		public DbSet<ObjectEffectPackageEntry<string>> ObjectEffectPackages { get; set; }
 
+		public DbSet<CreatureDisplayInfoEntry<string>> CreatureDisplayInfos { get; set; }
+
 		public DataBaseClientFilesDatabaseContext([NotNull] DbContextOptions<DataBaseClientFilesDatabaseContext> options)
 			: base(options)
 		{
