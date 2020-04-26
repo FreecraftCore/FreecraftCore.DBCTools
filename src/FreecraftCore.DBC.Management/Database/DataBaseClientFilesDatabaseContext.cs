@@ -96,6 +96,8 @@ namespace FreecraftCore
 
 		public DbSet<UnitBloodEntry<string>> UnitBloodEntries { get; set; }
 
+		public DbSet<NPCSoundsEntry> NpcSoundEntries { get; set; }
+
 		public DataBaseClientFilesDatabaseContext([NotNull] DbContextOptions<DataBaseClientFilesDatabaseContext> options)
 			: base(options)
 		{
