@@ -100,6 +100,8 @@ namespace FreecraftCore
 
 		public DbSet<ParticleColorEntry> ParticleColors { get; set; }
 
+		public DbSet<ObjectEffectPackageEntry<string>> ObjectEffectPackages { get; set; }
+
 		public DataBaseClientFilesDatabaseContext([NotNull] DbContextOptions<DataBaseClientFilesDatabaseContext> options)
 			: base(options)
 		{
