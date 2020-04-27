@@ -104,6 +104,8 @@ namespace FreecraftCore
 
 		public DbSet<CreatureDisplayInfoEntry<string>> CreatureDisplayInfos { get; set; }
 
+		public DbSet<LanguagesEntry<string>> Languages { get; set; }
+
 		public DataBaseClientFilesDatabaseContext([NotNull] DbContextOptions<DataBaseClientFilesDatabaseContext> options)
 			: base(options)
 		{
