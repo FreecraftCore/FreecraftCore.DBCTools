@@ -108,6 +108,8 @@ namespace FreecraftCore
 
 		public DbSet<CreatureTypeEntry<string>> CreatureTypes { get; set; }
 
+		public DbSet<CinematicCameraEntry<string>> CinematicCameras { get; set; }
+
 		public DataBaseClientFilesDatabaseContext([NotNull] DbContextOptions<DataBaseClientFilesDatabaseContext> options)
 			: base(options)
 		{
