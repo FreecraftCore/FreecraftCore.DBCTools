@@ -6,6 +6,7 @@ using FreecraftCore.Serializer;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Reflect.Extent;
 
 namespace FreecraftCore
 {
@@ -110,6 +111,8 @@ namespace FreecraftCore
 
 		public DbSet<CinematicCameraEntry<string>> CinematicCameras { get; set; }
 
+		public DbSet<CinematicSequencesEntry> CinematicSequences { get; set; }
+
 		public DataBaseClientFilesDatabaseContext([NotNull] DbContextOptions<DataBaseClientFilesDatabaseContext> options)
 			: base(options)
 		{
@@ -139,6 +142,7 @@ namespace FreecraftCore
 			AddAllInternalFields(modelBuilder.Entity<MapEntry<string>>());
 			AddAllInternalFields(modelBuilder.Entity<LoadingScreensEntry<string>>());
 			AddAllInternalFields(modelBuilder.Entity<CreatureDisplayInfoExtraEntry<string>>());
+			AddAllInternalFields(modelBuilder.Entity<CinematicSequencesEntry>());
 
 			//modelBuilder.Entity<MapEntry<string>>().OwnsOne()
 		}
@@ -151,7 +155,15 @@ namespace FreecraftCore
 				.GetValue(null);
 
 			foreach (string name in internalFieldNames)
-				entity.Property(name);
+			{
+				PropertyInfo info = typeof(TModelType).GetProperty(name, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+				if(info.Type().HasAttribute<OwnedAttribute>())
+				{
+					entity.OwnsOne(info.Type(), name);
+				}
+				else
+					entity.Property(name);
+			}
 		}
 
 		public DataBaseClientFilesDatabaseContext()

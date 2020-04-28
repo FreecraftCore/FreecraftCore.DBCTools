@@ -2,14 +2,16 @@
 using FreecraftCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace FreecraftCore.DBC.Management.Migrations
 {
     [DbContext(typeof(DataBaseClientFilesDatabaseContext))]
-    partial class DataBaseClientFilesDatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20200427112732_AddedCinematicSequencesDbc")]
+    partial class AddedCinematicSequencesDbc
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1852,40 +1854,6 @@ namespace FreecraftCore.DBC.Management.Migrations
                         .HasForeignKey("CameraId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.OwnsOne("FreecraftCore.GenericStaticallySizedArrayChunkSeven<int>", "UnusedCameraId", b1 =>
-                        {
-                            b1.Property<int>("CinematicSequencesEntrySequenceId")
-                                .HasColumnType("int");
-
-                            b1.Property<int>("Five")
-                                .HasColumnType("int");
-
-                            b1.Property<int>("Four")
-                                .HasColumnType("int");
-
-                            b1.Property<int>("One")
-                                .HasColumnType("int");
-
-                            b1.Property<int>("Seven")
-                                .HasColumnType("int");
-
-                            b1.Property<int>("Six")
-                                .HasColumnType("int");
-
-                            b1.Property<int>("Three")
-                                .HasColumnType("int");
-
-                            b1.Property<int>("Two")
-                                .HasColumnType("int");
-
-                            b1.HasKey("CinematicSequencesEntrySequenceId");
-
-                            b1.ToTable("CinematicSequences");
-
-                            b1.WithOwner()
-                                .HasForeignKey("CinematicSequencesEntrySequenceId");
-                        });
                 });
 
             modelBuilder.Entity("FreecraftCore.CreatureDisplayInfoEntry<string>", b =>
