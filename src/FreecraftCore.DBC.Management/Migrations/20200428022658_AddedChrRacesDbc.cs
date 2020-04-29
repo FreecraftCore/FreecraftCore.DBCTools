@@ -62,8 +62,8 @@ namespace FreecraftCore.DBC.Management.Migrations
                     MaleName_ptPT = table.Column<string>(nullable: true),
                     MaleName_itIT = table.Column<string>(nullable: true),
                     MaleName_Flags = table.Column<uint>(nullable: true),
-                    FacialCustomizationInternalName_Internal = table.Column<string>(nullable: true),
-                    FacialCustomizationInternalName = table.Column<string>(nullable: true),
+                    FacialCustomizationName_Internal = table.Column<string>(nullable: true),
+                    FacialCustomizationName = table.Column<string>(nullable: true),
                     HairCustomizationName = table.Column<string>(nullable: true)
                 },
                 constraints: table =>

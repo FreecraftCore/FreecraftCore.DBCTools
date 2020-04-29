@@ -8,8 +8,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FreecraftCore.DBC.Management.Migrations
 {
     [DbContext(typeof(DataBaseClientFilesDatabaseContext))]
-    [Migration("20200428032209_AddedMissingExpansionToChrRaceDbc")]
-    partial class AddedMissingExpansionToChrRaceDbc
+    [Migration("20200429105659_AddedCharTiles")]
+    partial class AddedCharTiles
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -218,6 +218,26 @@ namespace FreecraftCore.DBC.Management.Migrations
                     b.HasKey("CameraShakeId");
 
                     b.ToTable("CameraShakes");
+                });
+
+            modelBuilder.Entity("FreecraftCore.CharTitlesEntry<string>", b =>
+                {
+                    b.Property<int>("TitleId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int>("ConditionId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TitleBit")
+                        .HasColumnType("int");
+
+                    b.HasKey("TitleId");
+
+                    b.HasIndex("TitleBit")
+                        .IsUnique();
+
+                    b.ToTable("CharTitles");
                 });
 
             modelBuilder.Entity("FreecraftCore.ChrRacesEntry<string>", b =>
@@ -1896,6 +1916,107 @@ namespace FreecraftCore.DBC.Management.Migrations
 
                             b1.WithOwner()
                                 .HasForeignKey("AreaTriggerEntryAreaTriggerId");
+                        });
+                });
+
+            modelBuilder.Entity("FreecraftCore.CharTitlesEntry<string>", b =>
+                {
+                    b.OwnsOne("FreecraftCore.LocalizedStringDBC<string>", "FemaleName", b1 =>
+                        {
+                            b1.Property<int>("CharTitlesEntry<string>TitleId")
+                                .HasColumnType("int");
+
+                            b1.Property<uint>("Flags")
+                                .HasColumnType("int unsigned");
+
+                            b1.Property<string>("deDE")
+                                .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                            b1.Property<string>("enCN")
+                                .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                            b1.Property<string>("enTW")
+                                .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                            b1.Property<string>("enUS")
+                                .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                            b1.Property<string>("esES")
+                                .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                            b1.Property<string>("esMX")
+                                .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                            b1.Property<string>("frFR")
+                                .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                            b1.Property<string>("itIT")
+                                .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                            b1.Property<string>("koKR")
+                                .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                            b1.Property<string>("ptPT")
+                                .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                            b1.Property<string>("ruRU")
+                                .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                            b1.HasKey("CharTitlesEntry<string>TitleId");
+
+                            b1.ToTable("CharTitles");
+
+                            b1.WithOwner()
+                                .HasForeignKey("CharTitlesEntry<string>TitleId");
+                        });
+
+                    b.OwnsOne("FreecraftCore.LocalizedStringDBC<string>", "MaleName", b1 =>
+                        {
+                            b1.Property<int>("CharTitlesEntry<string>TitleId")
+                                .HasColumnType("int");
+
+                            b1.Property<uint>("Flags")
+                                .HasColumnType("int unsigned");
+
+                            b1.Property<string>("deDE")
+                                .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                            b1.Property<string>("enCN")
+                                .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                            b1.Property<string>("enTW")
+                                .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                            b1.Property<string>("enUS")
+                                .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                            b1.Property<string>("esES")
+                                .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                            b1.Property<string>("esMX")
+                                .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                            b1.Property<string>("frFR")
+                                .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                            b1.Property<string>("itIT")
+                                .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                            b1.Property<string>("koKR")
+                                .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                            b1.Property<string>("ptPT")
+                                .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                            b1.Property<string>("ruRU")
+                                .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                            b1.HasKey("CharTitlesEntry<string>TitleId");
+
+                            b1.ToTable("CharTitles");
+
+                            b1.WithOwner()
+                                .HasForeignKey("CharTitlesEntry<string>TitleId");
                         });
                 });
 

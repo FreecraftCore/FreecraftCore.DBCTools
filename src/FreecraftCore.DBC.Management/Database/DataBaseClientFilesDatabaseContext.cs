@@ -115,6 +115,8 @@ namespace FreecraftCore
 
 		public DbSet<ChrRacesEntry<string>> ChrRaces { get; set; }
 
+		public DbSet<CharTitlesEntry<string>> CharTitles { get; set; }
+
 		public DataBaseClientFilesDatabaseContext([NotNull] DbContextOptions<DataBaseClientFilesDatabaseContext> options)
 			: base(options)
 		{
@@ -141,13 +143,16 @@ namespace FreecraftCore
 				.HasIndex(a => a.AreaBit)
 				.IsUnique();
 
+			modelBuilder
+				.Entity<CharTitlesEntry<string>>()
+				.HasIndex(a => a.TitleBit)
+				.IsUnique();
+
 			AddAllInternalFields(modelBuilder.Entity<MapEntry<string>>());
 			AddAllInternalFields(modelBuilder.Entity<LoadingScreensEntry<string>>());
 			AddAllInternalFields(modelBuilder.Entity<CreatureDisplayInfoExtraEntry<string>>());
 			AddAllInternalFields(modelBuilder.Entity<CinematicSequencesEntry>());
 			AddAllInternalFields(modelBuilder.Entity<ChrRacesEntry<string>>());
-
-			//modelBuilder.Entity<MapEntry<string>>().OwnsOne()
 		}
 
 		private static void AddAllInternalFields<TModelType>(EntityTypeBuilder<TModelType> entity) 

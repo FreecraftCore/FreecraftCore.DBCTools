@@ -250,11 +250,11 @@ namespace FreecraftCore.DBC.Management.Migrations
                     b.Property<int>("ExplorationSoundId")
                         .HasColumnType("int");
 
-                    b.Property<string>("FacialCustomizationInternalName")
+                    b.Property<string>("FacialCustomizationName")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<string>("FacialCustomizationNameInternal")
-                        .HasColumnName("FacialCustomizationInternalName_Internal")
+                        .HasColumnName("FacialCustomizationName_Internal")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<int>("FactionTemplateId")
