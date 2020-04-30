@@ -117,6 +117,8 @@ namespace FreecraftCore
 
 		public DbSet<CharTitlesEntry<string>> CharTitles { get; set; }
 
+		public DbSet<LanguageWordsEntry<string>> LanguageWords { get; set; }
+
 		public DataBaseClientFilesDatabaseContext([NotNull] DbContextOptions<DataBaseClientFilesDatabaseContext> options)
 			: base(options)
 		{
