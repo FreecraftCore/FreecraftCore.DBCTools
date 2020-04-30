@@ -121,6 +121,8 @@ namespace FreecraftCore
 
 		public DbSet<QuestInfoEntry<string>> QuestInfos { get; set; }
 
+		public DbSet<QuestSortEntry<string>> QuestSort { get; set; }
+
 		public DataBaseClientFilesDatabaseContext([NotNull] DbContextOptions<DataBaseClientFilesDatabaseContext> options)
 			: base(options)
 		{
