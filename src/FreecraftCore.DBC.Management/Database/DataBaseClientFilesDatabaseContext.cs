@@ -125,6 +125,8 @@ namespace FreecraftCore
 
 		public DbSet<QuestXPEntry> QuestXp { get; set; }
 
+		public DbSet<ServerMessagesEntry<string>> ServerMessages { get; private set; }
+
 		public DataBaseClientFilesDatabaseContext([NotNull] DbContextOptions<DataBaseClientFilesDatabaseContext> options)
 			: base(options)
 		{
