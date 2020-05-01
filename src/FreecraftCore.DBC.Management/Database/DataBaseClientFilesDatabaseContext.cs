@@ -123,6 +123,8 @@ namespace FreecraftCore
 
 		public DbSet<QuestSortEntry<string>> QuestSort { get; set; }
 
+		public DbSet<QuestXPEntry> QuestXp { get; set; }
+
 		public DataBaseClientFilesDatabaseContext([NotNull] DbContextOptions<DataBaseClientFilesDatabaseContext> options)
 			: base(options)
 		{
