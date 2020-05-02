@@ -127,6 +127,8 @@ namespace FreecraftCore
 
 		public DbSet<ServerMessagesEntry<string>> ServerMessages { get; private set; }
 
+		public DbSet<GameTipsEntry<string>> GameTips { get; private set; }
+
 		public DataBaseClientFilesDatabaseContext([NotNull] DbContextOptions<DataBaseClientFilesDatabaseContext> options)
 			: base(options)
 		{

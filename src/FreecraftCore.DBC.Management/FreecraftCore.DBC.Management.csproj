@@ -16,10 +16,12 @@
     <Compile Remove="Migrations\20200423005934_AddedFactionTemplateDbc.Designer.cs" />
     <Compile Remove="Migrations\20200427113124_FixedCinematicSequenceDbc.cs" />
     <Compile Remove="Migrations\20200427113124_FixedCinematicSequenceDbc.Designer.cs" />
+    <Compile Remove="Migrations\20200502005610_AddedChrClassesDbc.cs" />
+    <Compile Remove="Migrations\20200502005610_AddedChrClassesDbc.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="FreecraftCore.API.Data" Version="5.0.59" />
+    <PackageReference Include="FreecraftCore.API.Data" Version="5.0.61" />
     <PackageReference Include="FreecraftCore.Serializer" Version="3.0.39" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="3.1.1" />
