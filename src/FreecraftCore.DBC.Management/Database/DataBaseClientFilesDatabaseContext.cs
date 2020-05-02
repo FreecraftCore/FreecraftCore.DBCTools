@@ -129,6 +129,8 @@ namespace FreecraftCore
 
 		public DbSet<GameTipsEntry<string>> GameTips { get; private set; }
 
+		public DbSet<ChrClassesEntry<string>> CharacterClasses { get; private set; }
+
 		public DataBaseClientFilesDatabaseContext([NotNull] DbContextOptions<DataBaseClientFilesDatabaseContext> options)
 			: base(options)
 		{
@@ -165,6 +167,7 @@ namespace FreecraftCore
 			AddAllInternalFields(modelBuilder.Entity<CreatureDisplayInfoExtraEntry<string>>());
 			AddAllInternalFields(modelBuilder.Entity<CinematicSequencesEntry>());
 			AddAllInternalFields(modelBuilder.Entity<ChrRacesEntry<string>>());
+			AddAllInternalFields(modelBuilder.Entity<ChrClassesEntry<string>>());
 		}
 
 		private static void AddAllInternalFields<TModelType>(EntityTypeBuilder<TModelType> entity) 
