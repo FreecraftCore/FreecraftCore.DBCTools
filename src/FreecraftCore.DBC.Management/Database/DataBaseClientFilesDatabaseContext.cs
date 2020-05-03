@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Reflection;
 using System.Text;
 using FreecraftCore.Serializer;
@@ -131,6 +132,8 @@ namespace FreecraftCore
 
 		public DbSet<ChrClassesEntry<string>> CharacterClasses { get; private set; }
 
+		public DbSet<CharBaseInfoEntry> CharBaseInfos { get; private set; }
+
 		public DataBaseClientFilesDatabaseContext([NotNull] DbContextOptions<DataBaseClientFilesDatabaseContext> options)
 			: base(options)
 		{
@@ -168,6 +171,40 @@ namespace FreecraftCore
 			AddAllInternalFields(modelBuilder.Entity<CinematicSequencesEntry>());
 			AddAllInternalFields(modelBuilder.Entity<ChrRacesEntry<string>>());
 			AddAllInternalFields(modelBuilder.Entity<ChrClassesEntry<string>>());
+			//AddAllInternalFields(modelBuilder.Entity<CharBaseInfoEntry>()); don't use internals do to EF Core limitation
+
+			ConfigureCharBaseInfo(modelBuilder);
+		}
+
+		private static void ConfigureCharBaseInfo(ModelBuilder modelBuilder)
+		{
+			modelBuilder
+				.Entity<CharBaseInfoEntry>()
+				.Property(p => p.RaceId)
+				.HasConversion<int>();
+
+			//Unique case that uses byte values, causing troubles.
+			modelBuilder
+				.Entity<CharBaseInfoEntry>()
+				.Property(p => p.ClassId)
+				.HasConversion<int>();
+
+			modelBuilder
+				.Entity<CharBaseInfoEntry>()
+				.HasAlternateKey(p => new {p.ClassId, p.RaceId});
+
+			//Only run this on migration, does not work in the actual runtime.
+			/*modelBuilder.Entity<CharBaseInfoEntry>()
+				.HasOne(t => t.Class)
+				.WithMany()
+				.HasPrincipalKey(u => (byte)u.ClassId)
+				.HasForeignKey("ClassId");
+
+			modelBuilder.Entity<CharBaseInfoEntry>()
+				.HasOne(t => t.Race)
+				.WithMany()
+				.HasPrincipalKey("RaceId")
+				.HasForeignKey("RaceId");*/
 		}
 
 		private static void AddAllInternalFields<TModelType>(EntityTypeBuilder<TModelType> entity) 
@@ -185,7 +222,20 @@ namespace FreecraftCore
 					entity.OwnsOne(info.Type(), name);
 				}
 				else
+				{
 					entity.Property(name);
+				}
+			}
+		}
+
+		private static string ComputeCLRTypeFromColumnAttributeTypeName(ColumnAttribute columnAttribute)
+		{
+			switch (columnAttribute.TypeName.ToUpper())
+			{
+				case "INT":
+					return typeof(int).AssemblyQualifiedName;
+				default:
+					throw new InvalidOperationException($"Does not support: {columnAttribute.TypeName}");
 			}
 		}
 

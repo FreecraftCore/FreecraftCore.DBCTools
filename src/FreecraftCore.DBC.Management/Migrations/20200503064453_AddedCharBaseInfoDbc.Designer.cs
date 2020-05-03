@@ -3,14 +3,16 @@ using System;
 using FreecraftCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace FreecraftCore.DBC.Management.Migrations
 {
     [DbContext(typeof(DataBaseClientFilesDatabaseContext))]
-    partial class DataBaseClientFilesDatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20200503064453_AddedCharBaseInfoDbc")]
+    partial class AddedCharBaseInfoDbc
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
