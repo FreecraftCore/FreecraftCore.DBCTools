@@ -68,13 +68,22 @@ namespace FreecraftCore
 
 			await StringWriter.WriteStringContents(stringCollection);
 
-			DBCHeader header = new DBCHeader(entries.Count, entrySize / sizeof(int), entrySize, (int)stringDatabase.Currentoffset);
+			DBCHeader header = new DBCHeader(entries.Count, CalculateFieldCount(entrySize), entrySize, (int)stringDatabase.Currentoffset);
 
 			if(Logger.IsEnabled(LogLevel.Debug))
 				Logger.LogDebug($"Generating Header for Type: {typeof(TDbcWriteType).Name} with HeaderValue: {header}");
 
 			//Now write the real header
 			await HeaderWriter.WriteHeader(header);
+		}
+
+		private static int CalculateFieldCount(int entrySize)
+		{
+			//Special case for CharBaseInfo
+			if (typeof(TDbcWriteType) == typeof(CharBaseInfoEntry))
+				return entrySize; //field count of CharBaseInfo is 2 bytes same as entry size.
+			else
+				return entrySize / sizeof(int);
 		}
 	}
 }
