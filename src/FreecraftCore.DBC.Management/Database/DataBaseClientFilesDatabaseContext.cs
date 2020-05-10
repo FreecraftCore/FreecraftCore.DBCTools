@@ -134,6 +134,8 @@ namespace FreecraftCore
 
 		public DbSet<CharBaseInfoEntry> CharBaseInfos { get; private set; }
 
+		public DbSet<SpellIconEntry<string>> SpellIcons { get; private set; }
+
 		public DataBaseClientFilesDatabaseContext([NotNull] DbContextOptions<DataBaseClientFilesDatabaseContext> options)
 			: base(options)
 		{
