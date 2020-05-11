@@ -138,6 +138,8 @@ namespace FreecraftCore
 
 		public DbSet<SkillLineCategoryEntry<string>> SkillCategories { get; private set; }
 
+		public DbSet<SkillLineEntry<string>> SkillLines { get; private set; }
+
 		public DataBaseClientFilesDatabaseContext([NotNull] DbContextOptions<DataBaseClientFilesDatabaseContext> options)
 			: base(options)
 		{
@@ -175,6 +177,7 @@ namespace FreecraftCore
 			AddAllInternalFields(modelBuilder.Entity<CinematicSequencesEntry>());
 			AddAllInternalFields(modelBuilder.Entity<ChrRacesEntry<string>>());
 			AddAllInternalFields(modelBuilder.Entity<ChrClassesEntry<string>>());
+			AddAllInternalFields(modelBuilder.Entity<SkillLineEntry<string>>());
 			//AddAllInternalFields(modelBuilder.Entity<CharBaseInfoEntry>()); don't use internals do to EF Core limitation
 
 			ConfigureCharBaseInfo(modelBuilder);
