@@ -1,0 +1,1 @@
+dotnet FreecraftCore.DBC.CreateGDBC.dll

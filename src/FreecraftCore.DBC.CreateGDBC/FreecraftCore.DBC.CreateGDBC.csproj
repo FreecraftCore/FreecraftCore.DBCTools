@@ -7,15 +7,15 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <LangVersion>7.2</LangVersion>
+    <LangVersion>7.3</LangVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <LangVersion>7.2</LangVersion>
+    <LangVersion>7.3</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="createdatabase_run.bat" />
+    <None Remove="createdbc_run.bat" />
   </ItemGroup>
 
   <ItemGroup>
@@ -23,7 +23,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
     </Content>
-    <Content Include="createdatabase_run.bat">
+    <Content Include="creategdbc_run.bat">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
     </Content>
@@ -33,13 +33,17 @@
     <PackageReference Include="Autofac" Version="5.1.0" />
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="6.0.0" />
     <PackageReference Include="fasterflect" Version="2.1.3" />
-    <PackageReference Include="FreecraftCore.API.Data" Version="5.0.78" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.1" />
+    <PackageReference Include="FreecraftCore.API.GDBC" Version="5.0.78" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\FreecraftCore.DBC.CreateDBC\FreecraftCore.DBC.CreateDBC.csproj" />
     <ProjectReference Include="..\FreecraftCore.DBC.Management\FreecraftCore.DBC.Management.csproj" />
     <ProjectReference Include="..\FreecraftCore.DBC.Tools.Common\FreecraftCore.DBC.Tools.Common.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Services\Fillable\" />
   </ItemGroup>
 
 </Project>
