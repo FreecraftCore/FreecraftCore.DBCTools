@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="FreecraftCore.API.Data" Version="5.0.76" />
+    <PackageReference Include="FreecraftCore.API.Data" Version="5.0.77" />
     <PackageReference Include="FreecraftCore.Serializer" Version="3.0.39" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="3.1.1" />
