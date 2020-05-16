@@ -114,6 +114,15 @@ namespace FreecraftCore
 			builder.RegisterType(typeof(GDbcFullFileGenerator<>).MakeGenericType(dbcType))
 				.As(typeof(IDbcFileGenerator<>).MakeGenericType(dbcType))
 				.SingleInstance();
+
+			//GenericDbcFileGeneratorFillable<TDbcFileType, TDbcEntryType>
+			builder.RegisterType(typeof(GenericDbcFileGeneratorFillable<,>).MakeGenericType(dbcType, dbcType))
+				.As<IDbcTargetFillable>()
+				.SingleInstance();
+
+			builder.RegisterType(typeof(TypeConverterStub<>).MakeGenericType(dbcType))
+				.As(typeof(ITypeConverterProvider<,>).MakeGenericType(dbcType, dbcType))
+				.SingleInstance();
 		}
 	}
 }

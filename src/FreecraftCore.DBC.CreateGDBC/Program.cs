@@ -26,7 +26,7 @@ namespace FreecraftCore
 
 			DbcTypeParser dbcTypeParser = new DbcTypeParser();
 
-			Directory.CreateDirectory(Config.DbcOutputPath);
+			Directory.CreateDirectory($"G{Config.DbcOutputPath}");
 
 			//For each implement DBCType we should try to build a DBC file for it.
 			foreach(Type dbcType in dbcTypeParser.ComputeAllKnownDbcTypes())
@@ -37,6 +37,9 @@ namespace FreecraftCore
 				using(IServiceScope scope = provider.CreateScope())
 				{
 					IDbcTargetFillable fillable = scope.ServiceProvider.GetService<IDbcTargetFillable>();
+
+					if (fillable == null)
+						throw new InvalidOperationException($"Failed to load Fillable for Type: {dbcType.Name}");
 
 					await fillable.FillAsync();
 
