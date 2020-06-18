@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -33,7 +33,7 @@
     <PackageReference Include="Autofac" Version="5.1.0" />
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="6.0.0" />
     <PackageReference Include="fasterflect" Version="2.1.3" />
-    <PackageReference Include="FreecraftCore.API.GDBC" Version="5.0.78" />
+    <PackageReference Include="FreecraftCore.API.GDBC" Version="5.0.107" />
   </ItemGroup>
 
   <ItemGroup>

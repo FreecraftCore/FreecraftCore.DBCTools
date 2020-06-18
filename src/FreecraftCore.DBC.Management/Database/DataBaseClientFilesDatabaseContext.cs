@@ -140,6 +140,8 @@ namespace FreecraftCore
 
 		public DbSet<SkillLineEntry<string>> SkillLines { get; private set; }
 
+		public DbSet<GameObjectDisplayInfoEntry<string>> GameObjectDisplayInfos { get; private set; }
+
 		public DataBaseClientFilesDatabaseContext([NotNull] DbContextOptions<DataBaseClientFilesDatabaseContext> options)
 			: base(options)
 		{
